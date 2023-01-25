@@ -1,3 +1,5 @@
+# /etc/sudoers
+
 root ALL=(ALL:ALL) ALL
 
 %wheel ALL=(ALL:ALL) ALL

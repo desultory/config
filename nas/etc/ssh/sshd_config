@@ -1,4 +1,4 @@
-#/etc/sshd/sshd_config
+# /etc/sshd/sshd_config
 Port 22
 ListenAddress 0.0.0.0
 LoginGraceTime 30

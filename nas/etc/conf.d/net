@@ -1,3 +1,4 @@
+# /etc/conf.d/net
 dns_domain_lo="pyl.onl"
 
 config_fib2="dhcp"
