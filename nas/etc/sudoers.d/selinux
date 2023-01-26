@@ -1,0 +1,3 @@
+# /etc/sudoers.d/selinux
+# set context when sudoing
+%wheel ALL=(ALL) TYPE=sysadm_t ROLE=sysadm_r ALL
