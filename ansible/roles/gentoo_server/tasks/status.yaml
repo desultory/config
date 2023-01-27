@@ -7,6 +7,6 @@
 - name: Print running services
   tags: status
   debug:
-    msg: "{{ item }}"
-  when: ansible_facts.services[item].state == 'running'
+    msg: "{{ ansible_facts.services[item].state }}"
+  when: ansible_facts.services[item].state == "running"
   with_items: "{{ ansible_facts.services }}"
