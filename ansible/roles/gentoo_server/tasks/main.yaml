@@ -12,5 +12,8 @@
 
 - name: Import status tasks
   include_tasks: roles/gentoo_server/tasks/status.yaml
-  tags:  status
+  tags:  [ never, status ]
 
+- name: Import service tasks
+  include_tasks: roles/gentoo_server/tasks/services.yaml
+  tags: [ never, service_start, service_reload ]
