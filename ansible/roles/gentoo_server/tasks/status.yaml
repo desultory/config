@@ -1,0 +1,8 @@
+- name: Check status
+  tags: status
+  ansible.builtin.service_facts:
+
+- name: Print service facts
+  tags: status
+  ansible.builtin.debug:
+    var: ansible_facts.services

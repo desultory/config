@@ -1,8 +1,13 @@
 - name: Check gentoo
   ansible.builtin.fail:
-    msg: Error: Using the Gentoo server role on a server that is not reporting using {{ansible_facts['os_family']}}
+    msg: "Error: Using the Gentoo server role on a server that is not reporting using {{ansible_facts['os_family']}}"
   when: ansible_facts['os_family']|lower != 'gentoo'
 
 - name: Set os_detected
   set_fact:
     os_detected: true
+
+- name: Import status tasks
+  include_tasks: roles/gentoo_server/tasks/status.yaml
+  tags:  status
+

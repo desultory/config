@@ -4,5 +4,5 @@
   when: ansible_facts['os_family']|lower == 'gentoo'
 
 - name: No OS detected
-  ansible.builtin.fail: Error: OS: {{ansible_facts['os_family']}} not supported
+  ansible.builtin.fail: "Error: OS: {{ansible_facts['os_family']}} not supported"
   
