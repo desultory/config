@@ -2,7 +2,11 @@
   tags: status
   ansible.builtin.service_facts:
 
-- name: Print service facts
+
+
+- name: Print running services
   tags: status
-  ansible.builtin.debug:
-    var: ansible_facts.services
+  debug:
+    msg: "{{ item }}"
+  when: ansible_facts.services[item].state == 'running'
+  with_items: "{{ ansible_facts.services }}"
