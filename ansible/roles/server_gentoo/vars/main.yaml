@@ -1,9 +1,8 @@
-vars:
-  ansible_ssh_args: ""
-  dst_grub_cfg_path: "/boot/grub/grub.cfg"
-  dst_kernel_src_path: "/usr/src/linux/"
-  dst_kernel_config_path: "{{dst_kernel_src_path}}.config"
-  src_dir_path: "{{playbook_dir}}/../{{ansible_hostname}}"
-  src_kernel_path: "/usr/src/linux"
-  src_kernel_config_path: "{{src_dir_path}}{{src_kernel_path}}/{{src_kernel_config}}.config"
+ansible_ssh_args: ""
+dst_grub_cfg_path: "/boot/grub/grub.cfg"
+dst_kernel_src_path: "/usr/src/linux/"
+dst_kernel_config_path: "{{dst_kernel_src_path}}.config"
+src_dir_path: "{{playbook_dir}}/../{{ansible_hostname}}"
+src_kernel_path: "/usr/src/linux"
+src_kernel_config_path: "{{src_dir_path}}{{src_kernel_path}}/{{src_kernel_config}}.config"
 
