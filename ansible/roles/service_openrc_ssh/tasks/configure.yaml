@@ -1,3 +1,8 @@
+- name: "Configure: install sshd"
+  become: yes
+  package:
+    name: "{{emerge_ssh_full}}"
+    state: present
 - name: "Configure: copy ssh config"
   become: yes
   template:

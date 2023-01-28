@@ -7,5 +7,8 @@ services: ['ssh']
 # Define whether or not to configure for selinux
 selinux_configure: false
 
+# Define the SSH package name
+emerge_ssh_full: "net-misc/openssh"
+
 # Define the sudo package name
 emerge_sudo_full: "app-admin/sudo"

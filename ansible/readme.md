@@ -42,7 +42,10 @@ Overrides to role variables should be made in the inventory file
 | --------------------- | ----------------- | ------------------------------------------------- |
 | `services`            | `['ssh']`         | List of serviecs to install/configure             |
 | `selinux_configure`   | `false`           | Define whether or not to configuure for SELinux   | 
+| `emerge_ssh_fukk`     | `net-misc/openssh`| Full package atom for ssh                         |
 | `emerge_sudo_full`    | `app-admin/sudo`  | Full package atom for sudo                        |
+
+|
 
 ### Kernel parameters
 
