@@ -7,6 +7,8 @@
     owner: root
     group: root
     mode: u=rw,g=r,o=r
+    # the %s is required, source can't be run from subprocess
+    # this could break if the template file is broken
     validate: "echo %s >> /dev/null && hostname {{inventory_hostname}}"
 - name: "Configure: sudo configuration"
   become: yes

@@ -42,15 +42,12 @@
         file_type: directory
         paths: "{{kernel_module_dir_path}}"
       register: kernel_versions
-    - name: Register debug
-      debug:
-        msg: "{{kernel_versions}}"
     - name: Get the lastest kernel version
       set_fact:
-        kernel_version_string: "{{ kernel_versions | sort(attribute='mtime', reverse=true) | first }}"
+        kernel_version_string: "{{ kernel_versions.files | sort(attribute='mtime') | map(attribute='path') | last | basename }}" 
     - name: Generate the initramfs (dracut)
-      command: "dracut --kver {{kernel_version_string}}"
-      when: "{{initramfs_bin}} == 'dracut'"
+      command: "dracut --kver {{kernel_version_string}} --force"
+      when: initramfs_bin == 'dracut'
   when: initramfs_enable
 
 - name: update the bootloader
