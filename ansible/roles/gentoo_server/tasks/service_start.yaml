@@ -1,9 +1,0 @@
-- name: Debug start services
-  ansible.builtin.debug:
-    msg: "Attempting to start services"
-
-- name: Start services
-  tags: service_start
-  debug:
-    msg: "{{ item }}"
-  with_items: "{{ansible_facts.services.values() | selectattr('default', 'in', 'runlevels') }}"

@@ -1,2 +1,0 @@
-vars:
-  ansible_ssh_args: ""
