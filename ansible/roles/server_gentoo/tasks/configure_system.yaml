@@ -1,5 +1,7 @@
 - name: Configuring the base system
-  include_tasks: configure_base
+  include_role:
+    name: server_gentoo
+    tasks_from: configure_base
 
 - name: Copying service configuration
   include_role:

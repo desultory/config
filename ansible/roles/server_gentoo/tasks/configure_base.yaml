@@ -1,10 +1,48 @@
 - name: "Configure: hostname configuration"
   become: yes
   template:
-    backup: true
+    backup: yes
     src: "hostname"
     dest: "/etc/conf.d/hostname"
     owner: root
     group: root
     mode: u=rw,g=r,o=r
-    validate: source %s && hostname $hostname
+    validate: "echo %s >> /dev/null && hostname {{inventory_hostname}}"
+- name: "Configure: sudo configuration"
+  become: yes
+  block:
+    - name: "Sudo: install"
+      package:
+        name: "{{emerge_sudo_full}}"
+        state: present
+    - name: "Sudo: base configuration"
+      copy:
+        backup: yes
+        src: "sudoers.conf"
+        dest: "/etc/sudoers.conf"
+        owner: root
+        group: root
+        mode: u=r,g=r,o=
+    - name: "Sudo: make sudoers.d"
+      file:
+        path: /etc/sudoers.d
+        state: directory
+        owner: root
+        group: root
+        mode: u=rwx,g=rx,o=x
+    - name: "Sudo: selinux configuration"
+      copy:
+        backup: yes
+        src: "sudo_selinux"
+        dest: "/etc/sudoers.d/selinux"
+        owner: root
+        group: root
+        mode: u=r,g=r,o=
+    - name: "Sudo: wheel configuration"
+      copy:
+        backup: yes
+        src: "sudo_wheel"
+        dest: "/etc/sudoers.d/wheel"
+        owner: root
+        group: root
+

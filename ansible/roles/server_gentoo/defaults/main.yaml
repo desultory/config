@@ -3,3 +3,9 @@ ansible_ssh_args: ""
 
 # Define the default services
 services: ['ssh']
+
+# Define whether or not to configure for selinux
+selinux_configure: false
+
+# Define the sudo package name
+emerge_sudo_full: "app-admin/sudo"
