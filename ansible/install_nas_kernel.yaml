@@ -1,0 +1,16 @@
+- name: install nas kernel
+  hosts: nas
+  tasks:
+    - name: copy kernel config
+      copy:
+        src: $src_kernel_config_path
+        dest: $dst_kernel_config_path
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+  vars:
+    dst_kernel_config_path: "/usr/src/linux/.config"
+    src_dir_path: "../nas"
+    src_kernel_path: "/usr/src/linux"
+    src_kernel_config: "nas-selinux"
+    src_kernel_config_path: "{{src_dir_path}}{{src_kernel_path}}{{src_kernel_config}}.config"

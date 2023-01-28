@@ -1,0 +1,4 @@
+- name: Start all services
+  import_role:
+    name: server_gentoo_openrc_start
+  when: ansible_facts['os_family']|lower == 'gentoo'

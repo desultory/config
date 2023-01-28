@@ -1,8 +1,3 @@
-- name: Detect Gentoo
-  import_role:
-    name: gentoo_server
-  when: ansible_facts['os_family']|lower == 'gentoo'
-
-- name: No OS detected
-  ansible.builtin.fail: "Error: OS: {{ansible_facts['os_family']}} not supported"
-  when: os_detected == false 
+- name: Debug server base
+  debug:
+    msg: "Loading base server role"

@@ -2,6 +2,5 @@
   hosts: servers
   serial: 1
   roles:
-    - server
-  tags:
-    - service_start
+    - start_all_services
+
