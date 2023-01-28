@@ -1,4 +1,9 @@
-- name: Import server role and install kernel task
-  import_role:
-    name: server_gentoo
-    tasks_from: install_kernel
+- name: Import role task
+  hosts: gentoo-servers
+  serial: 1
+  tasks:
+    - name: Import server role and install kernel task
+      import_role:
+        name: server_gentoo
+        tasks_from: install_kernel
+        vars_from: kernel

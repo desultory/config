@@ -1,6 +1,0 @@
-- name: bootstrap
-  hosts: localhost # https://docs.ansible.com/ansible/latest/inventory/implicit_localhost.html
-  tasks:
-    - name: Install Ansible SELinux
-      ansible.builtin.pip:
-

@@ -1,8 +1,11 @@
 ansible_ssh_args: ""
-dst_grub_cfg_path: "/boot/grub/grub.cfg"
-dst_kernel_src_path: "/usr/src/linux/"
-dst_kernel_config_path: "{{dst_kernel_src_path}}.config"
-src_dir_path: "{{playbook_dir}}/../{{ansible_hostname}}"
-src_kernel_path: "/usr/src/linux"
-src_kernel_config_path: "{{src_dir_path}}{{src_kernel_path}}/{{src_kernel_config}}.config"
+
+gentoo_ssh_enable: true
+gentoo_ssh_auth_methods: "publickey"
+gentoo_ssh_port: "22"
+gentoo_ssh_root_login: false
+gentoo_ssh_sftp_server: true
+gentoo_ssh_socket_unlink: false
+gentoo_ssh_tcp_keepalive: true
+gentoo_ssh_x11_forward: false
 

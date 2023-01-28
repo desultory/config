@@ -1,0 +1,9 @@
+- name: Import role task
+  hosts: nas
+  serial: 1
+  tasks:
+    - name: Import server role and configure system task
+      import_role:
+        name: server_gentoo
+        tasks_from: configure_system
+        vars_from: main

@@ -1,8 +1,0 @@
-servers:
-  hosts:
-    nas:
-      ansible_host: 10.10.10.27
-      src_kernel_config: "nas-selinux"
-      roles: server_gentoo
-    router:
-      ansible_host: 10.10.10.1

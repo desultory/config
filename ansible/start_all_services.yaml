@@ -1,6 +1,0 @@
-- name: Start all services
-  hosts: servers
-  serial: 1
-  roles:
-    - start_all_services
-

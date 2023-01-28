@@ -1,36 +1,36 @@
-  - name: copy kernel config
-    become: yes
-    copy:
-      src: "{{src_kernel_config_path}}"
-      dest: "{{dst_kernel_config_path}}"
-      owner: root
-      group: root
-      mode: u=rw,g=r,o=r
-  - name: build the kernel
-    become: yes
-    make:
-      chdir: "{{dst_kernel_src_path}}"
-      jobs: "{{ansible_facts['processor_vcpus']}}"
-  - name: mount boot partition
-    become: yes
-    command:
-      cmd: "mount /boot"
-      creates: /boot/grub/ # check that it is mounted
-  - name: install the kernel
-    become: yes
-    make:
-      chdir: "{{dst_kernel_src_path}}"
-      target: "install"
-  - name: install the kernel modules
-    become: yes
-    make:
-      chdir: "{{dst_kernel_src_path}}"
-      target: "modules_install"
-  - name: install the kernel headers
-    become: yes
-    make:
-      chdir: "{{dst_kernel_src_path}}"
-      target: "headers_install"
-  - name: update the bootloader
-    become: yes
-    command: "grub-mkconfig -o {{dst_grub_cfg_path}}"
+- name: copy kernel config
+  become: yes
+  copy:
+    src: "{{src_kernel_config_path}}"
+    dest: "{{dst_kernel_config_path}}"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+- name: build the kernel
+  become: yes
+  make:
+    chdir: "{{dst_kernel_src_path}}"
+    jobs: "{{ansible_facts['processor_vcpus']}}"
+- name: mount boot partition
+  become: yes
+  command:
+    cmd: "mount /boot"
+    creates: /boot/grub/ # check that it is mounted
+- name: install the kernel
+  become: yes
+  make:
+    chdir: "{{dst_kernel_src_path}}"
+    target: "install"
+- name: install the kernel modules
+  become: yes
+  make:
+    chdir: "{{dst_kernel_src_path}}"
+    target: "modules_install"
+- name: install the kernel headers
+  become: yes
+  make:
+    chdir: "{{dst_kernel_src_path}}"
+    target: "headers_install"
+- name: update the bootloader
+  become: yes
+  command: "grub-mkconfig -o {{dst_grub_cfg_path}}"

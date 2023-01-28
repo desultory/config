@@ -1,0 +1,50 @@
+# /etc/ssh/sshd_config
+Port {{gentoo_ssh_port}}
+ListenAddress 0.0.0.0
+LoginGraceTime 30
+{% if gentoo_ssh_root_login %}
+PermitRootLogin yes
+{% else %}
+PermitRootLogin no
+{% endif %}
+StrictModes yes
+MaxAuthTries 5
+MaxSessions 10
+PubkeyAuthentication yes
+AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2
+HostbasedAuthentication no
+IgnoreRhosts yes
+PasswordAuthentication no
+PermitEmptyPasswords no
+UsePAM yes
+{% if gentoo_ssh_x11_forward %}
+X11Forwarding yes
+{% else %}
+X11Forwarding no
+{% endif %}
+PrintMotd no
+PrintLastLog yes
+{% if gentoo_ssh_tcp_keepalive %}
+TCPKeepAlive yes
+{% else %}
+TCPKeepAlive no
+{% endif %}
+UseDNS no
+{% if gentoo_ssh_tcp_keepalive %}
+Subsystem sftp /usr/lib64/misc/sftp-server
+{% else %}
+{% endif %}
+AcceptEnv LANG LC_*
+AcceptEnv COLORTERM
+KexAlgorithms curve25519-sha256@libssh.org,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256
+Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
+
+AuthenticationMethods {{gentoo_ssh_auth_methods}}
+
+{% if gentoo_ssh_socket_unlink %}
+# Can help with remote socket binds
+StreamLocalBindUnlink yes
+{% else %}
+{% endif %}
+
