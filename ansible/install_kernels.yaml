@@ -6,4 +6,4 @@
       import_role:
         name: server_gentoo
         tasks_from: install_kernel
-        vars_from: kernel
+        defaults_from: kernel

@@ -1,0 +1,16 @@
+# Where the grub.cfg file is stored
+dst_grub_cfg_path: "/boot/grub/grub.cfg"
+# The base dir for the live kernel
+dst_kernel_src_path: "/usr/src/linux/"
+# The .config path for the kernel build process
+dst_kernel_config_path: "{{dst_kernel_src_path}}.config"
+# Where the .config file should be sourced from
+src_dir_path: "{{playbook_dir}}/../hosts/{{inventory_hostname}}"
+# Source dir for the kernel config
+# Currently using the path for the linux kernel
+# May later change to allow for a flatter host directory structure
+# keeping the host directory structure such that it can be copied over a filesystem
+src_kernel_path: "/usr/src/linux"
+# Computed path for the source kernel, based on defaults and intended overrides
+src_kernel_config_path: "{{src_dir_path}}{{src_kernel_path}}/{{src_kernel_config}}.config"
+

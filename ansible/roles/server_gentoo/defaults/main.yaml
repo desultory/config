@@ -1,0 +1,5 @@
+# Remove most of the ssh args to make the connection simpler, mostly gets rid of the cached connection sockets
+ansible_ssh_args: ""
+
+# Define the default services
+services: ['ssh']

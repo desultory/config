@@ -1,0 +1,18 @@
+# Custom SSH args, are processed by template
+# Override them in the host inventory configuration
+#
+gentoo_ssh_enable: true
+# this string is written out to ssh `AuthenticationMethods`
+gentoo_ssh_auth_methods: "publickey"
+# Writen to `Port`
+gentoo_ssh_port: "22"
+# Sets `PermitRootLogin` to `no` or `yes` based on bool
+gentoo_ssh_root_login: false
+# Enables the `Subsystem sftp /usr/lib64/misc/sftp-server`
+gentoo_ssh_sftp_server: true
+# enables `StreamLocalBindUnlink yes` for socket forwarding
+gentoo_ssh_socket_unlink: false
+# sets `TCPKeepAlive yes` based on bool
+gentoo_ssh_tcp_keepalive: true
+# Sets `X11Forwarding yes` based on bool
+gentoo_ssh_x11_forward: false

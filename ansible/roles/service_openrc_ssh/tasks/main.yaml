@@ -1,0 +1,9 @@
+- name: Check openrc
+  ansible.builtin.fail:
+    msg: "Error: Using the SSH openrc serivce role on a server that is reporting using {{ansible_facts['service_mgr']}}"
+  when: ansible_facts['service_mgr']|lower != 'openrc'
+
+- name: Debug OpenRC detected
+  ansible.builtin.debug:
+    msg: "OpenRC has been detected"
+

@@ -1,8 +1,7 @@
-- name: copy ssh config
-  become: yes
-  template:
-    src: "sshd_config"
-    dest: "/etc/ssh/sshd_config"
-    owner: root
-    group: root
-    mode: u=rw,g=,o=
+- name: Copying service configuration
+  include_role:
+    name: "service_openrc_{{item}}"
+    tasks_from: configure
+  loop: "{{services}}"
+  when: services is defined
+
