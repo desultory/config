@@ -3,7 +3,7 @@ gentoo_servers:
     nas:
       ansible_host: 10.10.10.27
       roles: server_gentoo
-      gentoo_ssh_socket_unlink: true
+      ssh_socket_unlink: true
       src_kernel_config: "nas-selinux"
     router:
       ansible_host: 10.10.10.1

@@ -1,7 +1,0 @@
-- name: install nas kernel
-  hosts: nas
-  tasks:
-    - name: Import server role and install kernel task
-      import_role:
-        name: server_gentoo
-        tasks_from: install_kernel
