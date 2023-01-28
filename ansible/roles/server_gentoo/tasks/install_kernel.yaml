@@ -40,7 +40,7 @@
       find:
         depth: 1
         file_type: directory
-        paths: "{{kernel_module_path}}"
+        paths: "{{kernel_module_dir_path}}"
       register: kernel_versions
     - name: Get the lastest kernel version
       set_fact:
@@ -48,7 +48,7 @@
     - name: Generate the initramfs (dracut)
       command: "dracut --kver {{kernel_version_string}}"
       when: "{{initramfs_bin}} == 'dracut'"
-  when: "{{initramfs_enable}}"
+  when: initramfs_enable
 
 - name: update the bootloader
   become: yes

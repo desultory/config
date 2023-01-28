@@ -25,7 +25,7 @@ emerge_kernel_use: "symlink"
 # Define whether or not the initramfs will be generated
 initramfs_enable: false
 # Define the kernel module path
-kernel_module_path: "/lib/modules/"
+kernel_module_dir_path: "/lib/modules"
 # Define the initramfs package
 emerge_initramfs_full: "sys-kernel/dracut"
 initramfs_bin: "dracut"
