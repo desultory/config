@@ -1,0 +1,10 @@
+- name: Check status
+  tags: status
+  ansible.builtin.service_facts:
+
+
+
+- name: Print running services
+  tags: status
+  debug:
+    msg: "{{ ansible_facts.services.values() | selectattr('state', 'in', ['started', 'running']) }}"
