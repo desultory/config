@@ -1,55 +1,55 @@
 - name: Build kernel
   become: yes
   block:
-    - name: copy kernel config
+    - name: "Kernel: copy kernel config"
       copy:
         src: "{{src_kernel_config_path}}"
         dest: "{{dst_kernel_config_path}}"
         owner: root
         group: root
         mode: u=rw,g=r,o=r
-    - name: build the kernel
+    - name: "Kernel: build"
       make:
         chdir: "{{dst_kernel_src_path}}"
         jobs: "{{ansible_facts['processor_vcpus']}}"
-    - name: mount boot partition
+    - name: "Kernel: mount boot partition"
       command:
         cmd: "mount /boot"
         creates: /boot/grub/ # check that it is mounted
-    - name: install the kernel
+    - name: "Kernel: install"
       make:
         chdir: "{{dst_kernel_src_path}}"
         target: "install"
-    - name: install the kernel modules
+    - name: "Kernel: install modules"
       make:
         chdir: "{{dst_kernel_src_path}}"
         target: "modules_install"
-    - name: install the kernel headers
+    - name: "Kernel: install headers"
       make:
         chdir: "{{dst_kernel_src_path}}"
         target: "headers_install"
 
-- name: install the initramfs
+- name: Build initramfs
   become: yes
   block:
-    - name: Install initramfs package
+    - name: "Initramfs: nstall initramfs package"
       package:
         name: "{{emerge_initramfs_full}}"
         state: present
-    - name: Get installed kernel module version names
+    - name: "Initramfs: Get installed kernel module version names"
       find:
         depth: 1
         file_type: directory
         paths: "{{kernel_module_dir_path}}"
       register: kernel_versions
-    - name: Get the lastest kernel version
+    - name: "Initramfs: Get the lastest kernel version"
       set_fact:
         kernel_version_string: "{{ kernel_versions.files | sort(attribute='mtime') | map(attribute='path') | last | basename }}" 
-    - name: Generate the initramfs (dracut)
+    - name: "Initramfs: Generate (dracut)"
       command: "dracut --kver {{kernel_version_string}} --force"
       when: initramfs_bin == 'dracut'
   when: initramfs_enable
 
-- name: update the bootloader
+- name: Update bootloader
   become: yes
   command: "grub-mkconfig -o {{dst_grub_cfg_path}}"
