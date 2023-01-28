@@ -8,9 +8,10 @@ Install ansible
 
 `# emerge ansible`
 
-Get community packages for SELinux
+Get community.general for SELinux and make
+Get ansible.posix for mounts
 
-`$ ansible-galaxy collection install community.general`
+`$ ansible-galaxy collection install community.general ansible.posix`
 
 ## Usage
 

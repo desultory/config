@@ -2,15 +2,45 @@
   hosts: nas
   tasks:
     - name: copy kernel config
+      become: yes
       copy:
-        src: $src_kernel_config_path
-        dest: $dst_kernel_config_path
+        src: "{{src_kernel_config_path}}"
+        dest: "{{dst_kernel_config_path}}"
         owner: root
         group: root
         mode: u=rw,g=r,o=r
+    - name: build the kernel
+      become: yes
+      make:
+        chdir: "{{dst_kernel_src_path}}"
+        jobs: "{{ansible_facts['processor_vcpus']}}"
+    - name: mount boot partition
+      become: yes
+      command:
+        cmd: "mount /boot"
+        creates: /boot/grub/ # check that it is mounted
+    - name: install the kernel
+      become: yes
+      make:
+        chdir: "{{dst_kernel_src_path}}"
+        target: "install"
+    - name: install the kernel modules
+      become: yes
+      make:
+        chdir: "{{dst_kernel_src_path}}"
+        target: "modules_install"
+    - name: install the kernel headers
+      become: yes
+      make:
+        chdir: "{{dst_kernel_src_path}}"
+        target: "headers_install"
+    - name: update the bootloader
+      become: yes
+      command: "grub-mkconfig -o /boot/grub/grub.cfg"
   vars:
-    dst_kernel_config_path: "/usr/src/linux/.config"
-    src_dir_path: "../nas"
+    dst_kernel_src_path: "/usr/src/linux/"
+    dst_kernel_config_path: "{{dst_kernel_src_path}}.config"
+    src_dir_path: "{{playbook_dir}}/../nas"
     src_kernel_path: "/usr/src/linux"
     src_kernel_config: "nas-selinux"
-    src_kernel_config_path: "{{src_dir_path}}{{src_kernel_path}}{{src_kernel_config}}.config"
+    src_kernel_config_path: "{{src_dir_path}}{{src_kernel_path}}/{{src_kernel_config}}.config"

@@ -1,8 +1,0 @@
-- name: pylonl playbook
-  hosts: all
-  serial: 1 
-  tasks:
-    - name: Ping all hosts
-      ansible.builtin.ping:
-  vars:
-    ansible_ssh_args: ""
