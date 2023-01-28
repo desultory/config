@@ -1,0 +1,10 @@
+- name: "Configure: hostname configuration"
+  become: yes
+  template:
+    backup: true
+    src: "hostname"
+    dest: "/etc/conf.d/hostname"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+    validate: source %s && hostname $hostname

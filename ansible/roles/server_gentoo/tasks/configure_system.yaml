@@ -1,3 +1,6 @@
+- name: Configuring the base system
+  include_tasks: configure_base
+
 - name: Copying service configuration
   include_role:
     name: "service_openrc_{{item}}"

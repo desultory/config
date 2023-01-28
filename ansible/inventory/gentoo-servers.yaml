@@ -1,4 +1,4 @@
-gentoo-servers:
+gentoo_servers:
   hosts:
     nas:
       ansible_host: 10.10.10.27
@@ -8,6 +8,8 @@ gentoo-servers:
     router:
       ansible_host: 10.10.10.1
       roles: server_gentoo
+      initramfs_enable: true
+      emerge_kernel_version: "6.0.8"
       src_kernel_config: "base"
 
 

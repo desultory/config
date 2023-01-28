@@ -1,9 +1,8 @@
 - name: Import role task
-  hosts: gentoo-servers
+  hosts: gentoo_servers
   serial: 1
   tasks:
     - name: Import server role and configure system task
       import_role:
         name: server_gentoo
         tasks_from: configure_system
-          #defaults_from: main

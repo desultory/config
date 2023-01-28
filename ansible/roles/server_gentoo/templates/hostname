@@ -1,0 +1,3 @@
+# /etc/conf.d/hostname
+# Hostname fallback if /etc/hostname does not exist
+hostname="{{inventory_hostname}}"

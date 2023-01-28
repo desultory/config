@@ -14,3 +14,18 @@ src_kernel_path: "/usr/src/linux"
 # Computed path for the source kernel, based on defaults and intended overrides
 src_kernel_config_path: "{{src_dir_path}}{{src_kernel_path}}/{{src_kernel_config}}.config"
 
+# Define the kernel package
+emerge_kernel_full: "sys-kernel/gentoo-sources"
+emerge_kernel_short: "gentoo-sources"
+# Define the default gentoo sources arch
+emerge_kernel_arch: "amd64"
+# Define the kernel use flags
+emerge_kernel_use: "symlink"
+
+# Define whether or not the initramfs will be generated
+initramfs_enable: false
+# Define the kernel module path
+kernel_module_path: "/lib/modules/"
+# Define the initramfs package
+emerge_initramfs_full: "sys-kernel/dracut"
+initramfs_bin: "dracut"
