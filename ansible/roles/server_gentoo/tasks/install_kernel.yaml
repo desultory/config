@@ -1,71 +1,23 @@
 - name: Build kernel
   become: yes
   block:
-    - name: "Kernel: Configure gentoo-sources use"
+    - name: "Kernel: Configure gentoo-kernel use"
       template:
         backup: yes
-        src: "gentoo-sources_use"
-        dest: "/etc/portage/package.use/gentoo-sources"
+        src: "gentoo-kernel_use"
+        dest: "/etc/portage/package.use/gentoo-kernel"
         owner: root
         group: root
         mode: u=rw,g=r,o=r
-    - name: "Kernel: Configure gentoo-sources accept-keywords"
+    - name: "Kernel: Configure gentoo-kernel accept-keywords"
       template:
         backup: yes
-        src: "gentoo-sources_accept_keywords"
-        dest: "/etc/portage/package.accept_keywords/gentoo-sources"
+        src: "gentoo-kernel_accept_keywords"
+        dest: "/etc/portage/package.accept_keywords/gentoo-kernel"
         owner: root
         group: root
-      when: emerge_kernel_version != 'latest'
-    - name: "Kernel: copy kernel config"
-      copy:
-        src: "{{src_kernel_config_path}}"
-        dest: "{{dst_kernel_config_path}}"
-        owner: root
-        group: root
-        mode: u=rw,g=r,o=r
-    - name: "Kernel: build"
-      make:
-        chdir: "{{dst_kernel_src_path}}"
-        jobs: "{{ansible_facts['processor_vcpus']}}"
-    - name: "Kernel: mount boot partition"
-      command:
-        cmd: "mount /boot"
-        creates: /boot/grub/ # check that it is mounted
-    - name: "Kernel: install"
-      make:
-        chdir: "{{dst_kernel_src_path}}"
-        target: "install"
-    - name: "Kernel: install modules"
-      make:
-        chdir: "{{dst_kernel_src_path}}"
-        target: "modules_install"
-    - name: "Kernel: install headers"
-      make:
-        chdir: "{{dst_kernel_src_path}}"
-        target: "headers_install"
-
-- name: Build initramfs
-  become: yes
-  block:
-    - name: "Initramfs: nstall initramfs package"
+    - name: "Kernel: emerge"
       package:
-        name: "{{emerge_initramfs_full}}"
+        name: "{{emerge_kernel_full}}"
         state: present
-    - name: "Initramfs: Get installed kernel module version names"
-      find:
-        depth: 1
-        file_type: directory
-        paths: "{{kernel_module_dir_path}}"
-      register: kernel_versions
-    - name: "Initramfs: Get the lastest kernel version"
-      set_fact:
-        kernel_version_string: "{{ kernel_versions.files | sort(attribute='mtime') | map(attribute='path') | last | basename }}" 
-    - name: "Initramfs: Generate (dracut)"
-      command: "dracut --kver {{kernel_version_string}} --force"
-      when: initramfs_bin == 'dracut'
-  when: initramfs_enable
 
-- name: Update bootloader
-  become: yes
-  command: "grub-mkconfig -o {{dst_grub_cfg_path}}"

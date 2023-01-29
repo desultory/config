@@ -1,2 +1,0 @@
-# /etc/portage/package.accept_keywords/gentoo-sources
-={{emerge_kernel_full}}-{{emerge_kernel_version}} ~{{emerge_arch}}

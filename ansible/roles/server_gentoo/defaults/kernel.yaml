@@ -1,30 +1,6 @@
-# Where the grub.cfg file is stored
-dst_grub_cfg_path: "/boot/grub/grub.cfg"
-# The base dir for the live kernel
-dst_kernel_src_path: "/usr/src/linux/"
-# The .config path for the kernel build process
-dst_kernel_config_path: "{{dst_kernel_src_path}}.config"
-# Where the .config file should be sourced from
-src_dir_path: "{{playbook_dir}}/../hosts/{{inventory_hostname}}"
-# Source dir for the kernel config
-# Currently using the path for the linux kernel
-# May later change to allow for a flatter host directory structure
-# keeping the host directory structure such that it can be copied over a filesystem
-src_kernel_path: "/usr/src/linux"
-# Name of the default kerne config
-src_kernel_config: "default"
-# Computed path for the source kernel, based on defaults and intended overrides
-src_kernel_config_path: "{{src_dir_path}}{{src_kernel_path}}/{{src_kernel_config}}.config"
-
 # Define the kernel package
-emerge_kernel_full: "sys-kernel/gentoo-sources"
-# Define the kernel use flags
-emerge_kernel_use: "symlink"
-
+emerge_kernel_full: "sys-kernel/gentoo-kernel"
+# Whether or not to use the unstable kernel
+emerge_kernel_unstable: false
 # Define whether or not the initramfs will be generated
 initramfs_enable: false
-# Define the kernel module path
-kernel_module_dir_path: "/lib/modules"
-# Define the initramfs package
-emerge_initramfs_full: "sys-kernel/dracut"
-initramfs_bin: "dracut"
