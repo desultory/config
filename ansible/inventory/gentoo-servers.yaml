@@ -1,0 +1,13 @@
+gentoo_servers:
+  hosts:
+    servera:
+      ansible_host: 10.0.0.100
+      roles: gentoo
+      ssh_socket_unlink: true
+      selinux_configure: true
+    serverb:
+      ansible_host: 10.0.0.102
+      roles: gentoo
+      initramfs_enable: true
+
+
