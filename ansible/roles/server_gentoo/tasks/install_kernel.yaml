@@ -1,3 +1,7 @@
+- name: Include kernel vars
+  include_defaults:
+    name: kernel
+
 - name: Build kernel
   become: yes
   block:

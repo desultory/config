@@ -1,5 +1,5 @@
 # /etc/portage/package.use/gentoo-kernel
-{% initramfs_enable %}
+{% if initramfs_enable %}
 {{emerge_kernel_full}}
 {% else %}
 {{emerge_kernel_full}} -initramfs

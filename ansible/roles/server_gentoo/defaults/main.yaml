@@ -15,3 +15,6 @@ emerge_ssh_full: "net-misc/openssh"
 
 # Define the sudo package name
 emerge_sudo_full: "app-admin/sudo"
+
+# Define the bootloader
+emerge_bootloader: "grub"
