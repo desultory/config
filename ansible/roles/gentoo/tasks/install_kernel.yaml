@@ -1,3 +1,9 @@
+# First configure portage
+- name: jump configure_portage
+  include_role:
+    name: gentoo
+    tasks_from: configure_portage
+
 # Configures emerge package.use and package.accept_keywords to install gentoo-kernel
 - name: Install
   become: yes
@@ -18,7 +24,7 @@
         owner: root
         group: root
     - name: emerge gentoo-kernel
-      package:
-        name: "{{emerge_kernel_full}}"
+      portage:
+        package: "{{emerge_kernel_full}}"
         state: present
 
