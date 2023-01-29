@@ -1,0 +1,6 @@
+# Define the kernel package
+emerge_kernel_full: "sys-kernel/gentoo-kernel"
+# Whether or not to use the unstable kernel
+emerge_kernel_unstable: false
+# Define whether or not the initramfs will be generated
+initramfs_enable: false

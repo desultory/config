@@ -1,0 +1,6 @@
+# /etc/portage/package.accept_keywords/gentoo-kernel
+{% if emerge_kernel_unstable %}
+{{emerge_kernel_full}} ~{{emerge_arch}}
+{% else %}
+{{emerge_kernel_full}} {{emerge_arch}}
+{% endif %}

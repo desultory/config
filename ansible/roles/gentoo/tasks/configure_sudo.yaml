@@ -1,38 +1,38 @@
 - name: Configuring sudo
   become: yes
   block:
-    - name: "Sudo: install"
+    - name: Install sudo
       package:
         name: "{{emerge_sudo_full}}"
         state: present
-    - name: "Sudo: base configuration"
+    - name: Install /etc/sudoers.conf
       copy:
         backup: yes
-        src: "sudoers.conf"
-        dest: "/etc/sudoers.conf"
+        src: etc/sudoers.conf
+        dest: /etc/sudoers.conf
         owner: root
         group: root
         mode: u=r,g=r,o=
-    - name: "Sudo: make sudoers.d"
+    - name: Create /etc/sudoers.d
       file:
         path: /etc/sudoers.d
         state: directory
         owner: root
         group: root
         mode: u=rwx,g=rx,o=x
-    - name: "Sudo: selinux configuration"
+    - name: Install /etc/sudoers.d/selinux
       copy:
         backup: yes
-        src: "sudo_selinux"
-        dest: "/etc/sudoers.d/selinux"
+        src: etc/sudoers.d/selinux
+        dest: /etc/sudoers.d/selinux
         owner: root
         group: root
         mode: u=r,g=r,o=
-    - name: "Sudo: wheel configuration"
+    - name: Install /etc/sudoers.d/wheel
       copy:
         backup: yes
-        src: "sudo_wheel"
-        dest: "/etc/sudoers.d/wheel"
+        src: etc/sudoers.d/wheel
+        dest: /etc/sudoers.d/wheel
         owner: root
         group: root
 

@@ -38,23 +38,24 @@ Overrides to role variables should be made in the inventory file
 
 ### Gentoo Variables
 
-|  Variable name            |  Defaults             |  Description                                      |
-| ------------------------- | --------------------- | ------------------------------------------------- |
-| `services`                | `['ssh']`             | List of serviecs to install/configure             |
-| `selinux_configure`       | `false`               | Define whether or not to configuure for SELinux   | 
-| `emerge_arch`             | `amd64`               | The arch for emerge packages                      |
-| `emerge_bootloader`       | `grub`                | Set the USE flag for the bootloade                |
-| `emerge_ssh_full`         | `net-misc/openssh`    | Full package atom for ssh                         |
-| `emerge_sudo_full`        | `app-admin/sudo`      | Full package atom for sudo                        |
+|  Variable name            |  Defaults                                     |  Description                                      |
+| ------------------------- | --------------------------------------------- | ------------------------------------------------- |
+| `services`                | `['ssh']`                                     | List of serviecs to install/configure             |
+| `selinux_configure`       | `false`                                       | Define whether or not to configuure for SELinux   | 
+| `emerge_arch`             | `amd64`                                       | The arch for emerge packages                      |
+| `emerge_profile`          | `default/linux/amd64/17.1/hardened/selinux`   | The default profile to select                     |
+| `emerge_bootloader`       | `grub`                                        | Set the USE flag for the bootloade                |
+| `emerge_ssh_full`         | `net-misc/openssh`                            | Full package atom for ssh                         |
+| `emerge_sudo_full`        | `app-admin/sudo`                              | Full package atom for sudo                        |
 
 
 ### Kernel parameters
 
-|  Variable name            |  Defaults                                                             |  Description                                              |
-| ------------------------- | --------------------------------------------------------------------- | --------------------------------------------------------- |
-| `emerge_kernel_full`      | `sys-kernel/gentoo-sources`                                           | The full atom of the gentoo kernel source package         |
-| `emerge_kernel_unstable`  | `false`                                                               | When true, tells emerge to use the unstable kernel        |
-| `initramfs_enable`        | `false`                                                               | Bool determining whether or not an initramfs is used      |
+|  Variable name            |  Defaults                     |  Description                                              |
+| ------------------------- | ----------------------------- | --------------------------------------------------------- |
+| `emerge_kernel_full`      | `sys-kernel/gentoo-sources`   | The full atom of the gentoo kernel source package         |
+| `emerge_kernel_unstable`  | `false`                       | When true, tells emerge to use the unstable kernel        |
+| `initramfs_enable`        | `false`                       | Bool determining whether or not an initramfs is used      |
 
 
 ### SSH Variables

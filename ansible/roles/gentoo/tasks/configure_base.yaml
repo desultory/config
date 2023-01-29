@@ -1,0 +1,17 @@
+# This file should only link to other tasks within the role
+# Just include the role with tasks from that portion
+- name: jump configure_portage
+  include_role:
+    name: gentoo
+    tasks_from: configure_portage
+
+- name: jump configure_hostname
+  include_role:
+    name: gentoo
+    tasks_from: configure_hostname
+
+- name: jump configure_sudo
+  include_role:
+    name: gentoo
+    tasks_from: configure_sudo
+

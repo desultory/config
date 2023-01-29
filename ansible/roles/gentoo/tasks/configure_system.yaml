@@ -1,6 +1,6 @@
 - name: Configuring the base system
   include_role:
-    name: server_gentoo
+    name: gentoo
     tasks_from: configure_base
 
 - name: Configuring services

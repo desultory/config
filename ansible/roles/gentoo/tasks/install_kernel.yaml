@@ -5,7 +5,7 @@
     - name: Install /etc/portage/package.use/gentoo-kernel
       template:
         backup: yes
-        src: use
+        src: etc/portage/package.use/gentoo-kernel
         dest: /etc/portage/package.use/gentoo-kernel
         owner: root
         group: root
@@ -13,7 +13,7 @@
     - name: Install /etc/portage/package.accept_keywords/gentoo-kernel
       template:
         backup: yes
-        src: accept_keywords
+        src: etc/portage/package.accept_keywords/gentoo-kernel
         dest: /etc/portage/package.accept_keywords/gentoo-kernel
         owner: root
         group: root

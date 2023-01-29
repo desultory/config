@@ -1,5 +1,0 @@
-- name: Include kernel install
-  include_role:
-    name: gentoo_kernel
-    tasks_from: install
-

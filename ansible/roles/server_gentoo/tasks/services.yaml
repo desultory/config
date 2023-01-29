@@ -1,3 +1,0 @@
-- name: Load service_start
-  include_tasks: roles/gentoo_server/tasks/service_start.yaml
-  tags: service_start

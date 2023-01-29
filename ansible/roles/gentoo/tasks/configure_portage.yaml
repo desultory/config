@@ -1,0 +1,18 @@
+# Contains tasks for configuring portage, should only contain the most generic tasks
+- name: Configuring portage
+  become: yes
+  block:
+    # TODO: Validation
+    # Currently not a portage capability
+    - name: Install /etc/portage/make.conf
+      template:
+        backup: yes
+        src: etc/portage/make.conf
+        dest: /etc/portage/make.conf
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+    # Set the profile based on {{emerge_profile}} 
+    - name: Set the emerge profile
+      command: "eselect profile set {{emerge_profile}}"
+

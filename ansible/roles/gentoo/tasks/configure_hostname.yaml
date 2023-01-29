@@ -1,9 +1,9 @@
-- name: Configuring hostname
+- name: Installing /etc/conf.d/hostname
   become: yes
   template:
     backup: yes
-    src: "hostname"
-    dest: "/etc/conf.d/hostname"
+    src: etc/conf.d/hostname
+    dest: /etc/conf.d/hostname
     owner: root
     group: root
     mode: u=rw,g=r,o=r
