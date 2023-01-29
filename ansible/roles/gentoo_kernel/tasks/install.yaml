@@ -1,7 +1,7 @@
-- name: Install kernel
+- name: Install
   become: yes
   block:
-    - name: "Kernel: Configure gentoo-kernel use"
+    - name: Configure gentoo-kernel use
       template:
         backup: yes
         src: "use"
@@ -9,14 +9,14 @@
         owner: root
         group: root
         mode: u=rw,g=r,o=r
-    - name: "Kernel: Configure gentoo-kernel accept-keywords"
+    - name: Configure gentoo-kernel accept-keywords
       template:
         backup: yes
         src: "accept_keywords"
         dest: "/etc/portage/package.accept_keywords/gentoo-kernel"
         owner: root
         group: root
-    - name: "Kernel: emerge"
+    - name: emerge gentoo-kernel
       package:
         name: "{{emerge_kernel_full}}"
         state: present

@@ -3,9 +3,9 @@
     name: server_gentoo
     tasks_from: configure_base
 
-- name: Copying service configuration
+- name: Configuring services
   include_role:
-    name: "service_openrc_{{item}}"
+    name: "service_{{item}}"
     tasks_from: configure
   loop: "{{services}}"
   when: services is defined
