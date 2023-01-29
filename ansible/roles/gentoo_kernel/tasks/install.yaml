@@ -1,15 +1,10 @@
-- name: Include kernel install
-  include_role:
-    name: gentoo_kernel
-    tasks_from: install
-
-- name: Build kernel
+- name: Install kernel
   become: yes
   block:
     - name: "Kernel: Configure gentoo-kernel use"
       template:
         backup: yes
-        src: "gentoo-kernel_use"
+        src: "use"
         dest: "/etc/portage/package.use/gentoo-kernel"
         owner: root
         group: root
@@ -17,7 +12,7 @@
     - name: "Kernel: Configure gentoo-kernel accept-keywords"
       template:
         backup: yes
-        src: "gentoo-kernel_accept_keywords"
+        src: "accept_keywords"
         dest: "/etc/portage/package.accept_keywords/gentoo-kernel"
         owner: root
         group: root
