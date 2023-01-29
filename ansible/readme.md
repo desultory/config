@@ -60,6 +60,7 @@ Overrides to role variables should be made in the inventory file
 | `src_kernel_config_path`  | `{{src_dir_path}}{{src_kernel_path}}/{{src_kernel_config}}.config`    | The path of the kernel configuration file                 |
 | `emerge_kernel_full`      | `sys-kernel/gentoo-sources`                                           | The full atom of the gentoo kernel source package         |
 | `emerge_kernel_use`       | `symlink`                                                             | The use flags for kernel sources                          |
+| `emerge_kernel_version`   | `latest`                                                              | The version for the kernel, latest doesn't set it         |
 | `initramfs_enable`        | `false`                                                               | Bool determining whether or not an initramfs is used      |
 | `initramfs_bin`           | `dracut`                                                              | The binary for the initramfs                              |
 | `emerge_initramfs_full`   | `sys-kernel/dracut`                                                   | The full atom for the initramfs package                   |

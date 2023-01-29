@@ -1,0 +1,2 @@
+# /etc/portage/package.use/gentoo-sources
+{{emerge_kernel_full}} {{emerge_kernel_use}}

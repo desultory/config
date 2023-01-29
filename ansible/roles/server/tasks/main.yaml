@@ -1,3 +1,0 @@
-- name: Debug server base
-  debug:
-    msg: "Loading base server role"

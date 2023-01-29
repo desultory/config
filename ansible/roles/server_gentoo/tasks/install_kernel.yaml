@@ -1,6 +1,22 @@
 - name: Build kernel
   become: yes
   block:
+    - name: "Kernel: Configure gentoo-sources use"
+      template:
+        backup: yes
+        src: "gentoo-sources_use"
+        dest: "/etc/portage/package.use/gentoo-sources"
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+    - name: "Kernel: Configure gentoo-sources accept-keywords"
+      template:
+        backup: yes
+        src: "gentoo-sources_accept_keywords"
+        dest: "/etc/portage/package.accept_keywords/gentoo-sources"
+        owner: root
+        group: root
+      when: emerge_kernel_version != 'latest'
     - name: "Kernel: copy kernel config"
       copy:
         src: "{{src_kernel_config_path}}"
