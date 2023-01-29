@@ -8,7 +8,7 @@ Install ansible
 
 `# emerge ansible`
 
-Get community.general for SELinux and make
+Get community.general for portage, SELinux, and make
 
 Get ansible.posix for mounts
 

@@ -2,8 +2,8 @@
   become: yes
   block:
     - name: Install sudo
-      package:
-        name: "{{emerge_sudo_full}}"
+      emerge:
+        package: "{{emerge_sudo_full}}"
         state: present
     - name: Install /etc/sudoers.conf
       copy:

@@ -27,4 +27,5 @@
       portage:
         package: "{{emerge_kernel_full}}"
         state: present
+        noreplace: false # force re-emerge
 
