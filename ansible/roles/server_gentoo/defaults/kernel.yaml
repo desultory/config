@@ -11,14 +11,13 @@ src_dir_path: "{{playbook_dir}}/../hosts/{{inventory_hostname}}"
 # May later change to allow for a flatter host directory structure
 # keeping the host directory structure such that it can be copied over a filesystem
 src_kernel_path: "/usr/src/linux"
+# Name of the default kerne config
+src_kernel_config: "default"
 # Computed path for the source kernel, based on defaults and intended overrides
 src_kernel_config_path: "{{src_dir_path}}{{src_kernel_path}}/{{src_kernel_config}}.config"
 
 # Define the kernel package
 emerge_kernel_full: "sys-kernel/gentoo-sources"
-emerge_kernel_short: "gentoo-sources"
-# Define the default gentoo sources arch
-emerge_kernel_arch: "amd64"
 # Define the kernel use flags
 emerge_kernel_use: "symlink"
 

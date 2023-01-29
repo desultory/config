@@ -7,6 +7,9 @@ services: ['ssh']
 # Define whether or not to configure for selinux
 selinux_configure: false
 
+# Define the default gentoo sources arch  
+emerge_arch: "amd64"
+
 # Define the SSH package name
 emerge_ssh_full: "net-misc/openssh"
 
