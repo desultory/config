@@ -55,7 +55,7 @@ Overrides to role variables should be made in the inventory file
 | `dst_kernel_src_path`     | `/usr/src/linux/`                                                     | Base dir for the live kernel sources                      |
 | `dst_kernel_config_path`  | `{{dst_kernel_src_path}}.config`                                      | the .config for the build process                         |
 | `src_dir_path`            | `{{playbook_dir}}/../hosts/{{inventory_hostname}}`                    | The directory the host config should be sourced from      |
-! `src_kernel_path`         | `/usr/src/linux`                                                      | The subdir the kernel configs are in                      |
+| `src_kernel_path`         | `/usr/src/linux`                                                      | The subdir the kernel configs are in                      |
 | `src_kernel_config`       | `default`                                                             | The name of the kernel configuration file                 |
 | `src_kernel_config_path`  | `{{src_dir_path}}{{src_kernel_path}}/{{src_kernel_config}}.config`    | The path of the kernel configuration file                 |
 | `emerge_kernel_full`      | `sys-kernel/gentoo-sources`                                           | The full atom of the gentoo kernel source package         |
