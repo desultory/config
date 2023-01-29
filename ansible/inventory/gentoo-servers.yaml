@@ -9,7 +9,6 @@ gentoo_servers:
       ansible_host: 10.10.10.1
       roles: server_gentoo
       initramfs_enable: true
-      emerge_kernel_version: "6.0.8"
       src_kernel_config: "base"
 
 
