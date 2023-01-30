@@ -39,15 +39,15 @@
         mode: u=rwx,g=rx,o=rx
     - name: Installing stripped kernel configuration
       template:
-        src: etc/kernel/config.d/99-stripped.config
-        dest: /etc/kernel/config.d/99-stripped.config
+        src: etc/kernel/config.d/90-stripped.config
+        dest: /etc/kernel/config.d/90-stripped.config
         owner: root
         group: root
         mode: u=rw,g=r,o=r
       when: stripped_kernel
     - name: Removing stripped kernel configuration
       file:
-        path: /etc/kernel/config.d/99-stripped.config
+        path: /etc/kernel/config.d/90-stripped.config
         state: absent
       when: not stripped_kernel
     - name: Installing KSPP kernel configuration
