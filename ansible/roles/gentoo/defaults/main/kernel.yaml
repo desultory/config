@@ -4,3 +4,7 @@ emerge_kernel_full: "sys-kernel/gentoo-kernel"
 emerge_kernel_unstable: false
 # Define whether or not the initramfs will be generated
 initramfs_enable: false
+# Define whether or not to configure for KSPP
+kspp_enable: true
+# Define whether or not to strip the kernel
+stripped_kernel: true

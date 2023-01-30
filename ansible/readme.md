@@ -56,7 +56,8 @@ Overrides to role variables should be made in the inventory file
 | `emerge_kernel_full`      | `sys-kernel/gentoo-sources`   | The full atom of the gentoo kernel source package         |
 | `emerge_kernel_unstable`  | `false`                       | When true, tells emerge to use the unstable kernel        |
 | `initramfs_enable`        | `false`                       | Bool determining whether or not an initramfs is used      |
-
+| `kspp_enable`             | `true`                        | Bool determining whether or not to configure for kspp     |
+| `stripped_kernel`         | `true`                        | Boot determining whether or not to strip the kernel       |
 
 ### SSH Variables
 

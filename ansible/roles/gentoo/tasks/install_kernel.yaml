@@ -23,6 +23,46 @@
         dest: /etc/portage/package.accept_keywords/gentoo-kernel
         owner: root
         group: root
+    - name: Create /etc/kernel
+      file:
+        path: /etc/kernel
+        state: directory
+        owner: root
+        group: root
+        mode: u=rwx,g=rx,o=rx
+    - name: Create /etc/kernel/config.d
+      file:
+        path: /etc/kernel/config.d
+        state: directory
+        owner: root
+        group: root
+        mode: u=rwx,g=rx,o=rx
+    - name: Installing stripped kernel configuration
+      template:
+        src: etc/kernel/config.d/99-stripped.config
+        dest: /etc/kernel/config.d/99-stripped.config
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+      when: stripped_kernel
+    - name: Removing stripped kernel configuration
+      file:
+        path: /etc/kernel/config.d/99-stripped.config
+        state: absent
+      when: not stripped_kernel
+    - name: Installing KSPP kernel configuration
+      template:
+        src: etc/kernel/config.d/99-kspp.config
+        dest: /etc/kernel/config.d/99-kspp.config
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+      when: kspp_enable
+    - name: Removing KSPP kernel configuration
+      file:
+        path: /etc/kernel/config.d/99-kspp.config
+        state: absent
+      when: not kspp_enable
     - name: emerge gentoo-kernel
       portage:
         package: "{{emerge_kernel_full}}"
