@@ -1,0 +1,33 @@
+# Obtains the git repo for kernel configuration tools
+- name: Configure kernel sources
+  become: yes
+  block:
+    - name: Detect host-amd
+      vars:
+        - kernel_features: "{{kernel_features + ['host-amd']}}"
+      when: "{{ansible_processors[0] == 'AuthenticAMD' and 'host-amd' not in kernel_features}}"
+    - name: Detect board
+      vars:
+        - kernel_features: "{{kernel_features + ['host-H12SSL']}}"
+      when: "{{ansible_facts['ansible_board_name'] == 'H12SSL-C' and 'host-H12SSL' not in kernel_features}}"
+    - name: Deploying kernel configs
+      template:
+        src: "{{item}}.config"
+        dest: "/usr/src/linux/{{item}}.config"
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+      loop: "{{kernel_features}}"
+    - name: Merge kernel configs
+      command:
+      args:
+        chdir: /usr/src/linux
+        argv: "{{merge_cmd}}"
+      vars:
+        - merge_configs: "{{kernel_features | map('regex_replace', '$', '.config')}}"
+        - hostname_arg: "CONFIG_DEFAULT_HOSTNAME=\"{{inventory_hostname}}\""
+        - merge_cmd: "{{ ['./merge_config/merge_config.py', '-d', '-p', hostname_arg] + merge_configs }}"
+    - name: Build kernel sources
+      command: "make -j {{ansible_facts['processor_vcpus'] * 2}}"
+      args:
+        chdir: /usr/src/linux

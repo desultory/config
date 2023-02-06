@@ -1,0 +1,11 @@
+# /etc/default/grub
+
+GRUB_DISTRIBUTOR="Gentoo"
+
+GRUB_TIMEOUT=5
+
+GRUB_CMDLINE_LINUX="console=ttyS0,115200n8"
+
+GRUB_TERMINAL="console serial"
+GRUB_SERIAL_COMMAND="serial efi0 --speed=115200 --word=8 --parity=no --stop=1"
+GRUB_GFXPAYLOAD_LINUX=text

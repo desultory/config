@@ -1,4 +1,4 @@
-# /etc/portage/package.accept_keywords/gentoo-kernel
+# /etc/portage/package.accept_keywords/gentoo-sources
 {% if emerge_kernel_unstable %}
 sys-kernel/gentoo-sources ~{{emerge_kernel_arch}}
 {% else %}

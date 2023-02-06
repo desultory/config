@@ -1,0 +1,30 @@
+# Remove most of the ssh args to make the connection simpler, mostly gets rid of the cached connection sockets
+ansible_ssh_args: ""
+
+# Define the default services
+services: ['ssh']
+
+# Define whether or not to configure for selinux
+selinux_configure: false
+
+# Define whether or not to used the hardened profile
+gentoo_hardened: true
+
+# Define the gentoo profile
+# Hardened and selinux will be added
+emerge_profile: "default/linux/amd64/17.1/"
+
+# Define the SSH package name
+emerge_ssh_full: "net-misc/openssh"
+
+# Define the bootloader
+emerge_bootloader: "grub"
+
+# Define the kernel package
+# gentoo-kernel for sys-kernel/gentoo-kernel, maintained by fedora/gentoo
+# gentoo-sources for sys-kernel/gentoo-sources,  requires patches to be specified
+emerge_kernel: "gentoo-sources"
+# Whether or not to use the unstable kernel
+emerge_kernel_unstable: false
+# Kernel arch
+emerge_kernel_arch: "amd64"

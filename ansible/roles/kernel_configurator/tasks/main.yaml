@@ -1,0 +1,11 @@
+# Configures and installs a kernel using gentoo-sources
+
+- name: Get merge_config.py
+  include_role:
+    name: kernel_configurator
+    tasks_from: get_tools
+
+- name: Configure sources
+  include_role:
+    name: kernel_configurator
+    tasks_from: configure_sources

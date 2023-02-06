@@ -1,0 +1,13 @@
+# A list of features (kernel patches) to use
+kernel_features: ['base', 'strip', 'network', 'kspp', 'fs-linux', 'fs-msdos', 'net-basic']
+# Features
+# base: Includes basic additions to the kernel
+# strip: removes many unnecessary features that may be part of defconfig
+# network: adds basic network support, full featured netfilter
+# kspp: Kernel self protection project configs
+# virt: Virtualization (kvm and qemu support)
+# docker: adds docker support
+# initramfs: adds initramfs support
+# fs-linux: adds btrfs and ext4
+# fs-msdos: adds fat
+# net-basic: adds bridging and vlan support

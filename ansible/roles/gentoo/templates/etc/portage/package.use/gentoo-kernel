@@ -1,7 +1,7 @@
 # /etc/portage/package.use/gentoo-kernel
-{% if initramfs_enable %}
-{{emerge_kernel_full}}
+{% if 'initramfs' in kernel_features %}
+sys-kernel/gentoo-kernel
 {% else %}
-{{emerge_kernel_full}} -initramfs
+sys-kernel/gentoo-kernel -initramfs
 {% endif %}
 sys-kernel/installkernel-gentoo {{emerge_bootloader}}

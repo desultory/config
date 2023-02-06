@@ -1,0 +1,2 @@
+# /etc/portage/package.use/gentoo-sources
+sys-kernel/gentoo-sources symlink

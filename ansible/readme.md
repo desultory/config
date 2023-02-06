@@ -38,26 +38,24 @@ Overrides to role variables should be made in the inventory file
 
 ### Gentoo Variables
 
-|  Variable name            |  Defaults                                     |  Description                                      |
-| ------------------------- | --------------------------------------------- | ------------------------------------------------- |
-| `services`                | `['ssh']`                                     | List of serviecs to install/configure             |
-| `selinux_configure`       | `false`                                       | Define whether or not to configuure for SELinux   | 
-| `emerge_arch`             | `amd64`                                       | The arch for emerge packages                      |
-| `emerge_profile`          | `default/linux/amd64/17.1/hardened/selinux`   | The default profile to select                     |
-| `emerge_bootloader`       | `grub`                                        | Set the USE flag for the bootloade                |
-| `emerge_ssh_full`         | `net-misc/openssh`                            | Full package atom for ssh                         |
-| `emerge_sudo_full`        | `app-admin/sudo`                              | Full package atom for sudo                        |
+|  Variable name            |  Defaults                     |  Description                                      |
+| ------------------------- | ----------------------------- | ------------------------------------------------- |
+| `services`                | `['ssh']`                     | List of serviecs to install/configure             |
+| `gentoo_hardened`         | `true`                        | Define whether or not to use the hardened profile | 
+| `docker_configure`        | `false`                       | Define whether or not to configure for Docker     |
+| `selinux_configure`       | `false`                       | Define whether or not to configure for SELinux    | 
+| `emerge_profile`          | `default/linux/amd64/17.1`    | The default profile to select                     |
+| `emerge_bootloader`       | `grub`                        | Set the USE flag for the bootloade                |
+| `emerge_kernel`           | `gentoo-sources`              | Short atom of the gentoo kernel source package    |
+| `emerge_kernel_unstable`  | `false`                       | Tells emerge to use the unstable kernel           |
 
 
-### Kernel parameters
+### Kernel configurator parameters
 
-|  Variable name            |  Defaults                     |  Description                                              |
-| ------------------------- | ----------------------------- | --------------------------------------------------------- |
-| `emerge_kernel_full`      | `sys-kernel/gentoo-sources`   | The full atom of the gentoo kernel source package         |
-| `emerge_kernel_unstable`  | `false`                       | When true, tells emerge to use the unstable kernel        |
-| `initramfs_enable`        | `false`                       | Bool determining whether or not an initramfs is used      |
-| `kspp_enable`             | `true`                        | Bool determining whether or not to configure for kspp     |
-| `stripped_kernel`         | `true`                        | Boot determining whether or not to strip the kernel       |
+|  Variable name            |  Defaults                                                                     |  Description                                                                  |
+| ------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `kernel_features`         | `['base', 'strip', 'network', 'kspp', 'fs-linux', 'fs-msdos', 'net-basic']`   | Define a list of kernel features, will attempt to load these templates/files  |
+| `cust_kernel_features`    |                                                                               | Features used in addition to the base ones                                    |
 
 ### SSH Variables
 

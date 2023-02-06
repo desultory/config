@@ -1,0 +1,14 @@
+# Configures the kernel based on the specified parameters
+
+- name: conditional install gentoo-kernel
+  include_role:
+    name: gentoo
+    tasks_from: install_gentoo_kernel
+  when: emerge_kernel == 'gentoo-kernel'
+
+- name: conditional install gentoo-sources
+  include_role:
+    name: gentoo
+    tasks_from: install_gentoo_sources
+  when: emerge_kernel == 'gentoo-sources'
+

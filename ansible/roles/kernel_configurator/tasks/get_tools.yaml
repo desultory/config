@@ -1,0 +1,7 @@
+# Obtains the git repo for kernel configuration tools
+
+- name: Clone merge_config
+  git:
+    repo: https://github.com/desultory/merge_config
+    dest: /usr/src/linux/merge_config/
+    single_branch: true

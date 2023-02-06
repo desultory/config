@@ -5,7 +5,7 @@
     tasks_from: configure_portage
 
 # Configures emerge package.use and package.accept_keywords to install gentoo-kernel
-- name: Install
+- name: Install gentoo-kernel
   become: yes
   block:
     - name: Install /etc/portage/package.use/gentoo-kernel
@@ -65,7 +65,7 @@
       when: not kspp_enable
     - name: emerge gentoo-kernel
       portage:
-        package: "{{emerge_kernel_full}}"
+        package: gentoo-kernel
         state: present
         noreplace: false # force re-emerge
 
