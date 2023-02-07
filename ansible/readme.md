@@ -55,7 +55,6 @@ These have no defaults and may be required for some functions
 | `docker_configure`        | `false`                       | Define whether or not to configure for Docker     |
 | `selinux_configure`       | `false`                       | Define whether or not to configure for SELinux    | 
 | `emerge_profile`          | `default/linux/amd64/17.1`    | The default profile to select                     |
-| `emerge_bootloader`       | `grub`                        | Set the USE flag for the bootloader, install      |
 | `emerge_kernel`           | `gentoo-sources`              | Short atom of the gentoo kernel source package    |
 | `emerge_kernel_unstable`  | `false`                       | Tells emerge to use the unstable kernel           |
 | `boot_partition_size`     | `512`                         | Size of the boot partition (in MB)                |

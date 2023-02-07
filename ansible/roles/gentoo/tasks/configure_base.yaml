@@ -10,10 +10,10 @@
     name: gentoo
     tasks_from: configure_boot_partition
 
-- name: jump configure_grub_base
+- name: jump configure_grub
   include_role:
     name: gentoo
-    tasks_from: configure_grub_base
+    tasks_from: configure_grub
 
 - name: jump configure_kernel
   include_role:

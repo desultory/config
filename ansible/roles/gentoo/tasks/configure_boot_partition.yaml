@@ -19,7 +19,7 @@
     - name: FS type is not fat32
       set_fact:
         bad_part: true
-      when: "drive_info['partitions'][0].fstype != 'fat16'"
+      when: "drive_info['partitions'][0].fstype != 'fat32'"
     - name: ESP flag is not set
       set_fact:
         bad_part: true
@@ -28,6 +28,17 @@
       set_fact:
         bad_part: true
       when: "'boot' not in drive_info['partitions'][0].flags"
+
+- name: Unount /boot
+  become: yes
+  block:
+    - name: Check /boot mount
+      command: mount
+      register: result
+    - name: Unount /boot
+      command: umount /boot
+      when: "'on /boot type' in result['stdout']"
+  when: reformat_boot
 
 - name: Configure partitions
   become: yes
@@ -57,6 +68,7 @@
       filesystem:
         dev: "/dev/disk/by-id/{{boot_device}}-part1"
         fstype: vfat
+        opts: "-F 32 -n EFI"
     - name: Get the partition boot UUID
       command: "lsblk /dev/disk/by-id/{{boot_device}}-part1 -n -o PARTUUID"
       register: partition_uuid

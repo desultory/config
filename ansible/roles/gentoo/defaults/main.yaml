@@ -1,6 +1,3 @@
-# Remove most of the ssh args to make the connection simpler, mostly gets rid of the cached connection sockets
-ansible_ssh_args: ""
-
 # Define the default services
 services: ['ssh']
 
@@ -16,9 +13,6 @@ emerge_profile: "default/linux/amd64/17.1/"
 
 # Define the SSH package name
 emerge_ssh_full: "net-misc/openssh"
-
-# Define the bootloader
-emerge_bootloader: "grub"
 
 # Define the kernel package
 # gentoo-kernel for sys-kernel/gentoo-kernel, maintained by fedora/gentoo

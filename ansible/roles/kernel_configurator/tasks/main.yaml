@@ -9,3 +9,8 @@
   include_role:
     name: kernel_configurator
     tasks_from: configure_sources
+
+- name: Build and install kernel
+  include_role:
+    name: kernel_configurator
+    tasks_from: build_kernel

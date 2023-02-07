@@ -24,3 +24,5 @@
     - name: Configure and compile sources
       include_role:
         name: kernel_configurator
+    - name: Install grub config
+      command: grub-mkconfig -o /boot/grub/grub.cfg

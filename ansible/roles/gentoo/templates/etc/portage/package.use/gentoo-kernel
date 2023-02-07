@@ -4,4 +4,3 @@ sys-kernel/gentoo-kernel
 {% else %}
 sys-kernel/gentoo-kernel -initramfs
 {% endif %}
-sys-kernel/installkernel-gentoo {{emerge_bootloader}}

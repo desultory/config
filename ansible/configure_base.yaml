@@ -1,6 +1,5 @@
 - name: Import role task
   hosts: gentoo_servers
-  debugger: on_failed
   serial: 1
   tasks:
     - name: Import server role and configure system task

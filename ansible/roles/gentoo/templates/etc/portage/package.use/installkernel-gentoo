@@ -1,0 +1,6 @@
+# /etc/portage/package.use/gentoo-kernel
+{% if emerge_kernel == 'gentoo-kernel' %}
+sys-kernel/installkernel-gentoo grub
+{% else %}
+sys-kernel/intallkernel-gentoo
+{% endif %}

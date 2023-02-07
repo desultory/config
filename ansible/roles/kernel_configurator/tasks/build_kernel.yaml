@@ -1,0 +1,17 @@
+- name: Build kernel sources
+  become: yes
+  command: "make -j {{ansible_facts['processor_vcpus'] * 2}}"
+  args:
+    chdir: /usr/src/linux
+
+- name: Install kernel modules
+  become: yes
+  command: make modules_install
+  args:
+    chdir: /usr/src/linux
+- name: Install the kernel
+  become: yes
+  command: make install
+  args:
+    chdir: /usr/src/linux
+
