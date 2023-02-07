@@ -1,13 +1,8 @@
 - name: Check Grub
-  block:
-    - name: Check use env flag
-      fail:
-        msg: emerge_bootloader is not set to grub
-      when: emerge_bootloader != 'grub'
-    - name: Check boot device set
-      fail:
-        msg: grub_device is not set
-      when: grub_device not in ansible_facts['device_links']['ids']
+  - name: Check use env flag
+    fail:
+      msg: emerge_bootloader is not set to grub
+    when: emerge_bootloader != 'grub'
 
 - name: Configuring grub base
   become: yes

@@ -1,0 +1,69 @@
+- name: Check boot device
+  block:
+    - name: Check that the boot device is set
+      fail:
+        msg: "valid boot_device is not set: {{boot_device}}"
+      when: boot_device not in ansible_facts['device_links']['ids'].values() | flatten
+
+- name: Gather boot device partition information
+  block:
+    - name: Get partition info
+      become: yes
+      parted:
+        device: "/dev/disk/by-id/{{boot_device}}"
+      register: drive_info
+    - debug:
+        msg: "{{drive_info}}"
+    - name: No partitions exist
+      set_fact:
+        bad_part: true
+      when: not drive_info['partitions']
+    - name: FS type is not fat32
+      set_fact:
+        bad_part: true
+      when: "drive_info['partitions'][0].fstype != 'fat32'"
+    - name: ESP flag is not set
+      set_fact:
+        bad_part: true
+      when: "'esp' not in drive_info['partitions'][0].flags"
+
+- name: Configure partitions
+  become: yes
+  block:
+    - name: Clear old partitions
+      parted:
+        device: "/dev/disk/by-id/{{boot_device}}"
+        state: absent
+        number: "{{item.num}}"
+      loop: "{{drive_info['partitions']}}"
+    - name: Create new boot partition
+      parted:
+        device: "/dev/disk/by-id/{{boot_device}}"
+        state: present
+        label: gpt
+        name: boot
+        number: 1
+        part_type: primary
+        flags: esp
+        fs_type: fat32
+        part_end: "{{boot_partition_size}}MiB"
+    - name: Get FAT FS Utils
+      portage:
+        package: sys-fs/dosfstools
+        state: present
+    - name: Format the boot partition
+      filesystem:
+        dev: "/dev/disk/by-id/{{boot_device}}-part1"
+        fstype: vfat
+    - name: Get the partition boot UUID
+      command: "lsblk /dev/disk/by-id/{{boot_device}}-part1 -n -o PARTUUID"
+      register: partition_uuid
+    - name: Mount the boot partition and add it to fstab
+      mount:
+        backup: yes
+        path: /boot
+        src: "PARTUUID={{partition_uuid.stdout_lines[0]}}"
+        fstype: vfat
+        opts: "noauto,noatime"
+        state: mounted
+  when: bad_part and reformat_boot

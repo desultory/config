@@ -5,6 +5,11 @@
     name: gentoo
     tasks_from: configure_portage
 
+- name: jump configure_boot_partition
+  include_role:
+    name: gentoo
+    tasks_from: configure_boot_partition
+
 - name: jump configure_grub_base
   include_role:
     name: gentoo

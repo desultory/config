@@ -28,3 +28,6 @@ emerge_kernel: "gentoo-sources"
 emerge_kernel_unstable: false
 # Kernel arch
 emerge_kernel_arch: "amd64"
+
+# Set the bootloader partition size
+boot_partition_size: 512

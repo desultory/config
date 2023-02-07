@@ -1,5 +1,5 @@
 # Configures emerge package.use and package.accept_keywords to install gentoo-sources
-- name: Install gentoo-sources
+- name: Obtain, prepare, and configure gentoo sources
   become: yes
   block:
     - name: Install /etc/portage/package.use/gentoo-sources
@@ -21,7 +21,6 @@
       portage:
         package: gentoo-sources
         state: present
-    - name: Configure sources
+    - name: Configure and compile sources
       include_role:
         name: kernel_configurator
-

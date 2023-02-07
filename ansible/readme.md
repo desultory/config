@@ -36,6 +36,16 @@ Configure the base system for all servers
 
 Overrides to role variables should be made in the inventory file
 
+### Host Variables
+
+These have no defaults and may be required for some functions
+
+|  Variable name            |  Required by          |  Description                                                                      |
+| ------------------------- | --------------------- | --------------------------------------------------------------------------------- |
+| `boot_device`             | bootloader, kernel    | The name of the item under /dev/disk/by-id/ that corresponds with the boot device |
+| `boot_partition`          | bootloader, kernel    | The UUID of the boot partition, should be associated with the boot device         |
+| `reformat_boot`           |                       | When true, the script will allow reformatting of the boot device (DANGEROUS)      |
+
 ### Gentoo Variables
 
 |  Variable name            |  Defaults                     |  Description                                      |
@@ -48,7 +58,7 @@ Overrides to role variables should be made in the inventory file
 | `emerge_bootloader`       | `grub`                        | Set the USE flag for the bootloader, install      |
 | `emerge_kernel`           | `gentoo-sources`              | Short atom of the gentoo kernel source package    |
 | `emerge_kernel_unstable`  | `false`                       | Tells emerge to use the unstable kernel           |
-
+| `boot_partition_size`     | `512`                         | Size of the boot partition (in MB)                |
 
 ### Kernel configurator parameters
 
