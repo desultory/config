@@ -1,0 +1,26 @@
+- name: Check Grub
+  block:
+    - name: Check use env flag
+      fail:
+        msg: emerge_bootloader is not set to grub
+      when: emerge_bootloader != 'grub'
+    - name: Check boot device set
+      fail:
+        msg: grub_device is not set
+      when: grub_device not in ansible_facts['device_links']['ids']
+
+- name: Configuring grub base
+  become: yes
+  block:
+    - name: Install grub package
+      portage:
+        package: sys-boot/grub
+        state: present
+    - name: Install /etc/default/grub
+      template:
+        backup: yes
+        src: etc/default/grub
+        dest: /etc/default/grub
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
