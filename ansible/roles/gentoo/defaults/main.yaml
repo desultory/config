@@ -29,5 +29,7 @@ emerge_kernel_unstable: false
 # Kernel arch
 emerge_kernel_arch: "amd64"
 
+# Don't reformat partitions unless specified
+reformat_boot: false
 # Set the bootloader partition size
 boot_partition_size: 512

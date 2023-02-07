@@ -12,8 +12,6 @@
       parted:
         device: "/dev/disk/by-id/{{boot_device}}"
       register: drive_info
-    - debug:
-        msg: "{{drive_info}}"
     - name: No partitions exist
       set_fact:
         bad_part: true
@@ -21,11 +19,15 @@
     - name: FS type is not fat32
       set_fact:
         bad_part: true
-      when: "drive_info['partitions'][0].fstype != 'fat32'"
+      when: "drive_info['partitions'][0].fstype != 'fat16'"
     - name: ESP flag is not set
       set_fact:
         bad_part: true
       when: "'esp' not in drive_info['partitions'][0].flags"
+    - name: Boot flag is not set
+      set_fact:
+        bad_part: true
+      when: "'boot' not in drive_info['partitions'][0].flags"
 
 - name: Configure partitions
   become: yes
@@ -44,7 +46,7 @@
         name: boot
         number: 1
         part_type: primary
-        flags: esp
+        flags: [esp, boot]
         fs_type: fat32
         part_end: "{{boot_partition_size}}MiB"
     - name: Get FAT FS Utils
@@ -66,4 +68,4 @@
         fstype: vfat
         opts: "noauto,noatime"
         state: mounted
-  when: bad_part and reformat_boot
+  when: (bad_part is defined and bad_part) and reformat_boot

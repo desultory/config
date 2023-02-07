@@ -1,8 +1,7 @@
 - name: Check Grub
-  - name: Check use env flag
-    fail:
-      msg: emerge_bootloader is not set to grub
-    when: emerge_bootloader != 'grub'
+  fail:
+    msg: emerge_bootloader is not set to grub
+  when: emerge_bootloader != 'grub'
 
 - name: Configuring grub base
   become: yes

@@ -12,22 +12,23 @@
 
 - name: Detect host features
   block:
-    - name: lspci
+    - name: Gather pci information
       command: lspci
-      register: lscpi_result
-    set_fact:
-      kernel_features: "{{kernel_features + cust_kernel_features | union(auto_features | select) | unique}}"
-    vars:
-      auto_features:
-        - "{{'host-amd' if 'AuthenticAMD' in ansible_facts['processor']}}"
-        - "{{'host-H12SSL' if ansible_facts['board_name'] == 'H12SSL-C'}}"
-        - "{{'net-x520' if 'Intel Corporation 82599ES' in lspci_result['stdout']}}"
-        - "{{'storage-sata' if 'SATA controller:' in lspci_result['stdout']}}"
-        - "{{'storage-nvme' if 'Non-Volatile memory controller:' in lspci_result['stdout']}}"
-        - "{{'storage-scsi' if 'Serial Attached SCSI controller:' in lspci_result['stdout']}}"
-        - "{{'storage-usb' if 'USB controller' in lspci_result['stdout']}}"
-        - "{{'virt-docker' if docker_configure}}"
-        - "{{'selinux' if selinux_configure}}"
+      register: lspci_result
+    - name: Populate kernel_features
+      set_fact:
+        kernel_features: "{{kernel_features + cust_kernel_features | union(auto_features | select) | unique}}"
+      vars:
+        auto_features:
+          - "{{'host-amd' if 'AuthenticAMD' in ansible_facts['processor']}}"
+          - "{{'host-H12SSL' if ansible_facts['board_name'] == 'H12SSL-C'}}"
+          - "{{'net-x520' if 'Intel Corporation 82599ES' in lspci_result['stdout']}}"
+          - "{{'storage-sata' if 'SATA controller:' in lspci_result['stdout']}}"
+          - "{{'storage-nvme' if 'Non-Volatile memory controller:' in lspci_result['stdout']}}"
+          - "{{'storage-scsi' if 'Serial Attached SCSI controller:' in lspci_result['stdout']}}"
+          - "{{'storage-usb' if 'USB controller' in lspci_result['stdout']}}"
+          - "{{'virt-docker' if docker_configure}}"
+          - "{{'selinux' if selinux_configure}}"
 
 - name: Configure kernel sources
   become: yes
