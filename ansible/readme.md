@@ -40,12 +40,12 @@ Overrides to role variables should be made in the inventory file
 
 |  Variable name            |  Defaults                     |  Description                                      |
 | ------------------------- | ----------------------------- | ------------------------------------------------- |
-| `services`                | `['ssh']`                     | List of serviecs to install/configure             |
+| `services`                | `['ssh']`                     | List of services to install/configure             |
 | `gentoo_hardened`         | `true`                        | Define whether or not to use the hardened profile | 
 | `docker_configure`        | `false`                       | Define whether or not to configure for Docker     |
 | `selinux_configure`       | `false`                       | Define whether or not to configure for SELinux    | 
 | `emerge_profile`          | `default/linux/amd64/17.1`    | The default profile to select                     |
-| `emerge_bootloader`       | `grub`                        | Set the USE flag for the bootloade                |
+| `emerge_bootloader`       | `grub`                        | Set the USE flag for the bootloader               |
 | `emerge_kernel`           | `gentoo-sources`              | Short atom of the gentoo kernel source package    |
 | `emerge_kernel_unstable`  | `false`                       | Tells emerge to use the unstable kernel           |
 

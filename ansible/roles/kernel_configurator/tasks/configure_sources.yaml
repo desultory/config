@@ -22,6 +22,7 @@
       - "{{'storage-scsi' if ansible_facts['devices'].values() | selectattr('host', 'contains', 'Serial Attached SCSI controller')}}"
       - "{{'storage-usb' if ansible_facts['devices'].values() | selectattr('host', 'contains', 'USB controller')}}"
       - "{{'virt-docker' if docker_configure}}"
+      - "{{'selinux' if selinux_configure}}"
 - name: Configure kernel sources
   become: yes
   block:
@@ -43,7 +44,7 @@
       vars:
         - merge_configs: "{{kernel_features | map('regex_replace', '$', '.config')}}"
         - hostname_arg: "CONFIG_DEFAULT_HOSTNAME=\"{{inventory_hostname}}\""
-        - merge_cmd: "{{ ['./merge_config/merge_config.py', '-d', '-p', hostname_arg] + merge_configs }}"
+        - merge_cmd: "{{ ['./merge_config/merge_config.py', '-d', '-p', hostname_arg, '-p', 'CONFIG_LOCALVERSION=\"-ansible\"'] + merge_configs }}"
 
 - name: Build kernel sources
   become: yes
