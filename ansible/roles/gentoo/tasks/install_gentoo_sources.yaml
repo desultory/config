@@ -2,21 +2,6 @@
 - name: Obtain, prepare, and configure gentoo sources
   become: yes
   block:
-    - name: Install /etc/portage/package.use/gentoo-sources
-      copy:
-        backup: yes
-        src: etc/portage/package.use/gentoo-sources
-        dest: /etc/portage/package.use/gentoo-sources
-        owner: root
-        group: root
-        mode: u=rw,g=r,o=r
-    - name: Install /etc/portage/package.accept_keywords/gentoo-sources
-      template:
-        backup: yes
-        src: etc/portage/package.accept_keywords/gentoo-sources
-        dest: /etc/portage/package.accept_keywords/gentoo-sources
-        owner: root
-        group: root
     - name: emerge gentoo-sources
       portage:
         package: gentoo-sources

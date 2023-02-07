@@ -1,6 +1,9 @@
 # Define the default services
 services: ['ssh']
 
+# Define whether or not to use an initramfs, may be overridden by tasks
+use_initramfs: false
+
 # Define whether or not to configure for selinux
 selinux_configure: false
 

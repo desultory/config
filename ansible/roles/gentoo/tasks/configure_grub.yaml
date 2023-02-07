@@ -24,6 +24,25 @@
       command: mount /boot
       when: "'on /boot type' not in result['stdout']"
 
+- name: Check grub install
+  block:
+    - name: Get EFI file info
+      stat:
+        path: /boot/efi/EFI/BOOT/BOOTX64.EFI
+      register: efi_file
+    - name: Get grub EFI file info
+      stat:
+        path: /boot/grub/x86_64-efi/grub.efi
+      register: grub_file
+    - name: Get font info
+      stat:
+        path: /boot/grub/fonts/unicode.pf2
+      register: font_file
+    - name: Check grub
+      set_fact:
+        grub_installed: true
+      when: font_file.stat.exists and grub_file.stat.exists and efi_file.stat.exists
+
 - name: Installing grub bootloader
   become: yes
   block:
@@ -34,4 +53,5 @@
         owner: root
         group: root
     - name: Install GRUB to the EFI partition
-      command: grub-install --efi-directory=/boot/efi
+      command: grub-install --efi-directory=/boot/efi --removable
+  when: grub_installed is defined and not grub_installed

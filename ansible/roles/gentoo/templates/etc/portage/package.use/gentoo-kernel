@@ -1,5 +1,5 @@
 # /etc/portage/package.use/gentoo-kernel
-{% if 'initramfs' in kernel_features %}
+{% if use_initramfs %}
 sys-kernel/gentoo-kernel
 {% else %}
 sys-kernel/gentoo-kernel -initramfs

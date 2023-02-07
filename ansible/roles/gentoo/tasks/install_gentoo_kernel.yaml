@@ -16,13 +16,6 @@
         owner: root
         group: root
         mode: u=rw,g=r,o=r
-    - name: Install /etc/portage/package.accept_keywords/gentoo-kernel
-      template:
-        backup: yes
-        src: etc/portage/package.accept_keywords/gentoo-kernel
-        dest: /etc/portage/package.accept_keywords/gentoo-kernel
-        owner: root
-        group: root
     - name: Create /etc/kernel
       file:
         path: /etc/kernel

@@ -48,16 +48,17 @@ These have no defaults and may be required for some functions
 
 ### Gentoo Variables
 
-|  Variable name            |  Defaults                     |  Description                                      |
-| ------------------------- | ----------------------------- | ------------------------------------------------- |
-| `services`                | `['ssh']`                     | List of services to install/configure             |
-| `gentoo_hardened`         | `true`                        | Define whether or not to use the hardened profile | 
-| `docker_configure`        | `false`                       | Define whether or not to configure for Docker     |
-| `selinux_configure`       | `false`                       | Define whether or not to configure for SELinux    | 
-| `emerge_profile`          | `default/linux/amd64/17.1`    | The default profile to select                     |
-| `emerge_kernel`           | `gentoo-sources`              | Short atom of the gentoo kernel source package    |
-| `emerge_kernel_unstable`  | `false`                       | Tells emerge to use the unstable kernel           |
-| `boot_partition_size`     | `512`                         | Size of the boot partition (in MB)                |
+|  Variable name            |  Defaults                     |  Description                                                  |
+| ------------------------- | ----------------------------- | ------------------------------------------------------------- |
+| `services`                | `['ssh']`                     | List of services to install/configure                         |
+| `gentoo_hardened`         | `true`                        | Define whether or not to use the hardened profile             | 
+| `docker_configure`        | `false`                       | Define whether or not to configure for Docker                 |
+| `selinux_configure`       | `false`                       | Define whether or not to configure for SELinux                | 
+| `emerge_profile`          | `default/linux/amd64/17.1`    | The default profile to select                                 |
+| `emerge_kernel`           | `gentoo-sources`              | Short atom of the gentoo kernel source package                |
+| `emerge_kernel_unstable`  | `false`                       | Tells emerge to use the unstable kernel                       |
+| `boot_partition_size`     | `512`                         | Size of the boot partition (in MB)                            |
+| `use_initramfs`           | `false`                       | True if an initramfs is being used, may be set automatically  |
 
 ### Kernel configurator parameters
 
