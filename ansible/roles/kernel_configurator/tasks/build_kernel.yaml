@@ -7,7 +7,7 @@
 
 - name: Build kernel sources
   become: yes
-  command: "make -j {{ansible_facts['processor_vcpus'] * 2}}"
+  command: "make -j {{ansible_facts['processor_vcpus'] + 1}}"
   args:
     chdir: /usr/src/linux
 
