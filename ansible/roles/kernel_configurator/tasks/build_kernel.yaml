@@ -3,6 +3,7 @@
   command: make clean
   args:
     chdir: /usr/src/linux
+  when: build_clean
 
 - name: Build kernel sources
   become: yes
@@ -15,6 +16,7 @@
   command: make modules_install
   args:
     chdir: /usr/src/linux
+
 - name: Install the kernel
   become: yes
   command: make install
