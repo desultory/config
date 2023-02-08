@@ -6,6 +6,7 @@
       portage:
         package: gentoo-sources
         state: present
+        changed_use: true
     - name: Configure and compile sources
       include_role:
         name: kernel_configurator
