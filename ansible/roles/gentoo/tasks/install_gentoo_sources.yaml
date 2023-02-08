@@ -12,3 +12,24 @@
         name: kernel_configurator
     - name: Install grub config
       command: grub-mkconfig -o /boot/grub/grub.cfg
+    - set_fact:
+        has_efi_conf: false
+    - name: Check bootloader status
+      become: yes
+      block:
+        - name: Get efibootmgr configuration
+          command: efibootmgr
+          register: efibootmr_output
+        - name: Get the boot partition UUID
+          command: "lsblk /dev/disk/by-id/{{boot_device}}-part1 -n -o PARTUUID"
+          register: partition_uuid
+        - name: Check efibootmgr configuration
+          set_fact:
+            has_efi_conf: true
+          when: partition_uuid.stdout_lines[0] in item and 'File(\efi\EFI\BOOT\BOOTX64.EFI)' in item
+          with_items: "{{efibootmr_output.stdout_lines}}"
+
+    - name: Configure bootloader entry
+      become: yes
+      command: "efibootmgr -c -l '\\efi\\EFI\\BOOT\\BOOTX64.EFI' -L 'ansible-grub' -d /dev/disk/by-partuuid/{{partition_uuid.stdout_lines[0]}}"
+      when: not has_efi_conf

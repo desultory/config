@@ -65,9 +65,9 @@
       state: directory
   - name: Create a bind mount for the running system
     command: "mount -o bind / /mnt/ansible-tmp-mount"
-  - name: Relabel the system
+  - name: Relabel the active mountpoints
     command: "setfiles -r /mnt/ansible-tmp-mount /etc/selinux/strict/contexts/files/file_contexts /mnt/ansible-tmp-mount/{{item}}"
-    loop: ['dev', 'home', 'proc', 'run', 'sys', 'tmp']
+    loop: ['dev', 'proc', 'run', 'sys', 'tmp']
   - name: Unmount the bind mount
     command: "umount /mnt/ansible-tmp-mount"
   - name: Delete the mount dir

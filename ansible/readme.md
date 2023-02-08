@@ -62,10 +62,12 @@ These have no defaults and may be required for some functions
 
 ### Kernel configurator parameters
 
-|  Variable name            |  Defaults                                                                     |  Description                                                                  |
-| ------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| `kernel_features`         | `['base', 'strip', 'network', 'kspp', 'fs-linux', 'fs-msdos', 'net-basic']`   | Define a list of kernel features, will attempt to load these templates/files  |
-| `cust_kernel_features`    |                                                                               | Features used in addition to the base ones                                    |
+|  Variable name            |  Defaults                                                 |  Description                                                                  |
+| ------------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `kernel_features`         | `['base', 'strip', 'fs-basic' 'net-netfilter', 'kspp']`   | Define a list of kernel features, will attempt to load these templates/files  |
+| `cust_kernel_features`    |                                                           | Features used in addition to the base ones                                    |
+| `build_clean`             | `false`                                                   | Defines whether or not make clean is ran before running make                  |
+| `kconfig_allnoconfig`     | `false`                                                   | Runs make allnoconfig instead of make alldefconfig when merging kernel.configs|
 
 ### SSH Variables
 

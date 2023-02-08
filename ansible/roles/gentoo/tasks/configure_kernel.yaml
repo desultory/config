@@ -3,7 +3,6 @@
 - name: Configure package.accept_keywords
   become: yes
   template:
-    backup: yes
     src: "etc/portage/package.accept_keywords/{{item}}"
     dest: "/etc/portage/package.accept_keywords/{{item}}"
     owner: root
@@ -12,7 +11,6 @@
 - name: Configure package.use
   become: yes
   template:
-    backup: yes
     src: "etc/portage/package.use/{{item}}"
     dest: "/etc/portage/package.use/{{item}}"
     owner: root

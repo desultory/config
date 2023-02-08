@@ -20,8 +20,10 @@
         kernel_features: "{{kernel_features + cust_kernel_features | union(auto_features | select) | unique}}"
       vars:
         auto_features:
-          - "{{'host-amd' if 'AuthenticAMD' in ansible_facts['processor']}}"
+          - "{{'host-x86_64' if ansible_facts['architecture'] == 'x86_64'}}"
+          - "{{'host-gentoo' if ansible_facts['os_family'] == 'Gentoo'}}"
           - "{{'host-H12SSL' if ansible_facts['board_name'] == 'H12SSL-C'}}"
+          - "{{'host-amd' if 'AuthenticAMD' in ansible_facts['processor']}}"
           - "{{'net-x520' if 'Intel Corporation 82599ES' in lspci_result['stdout']}}"
           - "{{'storage-sata' if 'SATA controller:' in lspci_result['stdout']}}"
           - "{{'storage-nvme' if 'Non-Volatile memory controller:' in lspci_result['stdout']}}"
@@ -43,6 +45,13 @@
       loop: "{{kernel_features}}"
       vars:
         kernel_features: "{{kernel_features}}"
+    - name: Defining the basic merge parameters
+      set_fact:
+        merge_flag: "-d"
+    - name: Setting allnoconfig
+      set_fact:
+        merge_flag: "-n"
+      when: kconfig_allnoconfig
     - name: Merge kernel configs
       command:
       args:
@@ -51,4 +60,4 @@
       vars:
         - merge_configs: "{{kernel_features | map('regex_replace', '$', '.config')}}"
         - hostname_arg: "CONFIG_DEFAULT_HOSTNAME=\"{{inventory_hostname}}\""
-        - merge_cmd: "{{ ['./merge_config/merge_config.py', '-d', '-p', hostname_arg, '-p', 'CONFIG_LOCALVERSION=\"-ansible\"'] + merge_configs }}"
+        - merge_cmd: "{{ ['./merge_config/merge_config.py', merge_flag, '-p', hostname_arg, '-p', 'CONFIG_LOCALVERSION=\"-ansible\"'] + merge_configs }}"

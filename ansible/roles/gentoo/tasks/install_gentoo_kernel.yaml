@@ -10,7 +10,6 @@
   block:
     - name: Install /etc/portage/package.use/gentoo-kernel
       template:
-        backup: yes
         src: etc/portage/package.use/gentoo-kernel
         dest: /etc/portage/package.use/gentoo-kernel
         owner: root

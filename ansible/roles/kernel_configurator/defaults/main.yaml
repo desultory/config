@@ -1,5 +1,5 @@
 # A list of features (kernel patches) to use
-kernel_features: ['base', 'strip', 'network', 'kspp', 'fs-linux', 'fs-msdos', 'net-basic']
+kernel_features: ['base', 'strip', 'fs-basic', 'net-netfilter', 'kspp']
 # Features
 # base: Includes basic additions to the kernel
 # strip: removes many unnecessary features that may be part of defconfig
@@ -11,6 +11,11 @@ kernel_features: ['base', 'strip', 'network', 'kspp', 'fs-linux', 'fs-msdos', 'n
 # fs-linux: adds btrfs and ext4
 # fs-msdos: adds fat
 # net-basic: adds bridging and vlan support
+# Init custom features
+cust_kernel_features: []
 
 # Defines whether or not make clean is ran before make
 build_clean: false
+
+# Defines whether or not to run make allnoconfig
+kconfig_allnoconfig: false
