@@ -22,7 +22,6 @@
         mode: u=rwx,g=rx,o=x
     - name: Install /etc/sudoers.d/99-ansible
       template:
-        backup: yes
         src: etc/sudoers.d/99-ansible
         dest: /etc/sudoers.d/99-ansible
         owner: root
