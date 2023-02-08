@@ -1,10 +1,10 @@
-- name: "Configure: install opensshd"
+- name: Install opensshd
   become: yes
   package:
     name: net-misc/openssh
     state: present
 
-- name: "Configure: copy ssh config"
+- name: copy /etc/ssh/sshd_config
   become: yes
   template:
     backup: true
@@ -14,3 +14,9 @@
     group: root
     mode: u=rw,g=,o=
     validate: sshd -t -f %s
+
+- name: configure ssh service
+  service:
+    name: sshd
+    state: started
+    runlevel: default

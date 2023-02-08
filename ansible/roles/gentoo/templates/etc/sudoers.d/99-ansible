@@ -1,0 +1,8 @@
+# /etc/sudoers.d/99-ansible
+# Configured via template
+
+{% if configure_selinux %}
+%wheel ALL=(ALL) TYPE=sysadm_t ROLE=sysadm_r ALL
+{% else %}
+%wheel ALL=(ALL:ALL) AL
+{% endif %}

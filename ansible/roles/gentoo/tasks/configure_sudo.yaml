@@ -20,19 +20,12 @@
         owner: root
         group: root
         mode: u=rwx,g=rx,o=x
-    - name: Install /etc/sudoers.d/selinux
-      copy:
+    - name: Install /etc/sudoers.d/99-ansible
+      template:
         backup: yes
-        src: etc/sudoers.d/selinux
-        dest: /etc/sudoers.d/selinux
+        src: etc/sudoers.d/99-ansible
+        dest: /etc/sudoers.d/99-ansible
         owner: root
         group: root
         mode: u=r,g=r,o=
-    - name: Install /etc/sudoers.d/wheel
-      copy:
-        backup: yes
-        src: etc/sudoers.d/wheel
-        dest: /etc/sudoers.d/wheel
-        owner: root
-        group: root
 

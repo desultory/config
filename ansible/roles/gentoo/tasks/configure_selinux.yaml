@@ -76,3 +76,9 @@
       state: absent
   - name: Relabel all packages
     command: "rlpkg -a -r"
+
+- name: Enable and start auditd
+  service:
+    name: auditd
+    state: started
+    runlevel: default
