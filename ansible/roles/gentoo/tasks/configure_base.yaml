@@ -20,6 +20,12 @@
     name: gentoo
     tasks_from: configure_kernel
 
+- name: jump configure_selinux
+  include_role:
+    name: gentoo
+    tasks_from: configure_selinux
+  when: selinux_configure
+
 - name: jump configure_hostname
   include_role:
     name: gentoo

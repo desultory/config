@@ -1,0 +1,78 @@
+- name: Check SELinux
+  block:
+  - name: Check ansible configuration
+    fail:
+      msg: SELinux is not
+    when: not selinux_configure
+
+- name: Bootstrap selinux base
+  become: yes
+  command: emerge -1 -n selinux-base
+  environment:
+    FEATURES: "-selinux"
+
+- name: Configure SELinux
+  become: yes
+  template:
+    src: etc/selinux/config
+    dest: /etc/selinux/config
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+
+- name: Emerge SELinux
+  become: yes
+  block:
+  - name: Emerge base
+    command: "emerge -1 selinux-base"
+    environment:
+      FEATURES: "-selinux -sesandbox"
+  - name: Emerge base policy
+    command: "emerge -1 selinux-base-policy"
+    environment:
+      FEATURES: "-selinux -sesandbox"
+  - name: Rebuild @world
+    portage:
+      package: '@world'
+      changed_use: true
+      deep: true
+      update: true
+
+- name: Create SELinux mounts
+  become: yes
+  block:
+  - name: Make SELinux tmp mount
+    mount:
+      src: tmpfs
+      path: /tmp
+      fstype: tmpfs
+      opts: 'defaults,noexec,nosuid,rootcontext=system_u:object_r:tmp_t'
+      state: present
+  - name: Make SELinux run mount
+    mount:
+      src: tmpfs
+      path: /run
+      fstype: tmpfs
+      opts: 'mode=0755,nosuid,nodev,rootcontext=system_u:object_r:var_run_t'
+      state: present
+
+- name: Relabel system
+  become: yes
+  block:
+  - name: Create mount dir
+    file:
+      path: /mnt/ansible-tmp-mount
+      state: directory
+  - name: Create a bind mount for the running system
+    command: "mount -o bind / /mnt/ansible-tmp-mount"
+  - name: Relabel the system
+    command: "setfiles -r /mnt/ansible-tmp-mount /etc/selinux/strict/contexts/files/file_contexts /mnt/ansible-tmp-mount/{{items}}"
+    loop: ['dev', 'home', 'proc', 'run', 'sys', 'tmp']
+  - name: Unmount the bind mount
+    command: "umount /mnt/ansible-tmp-mount"
+  - name: Delete the mount dir
+    file:
+      path: /mnt/ansible-tmp-mount
+      state: absent
+  - name: Relabel all packages
+    command: "rlpkg -a -r"

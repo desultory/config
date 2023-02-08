@@ -1,3 +1,9 @@
+- name: Clean the build directory
+  become: yes
+  command: make clean
+  args:
+    chdir: /usr/src/linux
+
 - name: Build kernel sources
   become: yes
   command: "make -j {{ansible_facts['processor_vcpus'] * 2}}"

@@ -1,3 +1,10 @@
+- name: Check boot device
+  block:
+    - name: Check that the boot device is set
+      fail:
+        msg: "valid boot_device is not set: {{boot_device}}"
+      when: boot_device not in ansible_facts['device_links']['ids'].values() | flatten
+
 - name: Configuring grub package
   become: yes
   block:
@@ -55,3 +62,26 @@
     - name: Install GRUB to the EFI partition
       command: grub-install --efi-directory=/boot/efi --removable
   when: grub_installed is defined and not grub_installed
+
+- set_fact:
+    has_efi_conf: false
+
+- name: Check bootloader status
+  become: yes
+  block:
+    - name: Get efibootmgr configuration
+      command: efibootmgr
+      register: efibootmr_output
+    - name: Get the boot partition UUID
+      command: "lsblk /dev/disk/by-id/{{boot_device}}-part1 -n -o PARTUUID"
+      register: partition_uuid
+    - name: Check efibootmgr configuration
+      set_fact:
+        has_efi_conf: true
+      when: partition_uuid.stdout_lines[0] in item and 'File(\efi\EFI\BOOT\BOOTX64.EFI)' in item
+      with_items: "{{efibootmr_output.stdout_lines}}"
+
+- name: Configure bootloader entry
+  become: yes
+  command: "efibootmgr -c -l '\\efi\\EFI\\BOOT\\BOOTX64.EFI' -L 'ansible-grub' -d /dev/disk/by-partuuid/{{partition_uuid.stdout_lines[0]}}"
+  when: not has_efi_conf

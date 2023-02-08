@@ -11,3 +11,6 @@ kernel_features: ['base', 'strip', 'network', 'kspp', 'fs-linux', 'fs-msdos', 'n
 # fs-linux: adds btrfs and ext4
 # fs-msdos: adds fat
 # net-basic: adds bridging and vlan support
+
+# Defines whether or not make clean is ran before make
+build_clean: false
