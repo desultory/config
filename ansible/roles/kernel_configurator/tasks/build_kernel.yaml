@@ -11,22 +11,23 @@
   args:
     chdir: /usr/src/linux
 
-- name: Install the kernel, modules, and heders
-  become: yes
-  block:
-    - name: Check if modules are enabled
-      command: "grep 'CONFIG_MODULES=y' /usr/src/linux/.config -q"
-    - name: Install modules
-      command: make modules_install
-      args:
-        chdir: /usr/src/linux
-  always:
-    - name: Install the headers
-      command: make headers_install
-      args:
-        chdir: /usr/src/linux
-    - name: Install the kernel
-      command: make install
-      args:
-        chdir: /usr/src/linux
+- name: Check if modules are enabled
+  command: "grep -xqF 'CONFIG_MODULES=y' /usr/src/linux/.config"
+  check_mode: no
+  ignore_errors: yes
+  register: has_modules
+- name: Install modules
+  command: make modules_install
+  args:
+    chdir: /usr/src/linux
+  when: has_modules.rc == 0
+
+- name: Install the headers
+  command: make headers_install
+  args:
+    chdir: /usr/src/linux
+- name: Install the kernel
+  command: make install
+  args:
+    chdir: /usr/src/linux
 

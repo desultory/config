@@ -16,6 +16,10 @@ Get ansible.posix for mounts
 
 ## Usage
 
+Get host information
+
+`$ ansible -i inventory {host} -m gather_facts`
+
 Ping hosts
 
 `$ ansible -i inventory -m ping all`
