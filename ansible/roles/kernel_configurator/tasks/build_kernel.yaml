@@ -1,3 +1,6 @@
+- set_fact:
+    configs_differ: false
+
 - name: Check build differences
   block:
     - name: Check existing kernel config
@@ -11,7 +14,7 @@
     - name: Compare configs
       set_fact:
         configs_differ: true
-      when: "'stat' in running_config and 'stat' in new_config and running_config.stat.checksum != new_config.stat.checksum"
+      when: "'checksum' not in running_config.stat or running_config.stat.checksum != new_config.stat.checksum"
 
 - name: Build the kernel
   become: yes
@@ -29,5 +32,5 @@
       include_role:
         name: kernel_configurator
         tasks_from: install_kernel
-  when: configs_differ is defined and not configs_differ
+  when: configs_differ
 

@@ -6,4 +6,4 @@
 - name: Relabel system
   include_role:
     name: gentoo_selinux
-    takss_from: relabel
+    tasks_from: relabel
