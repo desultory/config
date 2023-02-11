@@ -1,12 +1,9 @@
 - name: Check gentoo
-  ansible.builtin.fail:
+  fail:
     msg: "Error: Using the Gentoo server role on a server that is not reporting using {{ansible_facts['os_family']}}"
   when: ansible_facts['os_family'] != 'Gentoo'
 
-- name: Debug Gentoo detected
-  ansible.builtin.debug:
-    msg: "Gentoo has been detected"
-- name: Set os_detected
-  set_fact:
-    os_detected: true
-
+- name: Jump configure_system
+  include_role:
+    name: gentoo
+    tasks_from: configure_system

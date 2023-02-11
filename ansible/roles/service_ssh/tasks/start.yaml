@@ -1,0 +1,5 @@
+- name: Start SSH service and add to default runlevel
+  service:
+    name: sshd
+    state: started
+    runlevel: default

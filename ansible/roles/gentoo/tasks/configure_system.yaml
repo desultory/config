@@ -3,10 +3,14 @@
     name: gentoo
     tasks_from: configure_base
 
+- name: Configure SELinux
+  include_role:
+    name: gentoo_selinux
+  when: selinux_configure
+
 - name: Configuring services
   include_role:
     name: "service_{{item}}"
-    tasks_from: configure
   loop: "{{services}}"
   when: services is defined
 

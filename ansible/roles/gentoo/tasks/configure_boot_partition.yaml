@@ -1,9 +1,7 @@
-- name: Check boot device
-  block:
-    - name: Check that the boot device is set
-      fail:
-        msg: "valid boot_device is not set: {{boot_device}}"
-      when: boot_device not in ansible_facts['device_links']['ids'].values() | flatten
+- name: Check that the boot device is set
+  fail:
+    msg: "valid boot_device is not set: {{boot_device}}"
+  when: boot_device not in ansible_facts['device_links']['ids'].values() | flatten
 
 - name: Gather boot device partition information
   block:
@@ -29,7 +27,7 @@
         bad_part: true
       when: "'boot' not in drive_info['partitions'][0].flags"
 
-- name: Unount /boot
+- name: Configure partitions
   become: yes
   block:
     - name: Check /boot mount
@@ -38,11 +36,6 @@
     - name: Unount /boot
       command: umount /boot
       when: "'on /boot type' in result['stdout']"
-  when: reformat_boot
-
-- name: Configure partitions
-  become: yes
-  block:
     - name: Clear old partitions
       parted:
         device: "/dev/disk/by-id/{{boot_device}}"

@@ -1,0 +1,9 @@
+- name: Configure SELinux
+  include_role:
+    name: gentoo_selinux
+    tasks_from: configure
+
+- name: Relabel system
+  include_role:
+    name: gentoo_selinux
+    takss_from: relabel

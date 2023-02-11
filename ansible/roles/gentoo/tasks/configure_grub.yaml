@@ -31,11 +31,20 @@
       command: mount /boot
       when: "'on /boot type' not in result['stdout']"
 
+- set_fact:
+    grub_installed: false
+
+- set_fact:
+    efi_file_loc: '/boot/EFI/BOOT/BOOTX64.EFI'
+- set_fact:
+    efi_file_loc: '/boot/EFI/gentoo/grubx64.efi'
+  when: emerge_kernel == 'gentoo-kernel'
+
 - name: Check grub install
   block:
-    - name: Get EFI file info
+    - name: Get removable EFI file info
       stat:
-        path: /boot/efi/EFI/BOOT/BOOTX64.EFI
+        path: "{{efi_file_loc}}"
       register: efi_file
     - name: Get grub EFI file info
       stat:
@@ -59,6 +68,10 @@
         state: directory
         owner: root
         group: root
+    - name: Install removable GRUB to the EFI partition
+      command: grub-install --efi-directory=/boot/ --removable
+      when: emerge_kernel == 'gentoo-sources'
     - name: Install GRUB to the EFI partition
-      command: grub-install --efi-directory=/boot/efi --removable
+      command: grub-install --efi-directory=/boot/
+      when: emerge_kernel == 'gentoo-kernel'
   when: grub_installed is defined and not grub_installed

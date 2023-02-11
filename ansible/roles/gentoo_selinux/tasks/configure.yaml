@@ -1,10 +1,3 @@
-- name: Check SELinux
-  block:
-  - name: Check ansible configuration
-    fail:
-      msg: SELinux is not
-    when: not selinux_configure
-
 - name: Bootstrap selinux base
   become: yes
   command: emerge -1 -n selinux-base
@@ -55,30 +48,3 @@
       fstype: tmpfs
       opts: 'mode=0755,nosuid,nodev,rootcontext=system_u:object_r:var_run_t'
       state: present
-
-- name: Relabel system
-  become: yes
-  block:
-  - name: Create mount dir
-    file:
-      path: /mnt/ansible-tmp-mount
-      state: directory
-  - name: Create a bind mount for the running system
-    command: "mount -o bind / /mnt/ansible-tmp-mount"
-  - name: Relabel the active mountpoints
-    command: "setfiles -r /mnt/ansible-tmp-mount /etc/selinux/strict/contexts/files/file_contexts /mnt/ansible-tmp-mount/{{item}}"
-    loop: ['dev', 'proc', 'run', 'sys', 'tmp']
-  - name: Unmount the bind mount
-    command: "umount /mnt/ansible-tmp-mount"
-  - name: Delete the mount dir
-    file:
-      path: /mnt/ansible-tmp-mount
-      state: absent
-  - name: Relabel all packages
-    command: "rlpkg -a -r"
-
-- name: Enable and start auditd
-  service:
-    name: auditd
-    state: started
-    runlevel: default

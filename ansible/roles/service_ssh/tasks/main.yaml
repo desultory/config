@@ -1,9 +1,9 @@
-- name: Check openrc
-  ansible.builtin.fail:
-    msg: "Error: Using the SSH openrc serivce role on a server that is reporting using {{ansible_facts['service_mgr']}}"
-  when: ansible_facts['service_mgr']|lower != 'openrc'
+- name: Configure SSH
+  include_role:
+    name: service_ssh
+    tasks_from: configure
 
-- name: Debug OpenRC detected
-  ansible.builtin.debug:
-    msg: "OpenRC has been detected"
-
+- name: Start SSH
+  include_role:
+    name: service_ssh
+    tasks_from: start

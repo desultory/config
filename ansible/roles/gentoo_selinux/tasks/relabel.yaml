@@ -1,0 +1,20 @@
+- name: Set the labels for the active mounts and relabel all packages
+  become: yes
+  block:
+  - name: Create mount dir
+    file:
+      path: /mnt/ansible-tmp-mount
+      state: directory
+  - name: Create a bind mount for the running system
+    command: "mount -o bind {{system_root}} /mnt/ansible-tmp-mount"
+  - name: Relabel the active mountpoints
+    command: "setfiles -r /mnt/ansible-tmp-mount /etc/selinux/strict/contexts/files/file_contexts /mnt/ansible-tmp-mount/{{item}}"
+    loop: ['dev', 'proc', 'run', 'sys', 'tmp']
+  - name: Unmount the bind mount
+    command: "umount /mnt/ansible-tmp-mount"
+  - name: Delete the mount dir
+    file:
+      path: /mnt/ansible-tmp-mount
+      state: absent
+  - name: Relabel all packages
+    command: "rlpkg -a -r"

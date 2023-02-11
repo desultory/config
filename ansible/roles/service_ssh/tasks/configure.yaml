@@ -14,9 +14,3 @@
     group: root
     mode: u=rw,g=,o=
     validate: sshd -t -f %s
-
-- name: configure ssh service
-  service:
-    name: sshd
-    state: started
-    runlevel: default

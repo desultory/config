@@ -63,6 +63,7 @@ These have no defaults and may be required for some functions
 | `emerge_kernel_unstable`  | `false`                       | Tells emerge to use the unstable kernel                       |
 | `boot_partition_size`     | `512`                         | Size of the boot partition (in MB)                            |
 | `use_initramfs`           | `false`                       | True if an initramfs is being used, may be set automatically  |
+| `system_root`             | `/`                           | The location of the system root                               | 
 
 ### Kernel configurator parameters
 

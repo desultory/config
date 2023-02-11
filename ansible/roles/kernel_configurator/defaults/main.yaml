@@ -19,3 +19,4 @@ build_clean: false
 
 # Defines whether or not to run make allnoconfig
 kconfig_allnoconfig: false
+

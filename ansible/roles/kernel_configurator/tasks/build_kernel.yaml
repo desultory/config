@@ -1,33 +1,33 @@
-- name: Clean the build directory
+- name: Check build differences
+  block:
+    - name: Check existing kernel config
+      stat:
+        path: "/boot/config-{{ansible_facts['kernel']}}"
+      register: running_config
+    - name: Check new kernel config
+      stat:
+        path: "/usr/src/linux/.config"
+      register: new_config
+    - name: Compare configs
+      set_fact:
+        configs_differ: true
+      when: "'stat' in running_config and 'stat' in new_config and running_config.stat.checksum != new_config.stat.checksum"
+
+- name: Build the kernel
   become: yes
-  command: make clean
-  args:
-    chdir: /usr/src/linux
-  when: build_clean
-
-- name: Build kernel sources
-  become: yes
-  command: "make -j {{ansible_facts['processor_vcpus'] + 1}}"
-  args:
-    chdir: /usr/src/linux
-
-- name: Check if modules are enabled
-  command: "grep -xqF 'CONFIG_MODULES=y' /usr/src/linux/.config"
-  check_mode: no
-  ignore_errors: yes
-  register: has_modules
-- name: Install modules
-  command: make modules_install
-  args:
-    chdir: /usr/src/linux
-  when: has_modules.rc == 0
-
-- name: Install the headers
-  command: make headers_install
-  args:
-    chdir: /usr/src/linux
-- name: Install the kernel
-  command: make install
-  args:
-    chdir: /usr/src/linux
+  block:
+    - name: Clean the build directory
+      command: make clean
+      args:
+        chdir: /usr/src/linux
+      when: build_clean
+    - name: Build kernel sources
+      command: "make -j {{ansible_facts['processor_vcpus'] + 1}}"
+      args:
+        chdir: /usr/src/linux
+    - name: jump install_kernel
+      include_role:
+        name: kernel_configurator
+        tasks_from: install_kernel
+  when: configs_differ is defined and not configs_differ
 

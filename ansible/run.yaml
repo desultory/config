@@ -1,0 +1,7 @@
+- name: Run gentoo role
+  hosts: gentoo_servers
+  serial: 1
+  tasks:
+    - name: Import server role and configure system task
+      import_role:
+        name: gentoo

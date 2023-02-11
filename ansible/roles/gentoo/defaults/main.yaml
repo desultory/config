@@ -30,3 +30,6 @@ emerge_kernel_arch: "amd64"
 reformat_boot: false
 # Set the bootloader partition size
 boot_partition_size: 512
+
+# Set the system root location
+system_root: "/"
