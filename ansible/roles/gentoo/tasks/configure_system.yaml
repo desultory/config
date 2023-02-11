@@ -6,7 +6,7 @@
 - name: Configure SELinux
   include_role:
     name: gentoo_selinux
-  when: selinux_configure
+  when: "'selinux' in features"
 
 - name: Configuring services
   include_role:

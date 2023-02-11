@@ -4,8 +4,8 @@ services: ['ssh']
 # Define whether or not to use an initramfs, may be overridden by tasks
 use_initramfs: false
 
-# Define whether or not to configure for selinux
-selinux_configure: false
+# Define the empty features list
+features: []
 
 # Define whether or not to used the hardened profile
 gentoo_hardened: true
@@ -33,3 +33,6 @@ boot_partition_size: 512
 
 # Set the system root location
 system_root: "/"
+
+# Set whether or not to autorun this script
+autorun: true

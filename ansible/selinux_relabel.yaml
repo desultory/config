@@ -1,0 +1,13 @@
+- name: Relabel SELinux
+  hosts: gentoo_servers
+  serial: 1
+  tasks:
+    - name: Import the gentoo role but do not run it
+      import_role:
+        name: gentoo
+      vars:
+        autorun: false
+    - name: Import gentoo_selinux role and relabel the system
+      import_role:
+        name: gentoo_selinux
+        tasks_from: relabel

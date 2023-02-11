@@ -12,7 +12,6 @@
         owner: root
         group: root
         mode: u=rw,g=r,o=r
-    # Set the profile based on {{emerge_profile}}, {{gentoo_hardened}} and {{selinux_configure}}
+    # Set the profile based on {{emerge_profile}}, {{gentoo_hardened}} and {{features['selinux']}}
     - name: Set the emerge profile
-      command: "eselect profile set {{emerge_profile}}{{'/hardened' if gentoo_hardened}}{{'/selinux' if selinux_configure}}"
-
+      command: "eselect profile set {{emerge_profile}}{{'/hardened' if gentoo_hardened}}{{'/selinux' if 'selinux' in features}}"

@@ -7,3 +7,4 @@
   include_role:
     name: gentoo
     tasks_from: configure_system
+  when: autorun

@@ -29,8 +29,8 @@
           - "{{'storage-nvme' if 'Non-Volatile memory controller:' in lspci_result['stdout']}}"
           - "{{'storage-scsi' if 'Serial Attached SCSI controller:' in lspci_result['stdout']}}"
           - "{{'storage-usb' if 'USB controller' in lspci_result['stdout']}}"
-          - "{{'virt-docker' if docker_configure}}"
-          - "{{'selinux' if selinux_configure}}"
+          - "{{'virt-docker' if 'docker' in features}}"
+          - "{{'selinux' if 'selinux' in features}}"
 
 - name: Configure kernel sources
   become: yes
