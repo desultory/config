@@ -1,0 +1,22 @@
+- name: Enabling OpenRC logging
+  become: yes
+  lineinfile:
+    backup: yes
+    path: /etc/rc.conf
+    line: 'rc_logger="YES"'
+    insertafter: '#rc_logger="NO"'
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+
+- name: Enable serial TTY
+  become: yes
+  lineinfile:
+    backup: yes
+    path: /etc/inittab
+    line: "{{serial_port}}:12345:respawn:/sbin/agetty -L 115200 tty{{serial_port}} vt100"
+    insertafter: '# SERIAL CONSOLES'
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  when: "'serial' in features"

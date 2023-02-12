@@ -12,25 +12,46 @@
 
 - name: Detect host features
   block:
-    - name: Gather pci information
-      command: lspci
-      register: lspci_result
-    - name: Populate kernel_features
+    - name: Populate ansible_detected_features
       set_fact:
-        kernel_features: "{{kernel_features + cust_kernel_features | union(auto_features | select) | unique}}"
+        kernel_features: "{{kernel_features | union(ansible_detected_features | select) | unique}}"
       vars:
-        auto_features:
+        ansible_detected_features:
           - "{{'host-x86_64' if ansible_facts['architecture'] == 'x86_64'}}"
           - "{{'host-gentoo' if ansible_facts['os_family'] == 'Gentoo'}}"
           - "{{'host-H12SSL' if ansible_facts['board_name'] == 'H12SSL-C'}}"
+          - "{{'host-sabertooth990fx' if ansible_facts['board_name'] == 'SABERTOOTH 990FX'}}"
           - "{{'host-amd' if 'AuthenticAMD' in ansible_facts['processor']}}"
+          - "{{'virt-docker' if 'docker' in features}}"
+          - "{{'selinux' if 'selinux' in features}}"
+          - "{{'storage-crypt' if encrypted_root}}"
+    - name: Gather PCI information
+      command: lspci
+      register: lspci_result
+    - name: Populate pci_detected_features
+      set_fact:
+        kernel_features: "{{kernel_features | union(pci_detected_features | select) | unique}}"
+      vars:
+        pci_detected_features:
           - "{{'net-x520' if 'Intel Corporation 82599ES' in lspci_result['stdout']}}"
+          - "{{'net-e1000e' if 'Intel Corporation 82574L' in lspci_result['stdout']}}"
+          - "{{'net-mt7921k' if 'MT7921K' in lspci_result['stdout']}}"
+          - "{{'net-mt7921k' if 'MT7921K' in lspci_result['stdout']}}"
           - "{{'storage-sata' if 'SATA controller:' in lspci_result['stdout']}}"
           - "{{'storage-nvme' if 'Non-Volatile memory controller:' in lspci_result['stdout']}}"
           - "{{'storage-scsi' if 'Serial Attached SCSI controller:' in lspci_result['stdout']}}"
           - "{{'storage-usb' if 'USB controller' in lspci_result['stdout']}}"
-          - "{{'virt-docker' if 'docker' in features}}"
-          - "{{'selinux' if 'selinux' in features}}"
+          - "{{'video-nvidia' if 'NVIDIA Corporation GT218' in lspci_result['stdout']}}"
+    - name: Gather USB information
+      command: lsusb
+      register: lsusb_result
+      when: "'USB controller' in lspci_result['stdout']"
+    - name: Populate usb_detected_features
+      set_fact:
+        kernel_features: "{{kernel_features + cust_kernel_features | union(usb_detected_features | select) | unique}}"
+      vars:
+        usb_detected_features:
+          - "{{'net-mt7612u' if 'MediaTek Inc. MT7612U' in lsusb_result['stdout']}}"
 
 - name: Configure kernel sources
   become: yes

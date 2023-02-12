@@ -42,13 +42,19 @@ Overrides to role variables should be made in the inventory file
 
 ### Host Variables
 
-These have no defaults and may be required for some functions
+These may not have defaults, in which case, values must be defined in the host/playbook configuiration, and may be required for some functions
 
-|  Variable name            |  Required by          |  Description                                                                      |
-| ------------------------- | --------------------- | --------------------------------------------------------------------------------- |
-| `boot_device`             | bootloader, kernel    | The name of the item under /dev/disk/by-id/ that corresponds with the boot device |
-| `boot_partition`          | bootloader, kernel    | The UUID of the boot partition, should be associated with the boot device         |
-| `reformat_boot`           |                       | When true, the script will allow reformatting of the boot device (DANGEROUS)      |
+|  Variable name            | Default   | Required by           |  Description                                                                      |
+| ------------------------- | --------- | --------------------- | --------------------------------------------------------------------------------- |
+| `boot_device`             |           | bootloader, kernel    | The name of the item under /dev/disk/by-id/ that corresponds with the boot device |
+| `reformat_boot`           |           |                       | When true, the script will allow reformatting of the boot device (DANGEROUS)      |
+| `efi_device`              |           |                       | The device containing the EFI partition, useful if not using `reformat_boot`      |
+| `efi_removable`           | `false`   |                       | Specifies whether or not GRUB should do a removable install                       |
+| `boot_partition_size`     | `512`     |                       | Size of the boot partition (in MB)                                                |
+| `system_root`             | `/`       |                       | The location of the system root                                                   | 
+| `encrypted_root`          | `false`   |                       | When true, enables the dmcrypt and ramdisk                                        |
+| `serial_port`             | `S1`      | serial                | The port identifier for the serial port (S0,S1, etc)                              |
+| `grub_custom_cmdline`     |           |                       | Additional parameters to be added to `GRUB_CMDLINE_LINUX`                         |
 
 ### Gentoo Variables
 
@@ -60,9 +66,7 @@ These have no defaults and may be required for some functions
 | `emerge_profile`          | `default/linux/amd64/17.1`    | The default profile to select                                 |
 | `emerge_kernel`           | `gentoo-sources`              | Short atom of the gentoo kernel source package                |
 | `emerge_kernel_unstable`  | `false`                       | Tells emerge to use the unstable kernel                       |
-| `boot_partition_size`     | `512`                         | Size of the boot partition (in MB)                            |
 | `use_initramfs`           | `false`                       | True if an initramfs is being used, may be set automatically  |
-| `system_root`             | `/`                           | The location of the system root                               | 
 | `autorun`                 | `true`                        | If true, the entire install is played on import               |
 
 #### Features
@@ -73,6 +77,7 @@ These have no defaults and may be required for some functions
 | `docker`      | Enables docker support                            |
 | `ipv6`        | Enables ipv6 support                              |
 | `virt`        | Enables virtualization support                    |
+| `serial`      | Enables serial output                             |
 
 ### Kernel configurator parameters
 

@@ -1,0 +1,7 @@
+- name: test
+  hosts: nas
+  tasks:
+    - debug:
+        msg: "{{ansible_facts['mounts'] }}"
+    - debug:
+        msg: "{{ansible_facts['mounts'] | }}"

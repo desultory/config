@@ -8,6 +8,6 @@ gentoo_servers:
     serverb:
       ansible_host: 10.0.0.102
       roles: gentoo
-      initramfs_enable: true
+      use_initramfs: true
 
 

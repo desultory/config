@@ -1,0 +1,20 @@
+- name: Install initramfs
+  become: yes
+  block:
+    - name: Get kernel config
+      slurp:
+        src: /usr/src/linux/.config
+      register: kernel_config_file
+    - name: Get kernel version information
+      set_fact:
+        kernel_version_string: "{{kernel_config_file['content'] | b64decode | regex_search('^# Linux.* (\\S*) Kernel Configuration$', multiline=True) | regex_replace('# Linux.* (\\S*) Kernel Configuration', '\\1') }}"
+        kernel_localversion: "{{kernel_config_file['content'] | b64decode | regex_search('^CONFIG_LOCALVERSION=\"(\\S*)\"$', multiline=True) | regex_replace('CONFIG_LOCALVERSION=\"(\\S*)\"', '\\1') }}"
+    - name: Set the kernel version string
+      set_fact:
+         kernel_string: "{{kernel_version_string}}{{kernel_localversion}}"
+    - name: Get module directory
+      stat:
+        path: "/lib/modules{{kernel_string}}"
+      register: kmod_dir
+    - name: Dracut install
+      command: "dracut {% if not kmod_dir.stat.exists %}--no-kernel {% endif %}--kver={{kernel_string}} --force -H /boot/initramfs-{{kernel_string}}.img"

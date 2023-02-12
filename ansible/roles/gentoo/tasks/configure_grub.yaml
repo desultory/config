@@ -21,7 +21,7 @@
         group: root
         mode: u=rw,g=r,o=r
 
-- name: Mount /boot
+- name: Mount boot and partition
   become: yes
   block:
     - name: Check /boot mount
@@ -30,15 +30,23 @@
     - name: Mount /boot
       command: mount /boot
       when: "'on /boot type' not in result['stdout']"
+    - name: Create the EFI directory
+      file:
+        path: /boot/efi
+        state: directory
+        owner: root
+        group: root
+    - name: Mount /boot/efi
+      command: "mount '/dev/disk/by-id/{{efi_device}}' /boot/efi"
+      when: "efi_device is defined and 'on /boot/efi' not in result['stdout']"
 
 - set_fact:
-    grub_installed: false
+    efi_file_loc: "/boot/{% if efi_device is defined %}efi/{% endif %}EFI/{% if efi_removable %}BOOT/BOOTX64.EFI{% else %}gentoo/grubx64.efi{% endif %}"
+- set_fact:
+    efi_directory: "/boot{% if efi_device is defined %}/efi{% endif %}"
 
 - set_fact:
-    efi_file_loc: '/boot/EFI/BOOT/BOOTX64.EFI'
-- set_fact:
-    efi_file_loc: '/boot/EFI/gentoo/grubx64.efi'
-  when: emerge_kernel == 'gentoo-kernel'
+    grub_cmd: "grub-install --efi-directory={{efi_directory}}{% if efi_removable %} --removable{% endif %}"
 
 - name: Check grub install
   block:
@@ -54,24 +62,6 @@
       stat:
         path: /boot/grub/fonts/unicode.pf2
       register: font_file
-    - name: Check grub
-      set_fact:
-        grub_installed: true
-      when: font_file.stat.exists and grub_file.stat.exists and efi_file.stat.exists
-
-- name: Installing grub bootloader
-  become: yes
-  block:
-    - name: Create the EFI directory
-      file:
-        path: /boot/efi
-        state: directory
-        owner: root
-        group: root
-    - name: Install removable GRUB to the EFI partition
-      command: grub-install --efi-directory=/boot/ --removable
-      when: emerge_kernel == 'gentoo-sources'
-    - name: Install GRUB to the EFI partition
-      command: grub-install --efi-directory=/boot/
-      when: emerge_kernel == 'gentoo-kernel'
-  when: grub_installed is defined and not grub_installed
+    - name: Install grub
+      command: "{{grub_cmd}}"
+      when: not font_file.stat.exists or not grub_file.stat.exists or not efi_file.stat.exists

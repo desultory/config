@@ -5,10 +5,15 @@
     name: gentoo
     tasks_from: configure_portage
 
-- name: jump configure_openrc
+- name: jump configure_base_packages
   include_role:
     name: gentoo
-    tasks_from: configure_openrc
+    tasks_from: configure_base_packages
+
+- name: jump configure_init
+  include_role:
+    name: gentoo
+    tasks_from: configure_init
 
 - name: jump configure_boot_partition
   include_role:

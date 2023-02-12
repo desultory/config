@@ -4,12 +4,12 @@ GRUB_DISTRIBUTOR="Gentoo"
 
 GRUB_TIMEOUT=5
 
-{% if 'console' in ansible_facts['cmdline'] %}
-GRUB_CMDLINE_LINUX="earlyprintk console=tty0 console=ttyS0,115200n8"
+{% if 'serial' in features %}
+GRUB_CMDLINE_LINUX="earlyprintk console=tty0 console=tty{{serial_port}},115200n8 {{grub_custom_cmdline}}"
 GRUB_SERIAL_COMMAND="serial efi0 --speed=115200 --word=8 --parity=no --stop=1"
 GRUB_GFXPAYLOAD_LINUX=text
 {% else %}
-GRUB_CMDLINE_LINUX="earlyprintk console=tty0 console=ttyS0,115200n8"
+GRUB_CMDLINE_LINUX="earlyprintk {{grub_custom_cmdline}}"
 {% endif %}
 
 GRUB_TERMINAL="console serial vga_text gfxterm"

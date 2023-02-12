@@ -1,4 +1,4 @@
-- name: Install the kernel and configure grub
+- name: Install the kernel and initramfs if applicable
   become: yes
   block:
     - name: Check if modules are enabled
@@ -17,10 +17,14 @@
       args:
         chdir: /usr/src/linux
 
+    - name: jump install_initramfs
+      include_role:
+        name: kernel_configurator
+        tasks_from: install_initramfs
+      when: use_initramfs
+
     - name: Install the kernel
       command: make install
       args:
         chdir: /usr/src/linux
 
-    - name: Install grub config
-      command: grub-mkconfig -o /boot/grub/grub.cfg

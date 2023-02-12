@@ -1,0 +1,13 @@
+- name: Configure base packages
+  become: yes
+  block:
+    - name: Check USB
+      command: lspci
+      register: lspci_result
+    - name: Install usbutils
+      portage:
+        package: sys-apps/usbutils
+      when: "'USB controller' in lspci_result['stdout']"
+    - name: Install gentoolkit
+      portage:
+        package: app-portage/gentoolkit

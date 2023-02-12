@@ -4,9 +4,14 @@
   block:
     - name: emerge gentoo-sources
       portage:
-        package: gentoo-sources
+        package: sys-kernel/gentoo-sources
         state: present
         changed_use: true
+    - name: emerge dracut
+      portage:
+        package: sys-kernel/dracut
+        state: present
+      when: use_initramfs
     - name: Configure and compile sources
       include_role:
         name: kernel_configurator

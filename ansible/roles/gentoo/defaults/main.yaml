@@ -1,9 +1,6 @@
 # Define the default services
 services: ['ssh']
 
-# Define whether or not to use an initramfs, may be overridden by tasks
-use_initramfs: false
-
 # Define the empty features list
 features: []
 
@@ -12,7 +9,7 @@ gentoo_hardened: true
 
 # Define the gentoo profile
 # Hardened and selinux will be added
-emerge_profile: "default/linux/amd64/17.1/"
+emerge_profile: "default/linux/amd64/17.1"
 
 # Define the SSH package name
 emerge_ssh_full: "net-misc/openssh"
@@ -25,14 +22,24 @@ emerge_kernel: "gentoo-sources"
 emerge_kernel_unstable: false
 # Kernel arch
 emerge_kernel_arch: "amd64"
+# Define whether or not to use an initramfs, may be overridden by tasks
+use_initramfs: "{{encrypted_root}}"
+
+# Set whether or not to autorun this script
+autorun: true
 
 # Don't reformat partitions unless specified
 reformat_boot: false
 # Set the bootloader partition size
 boot_partition_size: 512
+# Set whether or not to do a removable install
+efi_removable: false
 
+# the serial port ID (/dev/tty{n})
+serial_port: "S1"
 # Set the system root location
 system_root: "/"
-
-# Set whether or not to autorun this script
-autorun: true
+# Whether or not the root partition should be encrypted
+encrypted_root: false
+# init grub custom commandline parameters
+grub_custom_cmdline: ""
