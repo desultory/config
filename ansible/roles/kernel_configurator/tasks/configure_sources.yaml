@@ -36,12 +36,12 @@
           - "{{'net-x520' if 'Intel Corporation 82599ES' in lspci_result['stdout']}}"
           - "{{'net-e1000e' if 'Intel Corporation 82574L' in lspci_result['stdout']}}"
           - "{{'net-mt7921k' if 'MT7921K' in lspci_result['stdout']}}"
-          - "{{'net-mt7921k' if 'MT7921K' in lspci_result['stdout']}}"
           - "{{'storage-sata' if 'SATA controller:' in lspci_result['stdout']}}"
           - "{{'storage-nvme' if 'Non-Volatile memory controller:' in lspci_result['stdout']}}"
           - "{{'storage-scsi' if 'Serial Attached SCSI controller:' in lspci_result['stdout']}}"
           - "{{'storage-usb' if 'USB controller' in lspci_result['stdout']}}"
           - "{{'video-nvidia' if 'NVIDIA Corporation GT218' in lspci_result['stdout']}}"
+        wireless_enabled: "{{true if 'MT7921K' in lspci_result['stdout']}}"
     - name: Gather USB information
       command: lsusb
       register: lsusb_result
@@ -81,4 +81,4 @@
       vars:
         - merge_configs: "{{kernel_features | map('regex_replace', '$', '.config')}}"
         - hostname_arg: "CONFIG_DEFAULT_HOSTNAME=\"{{inventory_hostname}}\""
-        - merge_cmd: "{{ ['./merge_config/merge_config.py', merge_flag, '-p', hostname_arg, '-p', 'CONFIG_LOCALVERSION=\"-ansible\"'] + merge_configs }}"
+        - merge_cmd: "{{['./merge_config/merge_config.py', merge_flag, '-p', hostname_arg, '-p', 'CONFIG_LOCALVERSION=\"-ansible\"', '-p', 'CONFIG_EXTRA_FIRMWARE=\"' + firmware_blobs + '\"'] + merge_configs}}"
