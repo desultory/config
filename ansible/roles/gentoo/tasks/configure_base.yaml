@@ -15,6 +15,11 @@
     name: gentoo
     tasks_from: configure_init
 
+- name: jump configure_net
+  include_role:
+    name: gentoo
+    tasks_from: configure_net
+
 - name: jump configure_boot_partition
   include_role:
     name: gentoo

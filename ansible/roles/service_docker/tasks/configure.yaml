@@ -1,0 +1,9 @@
+- name: Install Docker
+  become: yes
+  package:
+    name: app-containers/docker
+
+- name: Install docker-compose
+  become: yes
+  package:
+    name: app-containers/docker-compose

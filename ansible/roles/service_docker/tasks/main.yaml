@@ -1,0 +1,10 @@
+- name: Configure Docker
+  include_role:
+    name: service_docker
+    tasks_from: configure
+
+- name: Start Docker
+  include_role:
+    name: service_docker
+    tasks_from: start
+

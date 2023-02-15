@@ -12,25 +12,15 @@
 
 - name: Detect host features
   block:
-    - name: Populate ansible_detected_features
-      set_fact:
-        kernel_features: "{{kernel_features | union(ansible_detected_features | select) | unique}}"
-      vars:
-        ansible_detected_features:
-          - "{{'host-x86_64' if ansible_facts['architecture'] == 'x86_64'}}"
-          - "{{'host-gentoo' if ansible_facts['os_family'] == 'Gentoo'}}"
-          - "{{'host-H12SSL' if ansible_facts['board_name'] == 'H12SSL-C'}}"
-          - "{{'host-sabertooth990fx' if ansible_facts['board_name'] == 'SABERTOOTH 990FX'}}"
-          - "{{'host-amd' if 'AuthenticAMD' in ansible_facts['processor']}}"
-          - "{{'virt-docker' if 'docker' in features}}"
-          - "{{'selinux' if 'selinux' in features}}"
-          - "{{'storage-crypt' if encrypted_root}}"
+    - name: Clean the kernel features list
+      set_fact: # removes empty/redundant entries
+        kernel_features: "{{kernel_features | select | unique}}"
     - name: Gather PCI information
       command: lspci
       register: lspci_result
     - name: Populate pci_detected_features
-      set_fact:
-        kernel_features: "{{kernel_features | union(pci_detected_features | select) | unique}}"
+      set_fact: # adds pci detected features which do not already exist in the kernel_features list
+        kernel_features: "{{kernel_features | union(pci_detected_features | select)}}"
       vars:
         pci_detected_features:
           - "{{'net-x520' if 'Intel Corporation 82599ES' in lspci_result['stdout']}}"
@@ -48,10 +38,13 @@
       when: "'USB controller' in lspci_result['stdout']"
     - name: Populate usb_detected_features
       set_fact:
-        kernel_features: "{{kernel_features + cust_kernel_features | union(usb_detected_features | select) | unique}}"
+        kernel_features: "{{kernel_features | union(usb_detected_features | select)}}"
       vars:
         usb_detected_features:
           - "{{'net-mt7612u' if 'MediaTek Inc. MT7612U' in lsusb_result['stdout']}}"
+    - name: Finalize kernel_features
+      set_fact: # adds
+        kernel_features: "{{kernel_features | union(late_kernel_features + cust_kernel_features | select )}}"
 
 - name: Configure kernel sources
   become: yes

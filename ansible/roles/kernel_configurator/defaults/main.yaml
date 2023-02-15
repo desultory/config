@@ -1,5 +1,17 @@
 # A list of features (kernel patches) to use
-kernel_features: ['strip', 'base', 'fs-basic', 'net-netfilter', 'kspp']
+kernel_features:
+  - 'strip'
+  - 'base'
+  - "{{'host-gentoo' if ansible_facts['os_family'] == 'Gentoo'}}"
+  - "{{'host-x86_64' if ansible_facts['architecture'] == 'x86_64'}}"
+  - "{{'host-amd' if 'AuthenticAMD' in ansible_facts['processor']}}"
+  - "{{'host-H12SSL' if ansible_facts['board_name'] == 'H12SSL-C'}}"
+  - "{{'host-sabertooth990fx' if ansible_facts['board_name'] == 'SABERTOOTH 990FX'}}"
+  - 'fs-basic'
+  - 'net-netfilter'
+  - "{{'virt-docker' if 'docker' in services}}"
+  - "{{'selinux' if 'selinux' in features}}"
+  - "{{'storage-crypt' if encrypted_root}}"
 # Features
 # base: Includes basic additions to the kernel
 # strip: removes many unnecessary features that may be part of defconfig
@@ -13,6 +25,10 @@ kernel_features: ['strip', 'base', 'fs-basic', 'net-netfilter', 'kspp']
 # net-basic: adds bridging and vlan support
 # Init custom features
 cust_kernel_features: []
+
+# Set late features
+late_kernel_features:
+  - 'kspp'
 
 # Defines whether or not make clean is ran before make
 build_clean: false

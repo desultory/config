@@ -1,0 +1,24 @@
+- name: Configure udev rules for networking
+  become: yes
+  block:
+    - name: Installing /etc/udev/rules.d/99-ansible-net.rules
+      template:
+        src: etc/udev/rules.d/99-ansible-net.rules
+        dest: /etc/udev/rules.d/99-ansible-net.rules
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+    - name: Get current ip link information
+      command: ip link
+      register: ip_info
+    - command: "ip link property add dev {{ interface_match.0.device }} altname {{ item.key }}"
+      loop: "{{netconfig | dict2items}}"
+      vars:
+        # Extracts interfaces from ansible_facts using the interfaces field
+        # Then filters out ones which have mac addresses
+        host_interfaces: "{{ ansible_facts.interfaces | map('extract', ansible_facts) | selectattr('macaddress', 'defined') }}"
+        # Combine the detection logic with some data manipulation
+        # Selects the host interface that has the mac associated with the interface used in this current iteration
+        interface_match: "{{ host_interfaces | selectattr('macaddress', '==', item.value.mac) }}"
+      when: interface_match and netconfig[interface_match.0.device] is not defined and item.key not in ip_info.stdout
+

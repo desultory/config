@@ -1,0 +1,5 @@
+- name: Start the Docker daemon and add it to the default runlevel
+  service:
+    name: docker
+    state: started
+    runlevel: default
