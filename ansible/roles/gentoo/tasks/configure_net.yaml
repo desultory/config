@@ -11,8 +11,8 @@
     - name: Get current ip link information
       command: ip link
       register: ip_info
-    - name: Add interface aliases
-      command: "ip link property add dev {{ interface_match.0.device }} altname {{ item.key }}"
+    - name: Rename network interfaces
+      command: "bash -c 'ip link set dev {{interface_match.0.device}} down && ip link set {{interface_match.0.device}} name {{item.key}}'"
       loop: "{{netconfig | dict2items}}"
       vars:
         # Extracts interfaces from ansible_facts using the interfaces field

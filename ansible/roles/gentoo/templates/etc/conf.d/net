@@ -5,7 +5,9 @@ config_{{interface.key}}="{{interface.value.config}}"
 {% if interface.value.mtu is defined %}
 mtu_{{interface.key}}="{{interface.value.mtu}}"
 {% endif %}
-
+{% if interface.value.modules is defined %}
+modules_{{interface.key}}="{{interface.value.modules | join(' ')}}"
+{% endif %}
 {% if interface.value is regex('vlan[0-9]+') %}
 vlans_{{interface.key}}="{{interface.value | regex_findall('vlan([0-9]+)') | join(' ')}}"
 {% for vlan in interface.value | regex_findall('vlan([0-9]+)') %}
