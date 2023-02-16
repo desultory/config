@@ -1,6 +1,0 @@
-# /etc/udev/rules.d/10-persistent-net.rules
-SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="90:e2:ba:e3:2e:1c", NAME="fib1"
-SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="90:e2:ba:e3:2e:1d", NAME="fib2"
-
-SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="3c:ec:ef:77:da:c6", NAME="eth1"
-SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="3c:ec:ef:77:da:c7", NAME="eth2"
