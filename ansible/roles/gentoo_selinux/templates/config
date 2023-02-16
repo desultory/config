@@ -5,7 +5,7 @@
 #       enforcing - SELinux security policy is enforced.
 #       permissive - SELinux prints warnings instead of enforcing.
 #       disabled - No SELinux policy is loaded.
-SELINUX=permissive
+SELINUX={{selinux_status}}
 
 # SELINUXTYPE can take one of these four values:
 #       targeted - Only targeted network daemons are protected.
@@ -13,4 +13,4 @@ SELINUX=permissive
 #       mls      - Full SELinux protection with Multi-Level Security
 #       mcs      - Full SELinux protection with Multi-Category Security
 #                  (mls, but only one sensitivity level)
-SELINUXTYPE=strict
+SELINUXTYPE={{selinux_type}}

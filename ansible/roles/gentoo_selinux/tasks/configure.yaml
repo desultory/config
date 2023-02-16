@@ -6,12 +6,18 @@
 
 - name: Configure SELinux
   become: yes
-  template:
-    src: etc/selinux/config
-    dest: /etc/selinux/config
-    owner: root
-    group: root
-    mode: u=rw,g=r,o=r
+  block:
+  - name: Deploy /etc/selinux/config
+    template:
+      src: config
+      dest: /etc/selinux/config
+      owner: root
+      group: root
+      mode: u=rw,g=r,o=r
+  - name: Set SELinux status
+    selinux:
+      state: "{{selinux_status}}"
+      policy: "{{selinux_type}}"
 
 - name: Emerge SELinux
   become: yes

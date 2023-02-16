@@ -7,3 +7,4 @@
   include_role:
     name: gentoo_selinux
     tasks_from: relabel
+  when: selinux_relabel

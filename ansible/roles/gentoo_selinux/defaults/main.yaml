@@ -1,0 +1,8 @@
+# When true, relabels the system on configuration
+selinux_relabel: true
+
+# Sets the selinux status in /etc/conf.d/selinux
+selinux_status: permissive
+
+# Sets the selinux type (policy)
+selinux_type: strict

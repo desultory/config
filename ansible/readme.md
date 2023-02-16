@@ -67,7 +67,15 @@ These may not have defaults, in which case, values must be defined in the host/p
 | `emerge_kernel`           | `gentoo-sources`              | Short atom of the gentoo kernel source package                |
 | `emerge_kernel_unstable`  | `false`                       | Tells emerge to use the unstable kernel                       |
 | `use_initramfs`           | `false`                       | True if an initramfs is being used, may be set automatically  |
-| `autorun`                 | `true`                        | If true, the entire install is played on import               |
+| `autorun`                 | `false`                       | If true, the entire install is played on import               |
+
+#### SELinux
+
+| Name                  | Default       | Description                                       |
+| --------------------- | ------------- | ------------------------------------------------- |
+| `selinux_relabel`     | `true`        | Relabels the system when enables                  |
+| `selinux_status`      | `permissive`  | Sets the SELinux enforcing status                 |
+| `selinux_type`        | `strict`      | Sets the SELinux policy type                      |
 
 #### Services
 
