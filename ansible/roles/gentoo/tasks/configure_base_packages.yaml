@@ -1,7 +1,7 @@
 - name: Configure base packages
   become: yes
   block:
-    - name: Check USB
+    - name: Check for USB controller
       command: lspci
       register: lspci_result
     - name: Install usbutils
@@ -11,3 +11,9 @@
     - name: Install gentoolkit
       portage:
         package: app-portage/gentoolkit
+    - name: Disable netmount
+      service:
+        name: netmount
+        state: stopped
+        enabled: false
+      when: services is defined and 'netmount' not in services

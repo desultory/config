@@ -1,0 +1,26 @@
+# /etc/conf.d/net
+
+{% for interface in netconfig | dict2items %}
+config_{{interface.key}}="{{interface.value.config}}"
+{% if interface.value.mtu is defined %}
+mtu_{{interface.key}}="{{interface.value.mtu}}"
+{% endif %}
+
+{% if interface.value is regex('vlan[0-9]+') %}
+vlans_{{interface.key}}="{{interface.value | regex_findall('vlan([0-9]+)') | join(' ')}}"
+{% for vlan in interface.value | regex_findall('vlan([0-9]+)') %}
+{% if interface.value['vlan'+vlan].name is defined %}
+{{interface.key}}_vlan{{vlan}}_name="{{interface.value['vlan'+vlan].name}}"
+config_{{interface.value['vlan'+vlan].name | regex_replace('\.', '_')}}="{{interface.value['vlan'+vlan].config}}"
+{% else %}
+config_{{interface.key}}_{{vlan}}="{{interface.value['vlan'+vlan].config}}"
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if interface.value.bridge is defined %}
+bridge_{{interface.key}}="{{interface.value.bridge | join(' ')}}"
+{% endif %}
+{% if interface.value.need is defined %}
+rc_net_{{interface.key}}_need="{{interface.value.need | join(' ')}}"
+{% endif %}
+{% endfor %}

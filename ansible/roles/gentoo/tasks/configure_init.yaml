@@ -1,22 +1,33 @@
-- name: Enabling OpenRC logging
+- name:
   become: yes
-  lineinfile:
-    backup: yes
-    path: /etc/rc.conf
-    line: 'rc_logger="YES"'
-    insertafter: '#rc_logger="NO"'
-    owner: root
-    group: root
-    mode: u=rw,g=r,o=r
+  block:
+  - name: Enabling OpenRC logging
+    lineinfile:
+      backup: yes
+      path: /etc/rc.conf
+      line: 'rc_logger="YES"'
+      insertafter: '#rc_logger="NO"'
+      owner: root
+      group: root
+      mode: u=rw,g=r,o=r
 
-- name: Enable serial TTY
-  become: yes
-  lineinfile:
-    backup: yes
-    path: /etc/inittab
-    line: "{{serial_port}}:12345:respawn:/sbin/agetty -L 115200 tty{{serial_port}} vt100"
-    insertafter: '# SERIAL CONSOLES'
-    owner: root
-    group: root
-    mode: u=rw,g=r,o=r
-  when: "'serial' in features"
+  - name: Enable serial TTY
+    lineinfile:
+      backup: yes
+      path: /etc/inittab
+      line: "{{serial_port}}:12345:respawn:/sbin/agetty -L 115200 tty{{serial_port}} vt100"
+      insertafter: '# SERIAL CONSOLES'
+      owner: root
+      group: root
+      mode: u=rw,g=r,o=r
+    when: "'serial' in features"
+
+  - name: Enable passwordless root run_init
+    lineinfile:
+      backup: yes
+      path: /etc/pam.d/run_init
+      line: "auth       sufficient   pam_rootok.so"
+      insertbefore: BOF
+      owner: root
+      group: root
+      mode: u=rw,g=r,o=r

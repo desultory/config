@@ -1,58 +1,8 @@
 - name: test
   hosts: nas
   tasks:
-    - debug:
-        msg: ip link property add dev {{ interface_match.0.device }} target_info altname {{ item.key }}
-      loop: "{{netconfig | dict2items}}"
-      vars:
-        # Extracts interfaces from ansible_facts using the interfaces field
-        # Then filters out ones which have mac addresses
-        host_interfaces: "{{ ansible_facts.interfaces | map('extract', ansible_facts) | selectattr('macaddress', 'defined') }}"
-        # Combine the detection logic with some data manipulation
-        # Selects the host interface that has the mac associated with the interface used in this current iteration 
-        interface_match: "{{ host_interfaces | selectattr('macaddress', '==', item.value.mac) }}"
-      when: interface_match and netconfig[interface_match.0.device] is not defined
+    - service:
+        name: netmount
+        state: restarted
+      become: yes
 
-
-
-
-
-
-#    - name: Get target MAC and host internface names
-#      set_fact:
-#        target_info: "{{target_info | default([]) + [{'mac': ansible_facts[item].macaddress, 'host_if': item}]}}"
-#      loop: "{{ansible_facts['interfaces']}}"
-#      when: "{{item not in netconfig and ansible_facts[item].macaddress is defined and ansible_facts[item].macaddress in (netconfig.values() | map(attribute='mac'))}}"
-
-#    - name: Add aliases
-#      debug:
-#        msg: "ip link property add dev target_info altname {{item['key']}}"
-      #loop: "{{target_info}}"
-      #when: "{{target_info in (netconfig.values() | map(attribute='mac'))}}"
-#      loop: "{{lookup('dict', netconfig, wantlist=True)}}"
-      #when: "{{item.mac == '90:e2:ba:e3:2e:1c'}}"
-   # - debug:
-   #     msg: "{{netconfig}}"
-   #   loop: "{{netconfig.items
-   #   when: "{{ansible_facts
-
-#      netconfig:
-#        fib0:
-#          mac: "xx"
-#          ip: "none"
-#        fib2:
-#          mac: "yy"
-#      netconfig:
-
-#        "ansible_ax1800": {
-#            "active": true,
-#            "device": "ax1800",
-#            "hw_timestamp_filters": [],
-#            "macaddress": "zz",
-#            "module": "mt7921e",
-#            "mtu": 1500,
-#            "pciid": "0000:06:00.0",
-#            "promisc": true,
-#            "timestamping": [],
-#            "type": "ether"
-#        },

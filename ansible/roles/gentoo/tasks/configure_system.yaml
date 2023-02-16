@@ -14,3 +14,10 @@
   loop: "{{services}}"
   when: services is defined
 
+- name: Disable netmount
+  become: yes
+  service:
+    name: netmount
+    state: stopped
+    enabled: false
+  when: services is defined and 'netmount' not in services

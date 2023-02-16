@@ -11,14 +11,36 @@
     - name: Get current ip link information
       command: ip link
       register: ip_info
-    - command: "ip link property add dev {{ interface_match.0.device }} altname {{ item.key }}"
+    - name: Add interface aliases
+      command: "ip link property add dev {{ interface_match.0.device }} altname {{ item.key }}"
       loop: "{{netconfig | dict2items}}"
       vars:
         # Extracts interfaces from ansible_facts using the interfaces field
         # Then filters out ones which have mac addresses
-        host_interfaces: "{{ ansible_facts.interfaces | map('extract', ansible_facts) | selectattr('macaddress', 'defined') }}"
+        host_interfaces: "{{ansible_facts.interfaces | map('extract', ansible_facts) | selectattr('macaddress', 'defined')}}"
         # Combine the detection logic with some data manipulation
         # Selects the host interface that has the mac associated with the interface used in this current iteration
-        interface_match: "{{ host_interfaces | selectattr('macaddress', '==', item.value.mac) }}"
+        interface_match: "{{host_interfaces | selectattr('macaddress', '==', item.value.mac) if item.value.mac is defined}}"
       when: interface_match and netconfig[interface_match.0.device] is not defined and item.key not in ip_info.stdout
-
+    - name: Add interface init scripts
+      file:
+        state: "link"
+        src: /etc/init.d/net.lo
+        dest: "/etc/init.d/net.{{item.key}}"
+      loop: "{{netconfig | dict2items}}"
+    - name: Update /etc/conf.d/net
+      template:
+        backup: yes
+        src: etc/conf.d/net
+        dest: /etc/conf.d/net
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+    - name: Start network interfaces
+      service:
+        name: "net.{{item.key}}"
+        state: restarted
+        enabled: true
+        runlevel: default
+      loop: "{{netconfig | dict2items}}"
+      when: item.value.autostart is defined and item.value.autostart
