@@ -56,6 +56,81 @@ These may not have defaults, in which case, values must be defined in the host/p
 | `serial_port`             | `S1`      | serial                | The port identifier for the serial port (S0,S1, etc)                              |
 | `grub_custom_cmdline`     |           |                       | Additional parameters to be added to `GRUB_CMDLINE_LINUX`                         |
 
+### netconfig
+
+The netconfig should be done under a dict named `netconfig`, preferably in host vars
+
+The `mac` field is required for udev rules, this will ensure the device is properly named
+- During the setup process, the device will be renamed to the desired name, which could cuase network instability
+
+Each item under the `netconfig` dict should be interface names, such as `br0` or `ethernet1`
+- Names such as `eth1` and `wlp1` should be avoided as they are kernel device names
+
+| Parameter name        | Description                                                               |
+| --------------------- | ------------------------------------------------------------------------- |
+| `mac`                 | The mac address of the interface, used to set udev rules                  |
+| `config`              | The openrc `config_` parameter, such as `dhcp`, `null`, or `1.2.3.4/32`   |
+| `modules`             | A list of modules to be passed to `modules_{{interface_name}}`            |
+| `bridge`              | A list of interfaces to be bridged under the current interface            |
+
+#### VLANs
+
+VLAN entries can be added by creating a dict with the key name `vlan[n]` ex. `vlan1`
+
+The dict can contain the following key/value pairs
+
+| Key           | Description                                       |
+| ------------- | ------------------------------------------------- |
+| `name`        | The vlan name, ex `lan` `ethernet1.lan`           |
+| `config`      | The config parameter, like on a normal interface  |
+
+
+Example network config:
+
+      netconfig:
+        wan:
+        mac: "aa:bb:cc:dd:ee:01"
+          config: "null"
+        ax1800:
+          mac: "aa:bb:cc:dd:ee:02"
+          config: "null"
+          modules:
+            - "!wpa_supplicant"
+            - "!iw"
+            - "!iwconfig"
+        lan:
+          mac: "aa:bb:cc:dd:ee:03"
+          config: "null"
+        fib1:
+        mac: "aa:bb:cc:dd:ee:04"
+          mtu: "9000"
+          config: "null"
+          vlan1:
+            name: "fib.def"
+            config: "192.168.0.10/24"
+          vlan500:
+            name: "fib.wan"
+            config: dhcp
+          vlan100:
+            name: "fib.lan"
+            config: "null"
+        fib2:
+        mac: "aa:bb:cc:dd:ee:04"
+          mtu: "9000"
+          config: "null"
+        br0:
+          autostart: true
+          config: "192.168.1.1/24"
+          bridge:
+            - lan
+            - fib.lan
+            - ax1800
+          need:
+            - net.lan
+            - net.fib1
+            - net.ax1800
+
+
 ### Gentoo Variables
 
 |  Variable name            |  Defaults                     |  Description                                                  |
