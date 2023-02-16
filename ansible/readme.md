@@ -61,7 +61,7 @@ These may not have defaults, in which case, values must be defined in the host/p
 The netconfig should be done under a dict named `netconfig`, preferably in host vars
 
 The `mac` field is required for udev rules, this will ensure the device is properly named
-- During the setup process, the device will be renamed to the desired name, which could cuase network instability
+- During the setup process, the device will be renamed to the desired name, which could cause network instability
 
 Each item under the `netconfig` dict should be interface names, such as `br0` or `ethernet1`
 - Names such as `eth1` and `wlp1` should be avoided as they are kernel device names

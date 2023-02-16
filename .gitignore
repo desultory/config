@@ -1,3 +1,4 @@
 *.swp
 *.swo
+*.swn
 ansible/inventory/hosts.yaml
