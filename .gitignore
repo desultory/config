@@ -1,5 +1,6 @@
 *.swp
 *.swo
 *.swn
-inventory/hosts.yaml
+inventory*
+!inventory/servers.yaml
 vars/*.yaml
