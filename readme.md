@@ -86,7 +86,9 @@ Each item under the `netconfig` dict should be interface names, such as `br0` or
 
 #### VLANs
 
-VLAN entries can be added by creating a dict with the key name `vlan[n]` ex. `vlan1`
+VLAN entries can be added by creating a dict with the key name `vlan` then adding keys containing the vlan numbers
+- names can be specified using the `name` key under the vlan number
+- crated vlans can be configured using the configured `name` (with . replaced with _)  or `{{vlan_interface}}_{{vlan_number}}`
 
 The dict can contain the following key/value pairs
 
@@ -100,7 +102,7 @@ Example network config:
 
       netconfig:
         wan:
-        mac: "aa:bb:cc:dd:ee:01"
+          mac: "aa:bb:cc:dd:ee:01"
           config: "null"
         ax1800:
           mac: "aa:bb:cc:dd:ee:02"
@@ -113,20 +115,23 @@ Example network config:
           mac: "aa:bb:cc:dd:ee:03"
           config: "null"
         fib1:
-        mac: "aa:bb:cc:dd:ee:04"
+          mac: "aa:bb:cc:dd:ee:04"
           mtu: "9000"
           config: "null"
-          vlan1:
-            name: "fib.def"
-            config: "192.168.0.10/24"
-          vlan500:
-            name: "fib.wan"
-            config: dhcp
-          vlan100:
-            name: "fib.lan"
-            config: "null"
+          vlan:
+            1:
+              name: "fib.def"
+            500:
+            100:
+              name: "fib.lan"
+        fib_def:
+          config: "192.168.0.1/24"
+        fib_lan:
+          config: "null"
+        fib1_500:
+          config: "dhcp"
         fib2:
-        mac: "aa:bb:cc:dd:ee:04"
+          mac: "aa:bb:cc:dd:ee:04"
           mtu: "9000"
           config: "null"
         br0:
