@@ -1,5 +1,5 @@
 *.swp
 *.swo
 *.swn
-ansible/inventory/hosts.yaml
-ansible/vars/*.yaml
+inventory/hosts.yaml
+vars/*.yaml
