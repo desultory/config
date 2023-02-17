@@ -7,7 +7,7 @@
 - name: Deploying /etc/dhcp/dhcp.conf
   become: yes
   template:
-    src: dhcp.conf
+    src: dhcpd.conf
     dest: /etc/dhcp/dhcpd.conf
     owner: root
     group: root
