@@ -133,16 +133,16 @@ Example network config:
 
 ### Gentoo Variables
 
-|  Variable name            |  Defaults                     |  Description                                                  |
-| ------------------------- | ----------------------------- | ------------------------------------------------------------- |
-| `services`                | `['ssh']`                     | List of services to install/configure                         |
-| `features`                | `[]`                          | List of features to use                                       |
-| `gentoo_hardened`         | `true`                        | Define whether or not to use the hardened profile             | 
-| `emerge_profile`          | `default/linux/amd64/17.1`    | The default profile to select                                 |
-| `emerge_kernel`           | `gentoo-sources`              | Short atom of the gentoo kernel source package                |
-| `emerge_kernel_unstable`  | `false`                       | Tells emerge to use the unstable kernel                       |
-| `use_initramfs`           | `false`                       | True if an initramfs is being used, may be set automatically  |
-| `autorun`                 | `false`                       | If true, the entire install is played on import               |
+|  Variable name            |  Defaults                     |  Description                                                                  |
+| ------------------------- | ----------------------------- | ----------------------------------------------------------------------------- |
+| `services`                | `['ssh']`                     | List of services to install/configure                                         |
+| `features`                | `[]`                          | List of features to use                                                       |
+| `gentoo_hardened`         | `true`                        | Define whether or not to use the hardened profile, this will also enable KSPP | 
+| `emerge_profile`          | `default/linux/amd64/17.1`    | The default profile to select                                                 |
+| `emerge_kernel`           | `gentoo-sources`              | Short atom of the gentoo kernel source package                                |
+| `emerge_kernel_unstable`  | `false`                       | Tells emerge to use the unstable kernel                                       |
+| `use_initramfs`           | `false`                       | True if an initramfs is being used, may be set automatically                  |
+| `autorun`                 | `false`                       | If true, the entire install is played on import                               |
 
 #### SELinux
 

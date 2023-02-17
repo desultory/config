@@ -10,7 +10,6 @@ kernel_features:
   - 'fs-basic'
   - 'net-netfilter'
   - "{{'virt-docker' if 'docker' in services}}"
-  - "{{'selinux' if 'selinux' in features}}"
   - "{{'storage-crypt' if encrypted_root}}"
 # Features
 # base: Includes basic additions to the kernel
@@ -28,7 +27,8 @@ cust_kernel_features: []
 
 # Set late features
 late_kernel_features:
-  - 'kspp'
+  - "{{'selinux' if 'selinux' in features}}"
+  - "{{'kspp' if gentoo_hardened}}"
 
 # Defines whether or not make clean is ran before make
 build_clean: false

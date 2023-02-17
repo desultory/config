@@ -1,0 +1,67 @@
+- name: Configuring KSPP sysctl
+  become: yes
+  block:
+    - name: Restrict kernel address exposures of /proc files
+      sysctl:
+        name: kernel.kptr_restrict
+        value: '1'
+        state: present
+        sysctl_set: yes
+        reload: yes
+    - name: Avoid kernel memory address exposures via dmesg
+      sysctl:
+        name: kernel.dmesg_restrict
+        value: '1'
+        state: present
+        sysctl_set: yes
+        reload: yes
+    - name: Block non-uid-0 profiling
+      sysctl:
+        name: kernel.perf_event_paranoid
+        value: '3'
+        state: present
+        sysctl_set: yes
+        reload: yes
+    - name: Disable kexec
+      sysctl:
+        name: kernel.kexec_load_disabled
+        value: '1'
+        state: present
+        sysctl_set: yes
+        reload: yes
+    - name: Avoid non-ancestor ptrace access to running processes and their credentials
+      sysctl:
+        name: kernel.yama.ptrace_scope
+        value: '1'
+        state: present
+        sysctl_set: yes
+        reload: yes
+    - name: Disable user namespaces
+      sysctl:
+        name: user.max_user_namespaces
+        value: '0'
+        state: present
+        sysctl_set: yes
+        reload: yes
+    - name: Disable line discipline autoloading
+      sysctl:
+        name: dev.tty.ldisc_autoload
+        value: '0'
+        state: present
+        sysctl_set: yes
+        reload: yes
+    - name: Turn off unprivileged BPF access
+      sysctl:
+        name: kernel.unprivileged_bpf_disabled
+        value: '1'
+        state: present
+        sysctl_set: yes
+        reload: yes
+    - name: Enable BPF JIT hardening
+      sysctl:
+        name: net.core.bpf_jit_harden
+        value: '2'
+        state: present
+        sysctl_set: yes
+        reload: yes
+  when: gentoo_hardened
