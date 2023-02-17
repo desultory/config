@@ -1,8 +1,5 @@
 - name: Run gentoo role
-  hosts: gentoo_servers
-  #vars_files: dhcp.yaml
-  vars:
-    autorun: false
+  hosts: servers
   serial: 1
   tasks:
     - import_role:

@@ -1,5 +1,5 @@
 - name: Run gentoo role
-  hosts: gentoo_servers
+  hosts: servers
   serial: 1
   vars:
     autorun: true

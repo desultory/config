@@ -1,5 +1,5 @@
 - name: Install the kernel
-  hosts: gentoo_servers
+  hosts: servers
   serial: 1
   tasks:
     - name: Import the gentoo role and install the kernel
