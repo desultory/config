@@ -2,3 +2,4 @@
 *.swo
 *.swn
 ansible/inventory/hosts.yaml
+ansible/vars/*.yaml

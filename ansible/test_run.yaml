@@ -1,7 +1,9 @@
 - name: Run gentoo role
   hosts: gentoo_servers
+  vars_files: dhcp.yaml
   serial: 1
   tasks:
     - import_role:
-        name: gentoo
-        tasks_from: configure_net
+        name: service_dhcp
+        tasks_from: configure
+  

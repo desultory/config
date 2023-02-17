@@ -168,6 +168,7 @@ Example network config:
 | `ipv6`        | Enables ipv6 support                              |
 | `virt`        | Enables virtualization support                    |
 | `serial`      | Enables serial output                             |
+| `dhcp`        | Enables the DHCP server                           |
 
 ### Kernel configurator parameters
 
@@ -203,5 +204,55 @@ late_kernel_features is used to ensure certain .configs are added after autodete
 | `ssh_socket_unlink`       | `false`           | `StreamLocalBindUnlink`                           |
 | `ssh_tcp_keepalive`       | `true`            | `TCPKeepAlive`                                    |
 | `ssh_x11_forward`         | `false`           | `X11Forwarding`                                   |
+
+### DHCP Server variables
+
+| Variable name             | Defaults          | Description                                       |
+| ------------------------- | ----------------- | ------------------------------------------------- |
+| `dhcp_lease_time`         | `600`             | `default-lease-time`                              |
+| `dhcp_max_lease_time`     | `7200`            | `max-lease-time`                                  |
+| `dhcp_authoritative`      | `false`           | `authoritative`                                   |
+
+#### Subnets
+
+The key name should be: `dhcp_subnets`
+
+Each key name under it should be the name of subnet
+
+This configuration could be added to groups, hosts or as a standalone file that can be loaded with `vars_files`
+
+
+| Key name      | type                  | Description                                                                   |
+| ------------- | --------------------- | ----------------------------------------------------------------------------- |
+| `network`     | `string`              | The network of the DHCP range, ex `192.168.0.0`                               |
+| `subnet`      | `string`              | The subnet of the DHCP range, ex `255.255.255.0`                              |
+| `domain_name` | `string`              | Sets `domain-name`                                                            |
+| `dns_servers` | `list` of `string`    | Sets the `domain-name-servers`                                                |
+| `gateway`     | `string`              | Sets the `routers` option                                                     |
+| `range`       | `list` of `string`    | Sets the `range`, the first parameter is the start, the second is the finish  |
+
+
+Example:
+
+    dhcp_subnets:
+      lan:
+        network: "192.168.0.0"
+        netmask: "255.255.255.0"
+        domain_name: "lan.mylocal"
+        dns_servers:
+          - "1.1.1.1"
+          - "1.0.0.1"
+        gateway: "192.168.0.1"
+        range:
+            - "192.168.0.10"
+            - "192.168.0.100"
+
+
+
+
+
+
+
+
 
 

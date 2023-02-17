@@ -1,0 +1,4 @@
+- name: Configure DHCP
+  include_role:
+    name: service_dhcp
+    tasks_from: configure
