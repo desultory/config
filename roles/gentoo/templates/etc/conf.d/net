@@ -2,6 +2,9 @@
 
 {% for interface in netconfig | dict2items %}
 config_{{interface.key}}="{{interface.value.config}}"
+{% if interface.value.gateway is defined and interface.value.config != 'dhcp' and interface.value.config != 'null' %}
+routes_{{interface.key}}="default via {{interface.value.gateway}}"
+{% endif %} 
 {% if interface.value.mtu is defined %}
 mtu_{{interface.key}}="{{interface.value.mtu}}"
 {% endif %}

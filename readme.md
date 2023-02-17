@@ -81,6 +81,7 @@ Each item under the `netconfig` dict should be interface names, such as `br0` or
 | --------------------- | ------------------------------------------------------------------------- |
 | `mac`                 | The mac address of the interface, used to set udev rules                  |
 | `config`              | The openrc `config_` parameter, such as `dhcp`, `null`, or `1.2.3.4/32`   |
+| `gateway`             | The addressed  to be passed to `routes_{{interface_name}="defalut via"}`  |
 | `modules`             | A list of modules to be passed to `modules_{{interface_name}}`            |
 | `bridge`              | A list of interfaces to be bridged under the current interface            |
 
@@ -125,7 +126,8 @@ Example network config:
             100:
               name: "fib.lan"
         fib_def:
-          config: "192.168.0.1/24"
+          config: "192.168.0.2/24"
+          gateway: "192.168.0.1"
         fib_lan:
           config: "null"
         fib1_500:
