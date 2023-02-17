@@ -1,6 +1,9 @@
-# Ansible
+# Config
 
-## Setup process
+
+## Ansible Setup process
+
+This repo is currently designed to be used with OpenRC based Gentoo systems
 
 ### Gentoo
 
@@ -8,19 +11,27 @@ Install ansible
 
 `# emerge ansible`
 
-Get community.general for portage, SELinux, and make
-
-Get ansible.posix for mounts
+- Get community.general for portage, SELinux, and make
+- nano Get ansible.posix for mounts
 
 `$ ansible-galaxy collection install community.general ansible.posix`
 
 ## Usage
 
-Get host information
+Before the playbooks with the `gentoo` role can be used, the following must be configured:
+- Your hosts file, can be any yaml file in `inventory/`
+  - Carefully read all parameters in the configuration section before runnning the playbook
+  - Block devices are specified using their `/dev/disk/by-id` name
+    - Be mindful of whether you are selecting partitions or devices, and ensure you read the relevant playbooks before letting this reconfiure your partitions!
+    - In most cases, an additional flag must be set which will allow the playbook to actually modify partitions/filesystems
+    - The script should only mount/unmount the boot partition for kernel installations unless explicitly specified
+- `-K` must be passed to prompt for sudo credentials if the task/action required privileges
+
+Get host information, this is an effective way to obtain drive ids and other host information this script may use
 
 `$ ansible -i inventory {host} -m gather_facts`
 
-Ping hosts
+Ping hosts, can be used to bootstrap the install process when only single new SSH connections can be initiated at a time, ex. ssh agent forwarding over WSL
 
 `$ ansible -i inventory -m ping all`
 
@@ -28,13 +39,13 @@ Install kernel on host nas
 
 `$ ansible-playbook -i inventory -l nas install_kernel.yaml -K`
 
-Install kernels on all hosts
+Relabel SElinux on the nas host
 
-`$ ansible-playbook -i inventory install_kernel.yaml -K`
+`$ ansible-playbook -i inventory -l nas selinux_relabel.yaml -K`
 
-Configure the base system for all servers
+Configure all systems
 
-`$ ansible-playbook -i inventory configure_base.yaml -K`
+`$ ansible-playbook -i inventory run.yaml -K`
 
 ## Configuration
 
