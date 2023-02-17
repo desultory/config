@@ -31,7 +31,6 @@
           - "{{'storage-scsi' if 'Serial Attached SCSI controller:' in lspci_result['stdout']}}"
           - "{{'storage-usb' if 'USB controller' in lspci_result['stdout']}}"
           - "{{'video-nvidia' if 'NVIDIA Corporation GT218' in lspci_result['stdout']}}"
-        wireless_enabled: "{{true if 'MT7921K' in lspci_result['stdout']}}"
     - name: Gather USB information
       command: lsusb
       register: lsusb_result
@@ -74,4 +73,4 @@
       vars:
         - merge_configs: "{{kernel_features | map('regex_replace', '$', '.config')}}"
         - hostname_arg: "CONFIG_DEFAULT_HOSTNAME=\"{{inventory_hostname}}\""
-        - merge_cmd: "{{['./merge_config/merge_config.py', merge_flag, '-p', hostname_arg, '-p', 'CONFIG_LOCALVERSION=\"-ansible\"', '-p', 'CONFIG_EXTRA_FIRMWARE=\"' + firmware_blobs + '\"'] + merge_configs}}"
+        - merge_cmd: "{{['./merge_config/merge_config.py', merge_flag, '-p', hostname_arg, '-p', 'CONFIG_LOCALVERSION=\"-ansible\"'] + merge_configs}}"

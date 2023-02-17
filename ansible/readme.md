@@ -191,7 +191,6 @@ late_kernel_features is used to ensure certain .configs are added after autodete
 | `cust_kernel_features`    | `[]`                                                      | Features used in addition to the base ones                                    |
 | `build_clean`             | `false`                                                   | Defines whether or not make clean is ran before running make                  |
 | `kconfig_allnoconfig`     | `false`                                                   | Runs make allnoconfig instead of make alldefconfig when merging kernel.configs|
-| `wireless_enabled`        | `false`                                                   | When true, tells the kernel to load regdb blobs                               |
 
 ### SSH Variables
 
