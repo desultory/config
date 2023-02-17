@@ -1,0 +1,7 @@
+- name: Configure the network interfaces
+  hosts: gentoo_servers
+  serial: 1
+  tasks:
+    - import_role:
+        name: gentoo
+        tasks_from: configure_net

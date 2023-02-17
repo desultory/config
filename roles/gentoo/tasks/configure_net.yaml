@@ -42,7 +42,7 @@
       vars:
         interface_name: "{{item.path | regex_replace('^.*/net\\.(.*)', '\\1')}}"
         invalid_interfaces: []
-      when: "interface_name in netconfig and netconfig[interface_name].mac is not defined"
+      when: "interface_name in netconfig and netconfig[interface_name].mac is not defined and netconfig[interface_name].bridge is not defined"
     - name: Deleting invalid interface init scripts
       file:
         path: "{{item}}"
