@@ -4,3 +4,4 @@
   tasks:
     - import_role:
         name: service_dhcp
+      when: "'dhcp' in services"

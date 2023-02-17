@@ -1,8 +1,5 @@
 - name: test
-  hosts: nas
+  hosts: servers
   tasks:
-    - service:
-        name: netmount
-        state: restarted
-      become: yes
-
+    - debug:
+        msg: "{{netconfig.values() | selectattr('config', '==', 'dhcp') }}"
