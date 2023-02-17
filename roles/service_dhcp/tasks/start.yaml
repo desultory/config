@@ -1,7 +1,7 @@
-- name: Restart SSH service and add to default runlevel
+- name: Start DHCPd
   become: yes
   service:
-    name: sshd
+    name: dhcpd
     state: restarted
     runlevel: default
     enabled: true

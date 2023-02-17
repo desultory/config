@@ -43,3 +43,6 @@ system_root: "/"
 encrypted_root: false
 # init grub custom commandline parameters
 grub_custom_cmdline: ""
+
+# When true, network init files will be deleted if not present in the config
+clean_net: false

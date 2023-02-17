@@ -28,6 +28,27 @@
         src: /etc/init.d/net.lo
         dest: "/etc/init.d/net.{{item.key}}"
       loop: "{{netconfig | dict2items}}"
+      when: item.value.mac is defined
+    - name: Check for invalid netifrc init scripts
+      find:
+        paths: /etc/init.d/
+        patterns: "net.*"
+        file_type: "link"
+      register: netifrc_inits
+    - name: Checking for invalid interfaces
+      set_fact:
+        invalid_interfaces: "{{[item.path] | union(invalid_interfaces | select)}}"
+      with_items: "{{netifrc_inits.files}}"
+      vars:
+        interface_name: "{{item.path | regex_replace('^.*/net\\.(.*)', '\\1')}}"
+        invalid_interfaces: []
+      when: "interface_name in netconfig and netconfig[interface_name].mac is not defined"
+    - name: Deleting invalid interface init scripts
+      file:
+        path: "{{item}}"
+        state: absent
+      with_items: "{{invalid_interfaces}}"
+      when: invalid_interfaces is defined and clean_net
     - name: Update /etc/conf.d/net
       template:
         backup: yes

@@ -8,14 +8,11 @@ mtu_{{interface.key}}="{{interface.value.mtu}}"
 {% if interface.value.modules is defined %}
 modules_{{interface.key}}="{{interface.value.modules | join(' ')}}"
 {% endif %}
-{% if interface.value is regex('vlan[0-9]+') %}
-vlans_{{interface.key}}="{{interface.value | regex_findall('vlan([0-9]+)') | join(' ')}}"
-{% for vlan in interface.value | regex_findall('vlan([0-9]+)') %}
-{% if interface.value['vlan'+vlan].name is defined %}
-{{interface.key}}_vlan{{vlan}}_name="{{interface.value['vlan'+vlan].name}}"
-config_{{interface.value['vlan'+vlan].name | regex_replace('\.', '_')}}="{{interface.value['vlan'+vlan].config}}"
-{% else %}
-config_{{interface.key}}_{{vlan}}="{{interface.value['vlan'+vlan].config}}"
+{% if 'vlan' in interface.value %}
+vlans_{{interface.key}}="{{interface.value.vlan | join(' ')}}"
+{% for vlan in interface.value.vlan | dict2items %}
+{% if vlan.value.name is defined %}
+{{interface.key}}_vlan{{vlan.key}}_name="{{vlan.value.name}}"
 {% endif %}
 {% endfor %}
 {% endif %}

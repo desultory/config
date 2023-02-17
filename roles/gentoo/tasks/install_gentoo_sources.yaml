@@ -7,6 +7,7 @@
         package: sys-kernel/gentoo-sources
         state: present
         changed_use: true
+        noreplace: false
     - name: emerge dracut
       portage:
         package: sys-kernel/dracut

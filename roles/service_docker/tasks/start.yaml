@@ -3,3 +3,4 @@
     name: docker
     state: started
     runlevel: default
+    enabled: true

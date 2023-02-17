@@ -154,6 +154,7 @@ Example network config:
 | `emerge_kernel_unstable`  | `false`                       | Tells emerge to use the unstable kernel                                       |
 | `use_initramfs`           | `false`                       | True if an initramfs is being used, may be set automatically                  |
 | `autorun`                 | `false`                       | If true, the entire install is played on import                               |
+| `clean_net`               | `false`                       | If true, network init files which are not in the config will be deleted       |
 
 #### SELinux
 
@@ -218,11 +219,13 @@ late_kernel_features is used to ensure certain .configs are added after autodete
 
 ### DHCP Server variables
 
-| Variable name             | Defaults          | Description                                       |
-| ------------------------- | ----------------- | ------------------------------------------------- |
-| `dhcp_lease_time`         | `600`             | `default-lease-time`                              |
-| `dhcp_max_lease_time`     | `7200`            | `max-lease-time`                                  |
-| `dhcp_authoritative`      | `false`           | `authoritative`                                   |
+| Variable name             | Defaults          | Description                                                                                                       |
+| ------------------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `dhcp_lease_time`         | `600`             | `default-lease-time`                                                                                              |
+| `dhcp_max_lease_time`     | `7200`            | `max-lease-time`                                                                                                  |
+| `dhcp_authoritative`      | `false`           | `authoritative`                                                                                                   |
+| `dhcp_use_client`         | `false`           | When false, passes `-client` to emerge for the DHCP package                                                       |
+| `dhcp_interfaces`         |                   | Set the DHCP interfaces in `etc/conf.d/dhcpd`, should be a list. Specified interfaces should exist in netconfig   |
 
 #### Subnets
 
@@ -231,6 +234,7 @@ The key name should be: `dhcp_subnets`
 Each key name under it should be the name of subnet
 
 This configuration could be added to groups, hosts or as a standalone file that can be loaded with `vars_files`
+- Loading the `service_dhcp` module automatically attempts to load `vars/dhcp.yaml` and will throw an error if that file is not defined and there is no configuration in the host `dhcp_subnets` dict
 
 
 | Key name      | type                  | Description                                                                   |
@@ -258,10 +262,26 @@ Example:
             - "192.168.0.10"
             - "192.168.0.100"
 
+#### Static leases
 
+The key name should be: `dhcp_hosts`
 
+Each host should have a named key with the following possible keys:
 
+| Key name      | type          | Description                                           |
+| ------------- | ------------- | ----------------------------------------------------- |
+| `mac`         | `string`      | Sets the `hardware ethernet` option under the host    |
+| `ip`          | `string`      | Sets the `fixed-address` option                       |
 
+Example:
+
+    dhcp_hosts:
+      computer-1:
+        mac: "aa:bb:cc:dd:ee:ff"
+        ip: "192.168.0.11"
+      phone-a:
+        mac: "ff:ee:dd:cc:bb:aa"
+        ip: "192.168.100.11"
 
 
 

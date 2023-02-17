@@ -1,0 +1,5 @@
+{% if dhcp_use_client %}
+net-misc/dhcp server client
+{% else %}
+net-misc/dhcp server -client
+{% endif %}

@@ -1,4 +1,15 @@
-- name: Configure DHCP
+- name: Include dhcp.yaml vars file
+  include_vars:
+    file: dhcp.yaml
+  register: result # Ignore the file not being found if dhcp variables are already defined
+  failed_when: "result.message is defined and ((\"Could not find or access 'dhcp.yaml'\" in result.message and dhcp_subnets is not defined) or (\"Could not find or access 'dhcp.yaml'\" not in result.message))"
+
+- name: Configure DHCPd with vars/dhcp.yaml
   include_role:
     name: service_dhcp
     tasks_from: configure
+
+- name: Start DHCPd
+  include_role:
+    name: service_dhcp
+    tasks_from: start

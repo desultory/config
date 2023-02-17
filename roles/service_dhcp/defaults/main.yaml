@@ -4,3 +4,5 @@ dhcp_lease_time: 600
 dhcp_max_lease_time: 7200
 # Whether or not the DHCP server is authoritative
 dhcp_authoritative: false
+# When false, removes DHCP client functionality
+dhcp_use_client: false

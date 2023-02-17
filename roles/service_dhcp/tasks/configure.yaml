@@ -1,14 +1,25 @@
-- name: Install dhcpd
+- name: Configure and install isc dhcp server
   become: yes
-  package:
-    name: net-misc/dhcp
-    state: present
-
-- name: Deploying /etc/dhcp/dhcp.conf
-  become: yes
-  template:
-    src: dhcpd.conf
-    dest: /etc/dhcp/dhcpd.conf
-    owner: root
-    group: root
-    mode: u=rw,g=r,o=r
+  block:
+  - name: Set dhcp use flags
+    template:
+      src: dhcp
+      dest: /etc/portage/package.use/dhcp
+      owner: root
+      group: root
+      mode: u=rw,g=r,o=r
+  - name: Install dhcpd
+    portage:
+      name: net-misc/dhcp
+      state: present
+      changed_use: true
+      # In theory this should not be required but it is because the portage module is kinda broken
+      noreplace: false
+  - name: Deploying /etc/dhcp/dhcp.conf
+    template:
+      backup: yes
+      src: dhcpd.conf
+      dest: /etc/dhcp/dhcpd.conf
+      owner: root
+      group: root
+      mode: u=rw,g=r,o=r
