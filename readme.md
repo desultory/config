@@ -89,7 +89,7 @@ Each item under the `netconfig` dict should be interface names, such as `br0` or
 
 VLAN entries can be added by creating a dict with the key name `vlan` then adding keys containing the vlan numbers
 - names can be specified using the `name` key under the vlan number
-- crated vlans can be configured using the configured `name` (with . replaced with _)  or `{{vlan_interface}}_{{vlan_number}}`
+- crated vlans can be configured using the configured `name` (with . replaced with _ )  or `{{vlan_interface}}_{{vlan_number}}`
 
 The dict can contain the following key/value pairs
 
@@ -178,6 +178,7 @@ Example network config:
 | `ssh`         | OpenSSH server                                    |
 | `docker`      | dockerd                                           |
 | `dmcrypt`     | Disk encryption, inherited by encrypted_root      |
+| `dhcp`        | ISC DHCP Server                                   |
 
 #### Features
 
@@ -233,6 +234,7 @@ late_kernel_features is used to ensure certain .configs are added after autodete
 | `dhcp_authoritative`      | `false`           | `authoritative`                                                                                                   |
 | `dhcp_use_client`         | `false`           | When false, passes `-client` to emerge for the DHCP package                                                       |
 | `dhcp_interfaces`         |                   | Set the DHCP interfaces in `etc/conf.d/dhcpd`, should be a list. Specified interfaces should exist in netconfig   |
+| `dhcp_chroot`             | `true`            | Enables the chroot  at `/var/lib/dhcp/chroot`                                                                     |
 
 #### Subnets
 

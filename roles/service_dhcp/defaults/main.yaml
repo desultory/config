@@ -6,3 +6,5 @@ dhcp_max_lease_time: 7200
 dhcp_authoritative: false
 # When false, removes DHCP client functionality
 dhcp_use_client: false
+# When true, enables the chroot
+dhcp_chroot: true

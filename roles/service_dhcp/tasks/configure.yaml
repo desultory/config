@@ -1,25 +1,81 @@
 - name: Configure and install isc dhcp server
   become: yes
+  vars:
+    netifrc_dhcp_interfaces: "{{dhcp_interfaces | regex_replace('\\.', '_')}}"
   block:
-  - name: Set dhcp use flags
-    template:
-      src: dhcp
-      dest: /etc/portage/package.use/dhcp
-      owner: root
-      group: root
-      mode: u=rw,g=r,o=r
-  - name: Install dhcpd
-    portage:
-      name: net-misc/dhcp
-      state: present
-      changed_use: true
-      # In theory this should not be required but it is because the portage module is kinda broken
-      noreplace: false
-  - name: Deploying /etc/dhcp/dhcp.conf
-    template:
-      backup: yes
-      src: dhcpd.conf
-      dest: /etc/dhcp/dhcpd.conf
-      owner: root
-      group: root
-      mode: u=rw,g=r,o=r
+    - name: Set dhcp use flags
+      template:
+        src: dhcp
+        dest: /etc/portage/package.use/dhcp
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+    - name: Install dhcpd
+      portage:
+        name: net-misc/dhcp
+        state: present
+        changed_use: true
+        # In theory this should not be required but it is because the portage module is kinda broken
+        noreplace: false
+    - name: Deploying /etc/dhcp/dhcp.conf
+      template:
+        backup: yes
+        src: dhcpd.conf
+        dest: /etc/dhcp/dhcpd.conf
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+    - name: Setting DHCP Conf location in /etc/conf.d/dhcpd
+      lineinfile:
+        path: /etc/conf.d/dhcpd
+        state: present
+        insertafter: '# DHCPD_CONF="/etc/dhcp/dhcpd.conf"'
+        regexp: '^DHCPD_CONF=\".*\"'
+        line: 'DHCPD_CONF="/etc/dhcp/dhcpd.conf"'
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+    - name: Check interfaces
+      fail:
+        msg: "Invalid interfaces: {{dhcp_interfaces}}"
+      when: netifrc_dhcp_interfaces is not subset(netconfig.keys())
+    - name: Setting DHCP Interfaces in /etc/conf.d/dhcpd
+      lineinfile:
+        path: /etc/conf.d/dhcpd
+        state: present
+        insertafter: '# DHCPD_IFACE=""'
+        regexp: '^DHCPD_IFACE=\".*\"'
+        line: "DHCPD_IFACE=\"{{dhcp_interfaces | join(' ')}}\""
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+
+- name: Configuring DHCP chroot
+  become: yes
+  when: dhcp_chroot
+  block:
+    - name: Setting DHCP Chroot in /etc/conf.d/dhcpd
+      lineinfile:
+        path: /etc/conf.d/dhcpd
+        state: present
+        insertafter: '# DHCPD_CHROOT="/var/lib/dhcp/chroot"'
+        regexp: '^DHCPD_CHROOT=\".*\"'
+        line: 'DHCPD_CHROOT="/var/lib/dhcp/chroot"'
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+    - name: Creating the chroot dir at /var/lib/dhcp/chroot/etc/dhcp
+      file:
+        state: directory
+        path: /var/lib/dhcp/chroot/etc/dhcp
+        owner: root
+        group: root
+        mode: u=rwx,g=rx,o=rx
+    - name: Copy the dhcp config to the chroot
+      copy:
+        remote_src: yes
+        src: /etc/dhcp/dhcpd.conf
+        dest: /var/lib/dhcp/chroot/etc/dhcp/dhcpd.conf
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
