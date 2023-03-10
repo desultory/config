@@ -81,7 +81,7 @@ Potential values include:
 
 `shell` : The default shell for the user, defaults to `/bin/bash`
 
-`se_uset` : If selinux is enabled, sets the seuser value for this user and relables their home dir
+`se_user` : If selinux is enabled, sets the seuser value for this user and relables their home dir
 
 ### GRUB
 
