@@ -25,7 +25,16 @@
     - name: Get the boot partition UUID
       command: "lsblk /dev/disk/by-id/{% if efi_device is defined %}{{efi_device}}{% else %}{{boot_device}}-part1{% endif %} -n -o PARTUUID"
       register: partition_uuid
-
+  
+    - name: Get EFI configuration
+      command: efibootmgr
+      register: efibootmgr_result
+  
     - name: Configure bootloader entry
-      command: "efibootmgr -c -l 'vmlinuz-{{kernel_string}}' -L 'ansible-efistub' -d /dev/disk/by-partuuid/{{partition_uuid.stdout_lines[0]}} -p {{partition_number}}"
+      command: "efibootmgr -c -l '{{full_kernel_string}}' -L 'ansible-efistub' -d /dev/disk/by-partuuid/{{partition_uuid.stdout_lines[0]}} -p {{partition_number}}"
+      when: efibootmgt_regex_matches | length == 0
+  vars:
+    full_kernel_string: "vmlinuz-{{kernel_string}}"
+    efibootmgr_regexr: "^Boot.+ansible-efistub.+{{partition_uuid.stdout_lines[0]}}.+File\\({{full_kernel_string}}\\)$"
+    efibootmgt_regex_matches: "{{efibootmgr_result.stdout | split('\n') | select('match', efibootmgr_regexr)}}"
   when: efi_stub
