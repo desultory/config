@@ -1,0 +1,9 @@
+- name: Install the pam_ssh_agent_auth package
+  import_role:
+    name: feature_pam_ssh_agent_auth
+    tasks_from: install
+
+- name: Configure PAM to use pam_ssh_agent_auth
+  import_role:
+    name: feature_pam_ssh_agent_auth
+    tasks_from: configure

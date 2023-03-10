@@ -1,0 +1,14 @@
+- name: Configure and install pam_ssh_agent_auth
+  become: yes
+  block:
+    - name: Set package.accept_keywords for pam_ssh_agent_auth
+      copy:
+        src: pam_ssh_agent_auth
+        dest: /etc/portage/package.accept_keywords/pam_ssh_agent_auth
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+    - name: Install pam_ssh_agent_auth
+      package:
+        name: sys-auth/pam_ssh_agent_auth
+        state: present

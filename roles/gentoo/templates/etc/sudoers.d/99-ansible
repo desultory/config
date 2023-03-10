@@ -6,6 +6,6 @@
 {% else %}
 %wheel ALL=(ALL:ALL) AL
 {% endif %}
-{% if 'ssh' in services %}
+{% if 'pam_ssh_agent_auth' in features %}
 Defaults env_keep += "SSH_AUTH_SOCK"
 {% endif %}

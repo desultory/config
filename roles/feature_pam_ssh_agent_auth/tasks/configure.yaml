@@ -1,0 +1,47 @@
+- name: Configure pam sudo for pam_ssh_agent_auth
+  become: yes
+  block:
+    - lineinfile:
+        path: /etc/pam.d/sudo
+        state: present
+        line: "auth sufficient pam_ssh_agent_auth.so file=/etc/ssh/sudo_authorized_keys"
+        insertbefore: '^auth\s+(substack|include)\s+system-auth$'
+    - lineinfile:
+        path: /etc/pam.d/sudo
+        state: present
+        line: "auth substack system-auth"
+        regexp: '^auth\s+(substack|include)\s+system-auth$'
+    - lineinfile:
+        path: /etc/pam.d/sudo
+        state: present
+        line: "account substack system-auth"
+        regexp: '^account\s+(substack|include)\s+system-auth$'
+    - lineinfile:
+        path: /etc/pam.d/sudo
+        state: present
+        line: "session substack system-auth"
+        regexp: '^session\s+(substack|include)\s+system-auth$'
+- name: Add wheel users ssh keys to /etc/ssh/sudo_authorized_keys
+  become: yes
+  block:
+    - file:
+        state: directory
+        path: /etc/ssh/
+        owner: root
+        group: root
+        mode: u=rwx,g=rx,o=rx
+    - file:
+        state: touch
+        path: /etc/ssh/sudo_authorized_keys
+        owner: root
+        group: root
+        mode: u=rw,g=,o=
+    - name: Add SSH keys
+      include_role:
+        name: feature_pam_ssh_agent_auth
+        tasks_from: loop_sudo_keys.yaml
+      with_items: "{{users | dict2items}}"
+      loop_control:
+        loop_var: user
+      when: "'wheel' in user.value.get('groups') and 'ssh_keys' in user.value"
+

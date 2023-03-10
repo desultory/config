@@ -77,24 +77,13 @@ Potential values include:
 
 `ssh_keys` : A list containing the full SSH key as it would be listed in `ssh-add -L`
 
+When `pam_ssh_agent_auth` is in features, `wheel` group users will be allowed to run sudo with their ssh key
+
 `groups` : A list of groups the user will be added to, if wheel is set, the user will be given selinux staff permissions, and will be allowed to use sudo with their ssh key
 
 `shell` : The default shell for the user, defaults to `/bin/bash`
 
-`se_user` : If selinux is enabled, sets the seuser value for this user and relables their home dir
-
-### GRUB
-
-`feature_grub` role
-
-either `boot_device` or `efi_device` are required, these are host level vars that may be used by other functions
-
-| Parameter name        | Default       | Description                                                                       |
-| --------------------- | ------------- | --------------------------------------------------------------------------------- |
-| `efi_removable`       | `false`       | Specifies whether or not GRUB should do a removable install                       |
-| `grub_custom_cmdline` |               | Additional parameters to be added to `GRUB_CMDLINE_LINUX`                         |
-| `boot_device`         |               | The /dev/disk/by-id/ that corresponds to the boot device or partition             |
-| `efi_device`          |               | The the EFI partition disk ID, if it differs from the `boot_device`               |
+`se_user` : If selinux is enabled, sets the seuser value for this user and relabels their home dir
 
 ### netconfig
 
@@ -180,6 +169,8 @@ Example network config:
 
 ### Gentoo Variables
 
+`gentoo` role specific variables, may be used by subroles
+
 |  Variable name            |  Defaults                     |  Description                                                                                                          |
 | ------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | `services`                | `['ssh']`                     | List of services to install/configure                                                                                 |
@@ -195,6 +186,9 @@ Example network config:
 
 #### SELinux
 
+`gentoo_selinux` role / feature
+
+
 | Name                  | Default       | Description                                       |
 | --------------------- | ------------- | ------------------------------------------------- |
 | `selinux_relabel`     | `true`        | Relabels the system when enables                  |
@@ -202,6 +196,8 @@ Example network config:
 | `selinux_type`        | `strict`      | Sets the SELinux policy type                      |
 
 #### Services
+
+values for the `services` list
 
 | Name          | Description                                       |
 | ------------- | ------------------------------------------------- |
@@ -212,15 +208,19 @@ Example network config:
 
 #### Features
 
-| Name          | Description                                       |
-| ------------- | ------------------------------------------------- |
-| `selinux`     | Enables selinux support                           |
-| `ipv6`        | Enables ipv6 support                              |
-| `virt`        | Enables virtualization support                    |
-| `serial`      | Enables serial output                             |
-| `dhcp`        | Enables the DHCP server                           |
+values for the `features` list
+
+| Name                  | Description                                       |
+| --------------------- | ------------------------------------------------- |
+| `selinux`             | Enables selinux support                           |
+| `ipv6`                | Enables ipv6 support                              |
+| `virt`                | Enables virtualization support                    |
+| `serial`              | Enables serial output                             |
+| `pam_ssh_agent_auth`  | Enables the use of ssh keys for sudo auth         |
 
 ### Kernel configurator parameters
+
+`kernel_configurator` role
 
 When using this module, kernel features are loaded in the following order:
 
@@ -243,7 +243,20 @@ late_kernel_features is used to ensure certain .configs are added after autodete
 | `build_clean`             | `false`                                                   | Defines whether or not make clean is ran before running make                  |
 | `kconfig_allnoconfig`     | `false`                                                   | Runs make allnoconfig instead of make alldefconfig when merging kernel.configs|
 
-### SSH Variables
+### GRUB
+
+`feature_grub` role
+
+either `boot_device` or `efi_device` are required, these are host level vars that may be used by other functions
+
+| Parameter name        | Default       | Description                                                                       |
+| --------------------- | ------------- | --------------------------------------------------------------------------------- |
+| `efi_removable`       | `false`       | Specifies whether or not GRUB should do a removable install                       |
+| `grub_custom_cmdline` |               | Additional parameters to be added to `GRUB_CMDLINE_LINUX`                         |
+| `boot_device`         |               | The /dev/disk/by-id/ that corresponds to the boot device or partition             |
+| `efi_device`          |               | The the EFI partition disk ID, if it differs from the `boot_device`               |
+
+### SSH Server Variables
 
 |  Variable name            |  Defaults         |  Description                                      |
 | ------------------------- | ----------------- | ------------------------------------------------- |
