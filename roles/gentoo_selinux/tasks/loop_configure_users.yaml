@@ -1,0 +1,10 @@
+- name: Configure selinux user parameters
+  become: yes
+  user:
+    name: "{{item.key}}"
+    seuser: "{{item.value.se_user}}"
+  when: "'se_user' in item.value"
+
+- name: Relabel home dir
+  become: yes
+  command: "restorecon -R -F /home/{{item.key}}"

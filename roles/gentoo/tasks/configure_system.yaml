@@ -1,3 +1,9 @@
+- name: Configure the chroot environment
+  include_role:
+    name: gentoo
+    tasks_from: configure_chroot
+  when: use_chroot
+
 - name: Configuring the base system
   include_role:
     name: gentoo

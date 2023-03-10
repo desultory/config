@@ -45,6 +45,15 @@
       set_fact: # adds
         kernel_features: "{{kernel_features | union(late_kernel_features + cust_kernel_features | select )}}"
 
+- name: Get root partition for EFI stub
+  when: efi_stub
+  block:
+    - command: "lsblk /dev/disk/by-id/{{root_device}}-part{{root_partition}} -n -o PARTUUID"
+      register: partition_uuid
+    - name: Set the root_partition_uuid variable
+      set_fact:
+        root_partition_uuid: "{{partition_uuid.stdout_lines[0]}}"
+
 - name: Configure kernel sources
   become: yes
   block:

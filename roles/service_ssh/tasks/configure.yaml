@@ -4,7 +4,57 @@
     name: net-misc/openssh
     state: present
 
-- name: copy /etc/ssh/sshd_config
+- name: Set package.accept_keywords for pam_ssh_agent_auth
+  become: yes
+  copy:
+    src: pam_ssh_agent_auth
+    dest: /etc/portage/package.accept_keywords/pam_ssh_agent_auth
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+
+- name: Install pam_ssh_agent_auth
+  become: yes
+  package: 
+    name: sys-auth/pam_ssh_agent_auth
+    state: present
+
+- name: Configure pam_ssh_agent_auth
+  become: yes
+  block:
+    - lineinfile:
+        path: /etc/pam.d/sudo
+        state: present
+        line: "auth sufficient pam_ssh_agent_auth.so file=/etc/ssh/sudo_authorized_keys"
+    - lineinfile:
+        path: /etc/pam.d/sudo
+        state: present
+        line: "auth include system-auth"
+    - lineinfile:
+        path: /etc/pam.d/sudo
+        state: present
+        line: "account include system-auth"
+    - lineinfile:
+        path: /etc/pam.d/sudo
+        state: present
+        line: "session include system-auth"
+    - file:
+        state: touch
+        path: /etc/ssh/sudo_authorized_keys
+        owner: root
+        group: root
+        mode: u=rw,g=,o=
+    - name: Add SSH keys
+      include_role:
+        name: service_ssh
+        tasks_from: loop_sudo_keys.yaml
+      with_items: "{{users | dict2items}}"
+      loop_control:
+        loop_var: user
+      when: "'wheel' in user.value.get('groups') and 'ssh_keys' in user.value"
+
+
+- name: configure /etc/ssh/sshd_config
   become: yes
   template:
     backup: true

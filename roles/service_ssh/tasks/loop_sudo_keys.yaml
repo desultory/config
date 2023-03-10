@@ -1,0 +1,7 @@
+- name: Add SSH keys to /etc/ssh/sudo_authorized_keys
+  become: yes
+  lineinfile:
+    path: /etc/ssh/sudo_authorized_keys
+    state: present
+    line: "{{item}}"
+  with_items: "{{user.value.ssh_keys}}"

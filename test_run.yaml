@@ -4,4 +4,9 @@
   tasks:
     - import_role:
         name: gentoo
-        tasks_from: configure_net
+        tasks_from: configure_kernel
+    - import_role:
+        name: gentoo
+        tasks_from: configure_bootloader
+#    - import_role:
+#        name: service_dhcp

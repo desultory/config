@@ -1,0 +1,5 @@
+- name: Check reformat_root
+  fail:
+    msg: "Attempting to reformat the root device wehn reformat_root is not set"
+  when: not reformat_root
+

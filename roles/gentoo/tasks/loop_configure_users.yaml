@@ -1,0 +1,32 @@
+- name: Add user
+  become: yes
+  user:
+    name: "{{user.key}}"
+    groups: "{{user.value.get('groups', '')}}"
+    shell: "{{user.value.get('shell', '/bin/bash')}}"
+
+- name: Create user ssh dir
+  become: yes
+  file:
+    state: directory
+    path: "/home/{{user.key}}/.ssh"
+    owner: "{{user.key}}"
+    group: "{{user.key}}"
+    mode: u=rwx,g=,o=
+
+- name: Create user ssh authorized_keys file
+  become: yes
+  file:
+    state: touch
+    path: "/home/{{user.key}}/.ssh/authorized_keys"
+    owner: "{{user.key}}"
+    group: "{{user.key}}"
+    mode: u=rw,g=,o=
+
+- name: Add authorized keys
+  become: yes
+  lineinfile:
+    path: "/home/{{user.key}}/.ssh/authorized_keys"
+    line: "{{item}}"
+  with_items: "{{user.value.ssh_keys}}"
+  when: "'ssh_keys' in user.value"

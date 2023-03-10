@@ -1,0 +1,13 @@
+- name: Include users.yaml vars file
+  include_vars:
+    file: users.yaml
+  register: result # Ignore the file not being found if dhcp variables are already defined
+  failed_when: "result.message is defined and ((\"Could not find or access 'users.yaml'\" in result.message and users is not defined) or (\"Could not find or access 'users.yaml'\" not in result.message))"
+
+- name: Add users
+  include_role:
+    name: gentoo
+    tasks_from: loop_configure_users.yaml
+  loop_control:
+    loop_var: user
+  with_items: "{{users | dict2items}}"

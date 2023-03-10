@@ -1,0 +1,20 @@
+- name: Configure the installation
+  become: yes
+  block:
+    - name: Install sys-boot/grub
+      portage:
+        package: sys-boot/grub
+        state: present
+    - name: Install /etc/default/grub
+      template:
+        backup: yes
+        src: grub
+        dest: /etc/default/grub
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+
+- name: Install GRUB bootloader
+  import_role:
+    name: feature_grub
+    tasks_from: grub_install

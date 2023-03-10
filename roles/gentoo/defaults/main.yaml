@@ -30,10 +30,11 @@ autorun: false
 
 # Don't reformat partitions unless specified
 reformat_boot: false
+reformat_root: false
+# Set the default root partition number
+root_partition: 1
 # Set the bootloader partition size
 boot_partition_size: 512
-# Set whether or not to do a removable install
-efi_removable: false
 
 # the serial port ID (/dev/tty{n})
 serial_port: "S1"
@@ -41,8 +42,12 @@ serial_port: "S1"
 system_root: "/"
 # Whether or not the root partition should be encrypted
 encrypted_root: false
-# init grub custom commandline parameters
-grub_custom_cmdline: ""
+# Whether or not to compile EFI stub support into the kernel, and use it with efibootmgr
+efi_stub: false
 
 # When true, network init files will be deleted if not present in the config
 clean_net: false
+
+# When true, does a chroot install, dangerous to set manually
+use_chroot: false
+

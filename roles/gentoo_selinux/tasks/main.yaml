@@ -3,6 +3,11 @@
     name: gentoo_selinux
     tasks_from: configure
 
+- name: Configure users
+  include_role:
+    name: gentoo_selinux
+    tasks_from: configure_users
+
 - name: Relabel system
   include_role:
     name: gentoo_selinux

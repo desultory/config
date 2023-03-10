@@ -1,7 +1,7 @@
-- name: Check gentoo
-  fail:
-    msg: "Error: Using the Gentoo server role on a server that is not reporting using {{ansible_facts['os_family']}}"
-  when: ansible_facts['os_family'] != 'Gentoo'
+- name: jump check_system
+  include_role:
+    name: gentoo
+    tasks_from: check_system
 
 - name: Jump configure_system
   include_role:

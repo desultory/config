@@ -1,0 +1,5 @@
+# init grub custom commandline parameters
+grub_custom_cmdline: ""
+
+# Set whether or not to do a removable install
+efi_removable: false

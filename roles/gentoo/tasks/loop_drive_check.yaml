@@ -1,0 +1,8 @@
+- name: get mountpoint of the drive
+  set_fact:
+    use_chroot: True
+  with_items: "{{ansible_facts['mounts']}}"
+  when: item.mount == '/' and not item.device | regex_search(regex_str)
+  vars:
+    drive_path: \/dev\/{{drive_match.key}}
+    regex_str: "^{{drive_path}}.*$"

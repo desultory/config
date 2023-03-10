@@ -55,17 +55,46 @@ Overrides to role variables should be made in the inventory file
 
 These may not have defaults, in which case, values must be defined in the host/playbook configuiration, and may be required for some functions
 
-|  Variable name            | Default   | Required by           |  Description                                                                      |
-| ------------------------- | --------- | --------------------- | --------------------------------------------------------------------------------- |
-| `boot_device`             |           | bootloader, kernel    | The name of the item under /dev/disk/by-id/ that corresponds with the boot device |
-| `reformat_boot`           |           |                       | When true, the script will allow reformatting of the boot device (DANGEROUS)      |
-| `efi_device`              |           |                       | The device containing the EFI partition, useful if not using `reformat_boot`      |
-| `efi_removable`           | `false`   |                       | Specifies whether or not GRUB should do a removable install                       |
-| `boot_partition_size`     | `512`     |                       | Size of the boot partition (in MB)                                                |
-| `system_root`             | `/`       |                       | The location of the system root                                                   | 
-| `encrypted_root`          | `false`   |                       | When true, enables the dmcrypt and ramdisk                                        |
-| `serial_port`             | `S1`      | serial                | The port identifier for the serial port (S0,S1, etc)                              |
-| `grub_custom_cmdline`     |           |                       | Additional parameters to be added to `GRUB_CMDLINE_LINUX`                         |
+|  Variable name            | Default   | Required by           |  Description                                                                                          |
+| ------------------------- | --------- | --------------------- | ----------------------------------------------------------------------------------------------------- |
+| `reformat_boot`           | `false`   |                       | When true, the script will allow reformatting of the boot device (DANGEROUS)                          |
+| `reformat_root`           | `false`   |                       | When true, the script will allow reformatting of the root device (DANGEROUS)                          |
+| `boot_partition_size`     | `512`     |                       | Size of the boot partition (in MB)                                                                    |
+| `root_device`             |           |                       | The disk ID of the device to be used as the system root                                               |
+| `root_partition`          | `1`       |                       | The partition to be used as the system root                                                           |
+| `system_root`             | `/`       |                       | The location of the system root                                                                       |
+| `encrypted_root`          | `false`   |                       | When true, enables the dmcrypt and ramdisk                                                            |
+| `serial_port`             | `S1`      | serial                | The port identifier for the serial port (S0,S1, etc)                                                  |
+| `efi_stub`                | `false`   |                       | When true, configures the kernel/system to boot from an efi stub, requires the `root_device` is set   |
+
+### Users
+
+Users can be configured by adding them to a dict in `vars/users.yaml`
+
+The key names should be the name of the user
+
+Potential values include:
+
+`ssh_keys` : A list containing the full SSH key as it would be listed in `ssh-add -L`
+
+`groups` : A list of groups the user will be added to, if wheel is set, the user will be given selinux staff permissions, and will be allowed to use sudo with their ssh key
+
+`shell` : The default shell for the user, defaults to `/bin/bash`
+
+`se_uset` : If selinux is enabled, sets the seuser value for this user and relables their home dir
+
+### GRUB
+
+`feature_grub` role
+
+either `boot_device` or `efi_device` are required, these are host level vars that may be used by other functions
+
+| Parameter name        | Default       | Description                                                                       |
+| --------------------- | ------------- | --------------------------------------------------------------------------------- |
+| `efi_removable`       | `false`       | Specifies whether or not GRUB should do a removable install                       |
+| `grub_custom_cmdline` |               | Additional parameters to be added to `GRUB_CMDLINE_LINUX`                         |
+| `boot_device`         |               | The /dev/disk/by-id/ that corresponds to the boot device or partition             |
+| `efi_device`          |               | The the EFI partition disk ID, if it differs from the `boot_device`               |
 
 ### netconfig
 
@@ -89,7 +118,7 @@ Each item under the `netconfig` dict should be interface names, such as `br0` or
 
 VLAN entries can be added by creating a dict with the key name `vlan` then adding keys containing the vlan numbers
 - names can be specified using the `name` key under the vlan number
-- crated vlans can be configured using the configured `name` (with . replaced with _)  or `{{vlan_interface}}_{{vlan_number}}`
+- crated vlans can be configured using the configured `name` (with . replaced with _ )  or `{{vlan_interface}}_{{vlan_number}}`
 
 The dict can contain the following key/value pairs
 
@@ -151,17 +180,18 @@ Example network config:
 
 ### Gentoo Variables
 
-|  Variable name            |  Defaults                     |  Description                                                                  |
-| ------------------------- | ----------------------------- | ----------------------------------------------------------------------------- |
-| `services`                | `['ssh']`                     | List of services to install/configure                                         |
-| `features`                | `[]`                          | List of features to use                                                       |
-| `gentoo_hardened`         | `true`                        | Define whether or not to use the hardened profile, this will also enable KSPP | 
-| `emerge_profile`          | `default/linux/amd64/17.1`    | The default profile to select                                                 |
-| `emerge_kernel`           | `gentoo-sources`              | Short atom of the gentoo kernel source package                                |
-| `emerge_kernel_unstable`  | `false`                       | Tells emerge to use the unstable kernel                                       |
-| `use_initramfs`           | `false`                       | True if an initramfs is being used, may be set automatically                  |
-| `autorun`                 | `false`                       | If true, the entire install is played on import                               |
-| `clean_net`               | `false`                       | If true, network init files which are not in the config will be deleted       |
+|  Variable name            |  Defaults                     |  Description                                                                                                          |
+| ------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `services`                | `['ssh']`                     | List of services to install/configure                                                                                 |
+| `features`                | `[]`                          | List of features to use                                                                                               |
+| `gentoo_hardened`         | `true`                        | Define whether or not to use the hardened profile, this will also enable KSPP                                         | 
+| `emerge_profile`          | `default/linux/amd64/17.1`    | The default profile to select                                                                                         |
+| `emerge_kernel`           | `gentoo-sources`              | Short atom of the gentoo kernel source package                                                                        |
+| `emerge_kernel_unstable`  | `false`                       | Tells emerge to use the unstable kernel                                                                               |
+| `use_initramfs`           | `false`                       | True if an initramfs is being used, may be set automatically                                                          |
+| `autorun`                 | `false`                       | If true, the entire install is played on import                                                                       |
+| `clean_net`               | `false`                       | If true, network init files which are not in the config will be deleted                                               |
+| `use_chroot`              | `false`                       | If true, which is implied if the root device differs from the `/` mount, does a chroot install to the `root_device`   |
 
 #### SELinux
 
@@ -178,6 +208,7 @@ Example network config:
 | `ssh`         | OpenSSH server                                    |
 | `docker`      | dockerd                                           |
 | `dmcrypt`     | Disk encryption, inherited by encrypted_root      |
+| `dhcp`        | ISC DHCP Server                                   |
 
 #### Features
 
@@ -233,6 +264,7 @@ late_kernel_features is used to ensure certain .configs are added after autodete
 | `dhcp_authoritative`      | `false`           | `authoritative`                                                                                                   |
 | `dhcp_use_client`         | `false`           | When false, passes `-client` to emerge for the DHCP package                                                       |
 | `dhcp_interfaces`         |                   | Set the DHCP interfaces in `etc/conf.d/dhcpd`, should be a list. Specified interfaces should exist in netconfig   |
+| `dhcp_chroot`             | `true`            | Enables the chroot  at `/var/lib/dhcp/chroot`                                                                     |
 
 #### Subnets
 

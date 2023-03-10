@@ -1,5 +1,13 @@
 - name: test
   hosts: servers
   tasks:
-    - debug:
-        msg: "{{netconfig.values() | selectattr('config', '==', 'dhcp') }}"
+    - include_vars:
+        file: users.yaml
+    - name: aaa
+      debug:
+        var: item
+      with_items: "{{users | selectattr('groups', 'defined')}}"
+
+    #  - import_role:
+    #    name: gentoo
+    #    tasks_from: check_system.yaml

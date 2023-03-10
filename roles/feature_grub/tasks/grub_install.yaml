@@ -1,26 +1,3 @@
-- name: Check boot device
-  block:
-    - name: Check that the boot device is set
-      fail:
-        msg: "valid boot_device is not set: {{boot_device}}"
-      when: boot_device not in ansible_facts['device_links']['ids'].values() | flatten
-
-- name: Configuring grub package
-  become: yes
-  block:
-    - name: Install grub package
-      portage:
-        package: sys-boot/grub
-        state: present
-    - name: Install /etc/default/grub
-      template:
-        backup: yes
-        src: etc/default/grub
-        dest: /etc/default/grub
-        owner: root
-        group: root
-        mode: u=rw,g=r,o=r
-
 - name: Mount boot and partition
   become: yes
   block:
@@ -46,7 +23,7 @@
     efi_directory: "/boot{% if efi_device is defined %}/efi{% endif %}"
 
 - set_fact:
-    grub_cmd: "grub-install --efi-directory={{efi_directory}}{% if efi_removable %} --removable{% endif %}"
+    grub_cmd: "grub-install --target=x86_64-efi {% if efi_removable %}--removable {% endif %}--efi-directory={{efi_directory}} -v {% if efi_device is defined %}/dev/disk/by-id/{{efi_device}}{% else %}/dev/disk/by-id/{{boot_device}}{% endif %}"
 
 - name: Check grub install
   block:

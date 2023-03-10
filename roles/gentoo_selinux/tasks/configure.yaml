@@ -15,7 +15,7 @@
       group: root
       mode: u=rw,g=r,o=r
   - name: Set SELinux status
-    selinux:
+    ansible.posix.selinux:
       state: "{{selinux_status}}"
       policy: "{{selinux_type}}"
 

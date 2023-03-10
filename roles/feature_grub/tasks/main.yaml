@@ -1,0 +1,9 @@
+- name: Install GRUB package
+  import_role:
+    name: feature_grub
+    tasks_from: install
+
+- name: Configure UEFI to use GRUB
+  import_role:
+    name: feature_grub
+    tasks_from: configure

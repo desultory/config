@@ -1,6 +1,7 @@
 *.swp
 *.swo
 *.swn
+*.save
 inventory*
 !inventory/servers.yaml
 vars/*.yaml
