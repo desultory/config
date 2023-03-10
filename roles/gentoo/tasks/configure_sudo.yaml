@@ -47,22 +47,22 @@
         path: /etc/pam.d/sudo
         state: present
         line: "auth sufficient pam_ssh_agent_auth.so file=/etc/ssh/sudo_authorized_keys"
-        insertbefore: '^auth +(substack +|include +)system-auth$'
+        insertbefore: '^auth\s+(substack|include)\s+system-auth$'
     - lineinfile:
         path: /etc/pam.d/sudo
         state: present
         line: "auth include system-auth"
-        regexp: '^auth +(substack +|include +)system-auth$'
+        regexp: '^auth\s+(substack|include)\s+system-auth$'
     - lineinfile:
         path: /etc/pam.d/sudo
         state: present
         line: "account include system-auth"
-        regexp: '^account +(substack +|include +)system-auth$'
+        regexp: '^account\s+(substack|include)\s+system-auth$'
     - lineinfile:
         path: /etc/pam.d/sudo
         state: present
         line: "session include system-auth"
-        regexp: '^session +(substack +|include +)system-auth$'
+        regexp: '^session\s+(substack|include)\s+system-auth$'
     - file:
         state: directory
         path: /etc/ssh/
