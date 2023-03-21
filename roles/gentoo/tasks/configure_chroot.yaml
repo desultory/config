@@ -3,3 +3,14 @@
     msg: "Attempting to reformat the root device wehn reformat_root is not set"
   when: not reformat_root
 
+- set_fact:
+    root_partition: 2
+  when: root_device == boot_device
+
+- debug:
+    msg: "{{root_partition}}"
+
+
+
+- fail:
+    msg: "end"
