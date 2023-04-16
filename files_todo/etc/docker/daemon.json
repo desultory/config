@@ -1,0 +1,9 @@
+{
+	"storage-driver": "btrfs",
+	"iptables": false,
+	"ip-forward": false,
+	"ip-masq": false,
+	"ip6tables": false,
+	"ipv6": false,
+	"userland-proxy": false
+}
