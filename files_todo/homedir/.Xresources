@@ -7,9 +7,6 @@ URxvt.scrollstyle: rxvt
 ! Increase scrollback buURxvt*saveLines: 16384ffer size
 URxvt*saveLines: 16384
 
-! Automatically copy selected text
-URxvt.clipboard.autocopy: true
-
 ! Font config
 URxvt*font:           xft:Inconsolata:size=8
 Xft.dpi:        96
@@ -20,30 +17,73 @@ Xft.hintstyle:  hintslight
 Xft.autohint:   false
 Xft.lcdfilter:  lcddefault
 
+*.foreground:  #cccccc
+*.background:  #1e1e1e
+*.cursorColor: #ffffff
+!
+! Black
+*.color0:      #000000
+*.color8:      #666666
+!
+! Red
+*.color1:      #cd3131
+*.color9:      #f14c4c
+!
+! Green
+*.color2:      #0dbc79
+*.color10:     #23d18b
+!
+! Yellow
+*.color3:      #e5e510
+*.color11:     #f5f543
+!
+! Blue
+*.color4:      #2472c8
+*.color12:     #3b8eea
+!
+! Magenta
+*.color5:      #bc3fbc
+*.color13:     #d670d6
+!
+! Cyan
+*.color6:      #11a8cd
+*.color14:     #29b8db
+!
+! White
+*.color7:      #e5e5e5
+*.color15:     #e5e5e5
+!
+! Bold, Italic, Underline
+*.colorBD:     #ffffff
+!*.colorIT:
+!*.colorUL:
+
+
+! Old
 ! Color config
-urxvt*background:       #212629
-urxvt*foreground:       #737c80
+!urxvt*background:       #212629
+!urxvt*foreground:       #737c80
 !black
-URxvt*color0:           #111313
-URxvt*color8:           #424446
+!URxvt*color0:           #111313
+!URxvt*color8:           #424446
 !red
-URxvt*color1:           #9e6b71
-URxvt*color9:           #b69094
+!URxvt*color1:           #9e6b71
+!URxvt*color9:           #b69094
 !green
-URxvt*color2:           #719e6b
-URxvt*color10:          #94b690
+!URxvt*color2:           #719e6b
+!URxvt*color10:          #94b690
 !yellow
-URxvt*color3:           #9e986c
-URxvt*color11:          #b5b18f
+!URxvt*color3:           #9e986c
+!URxvt*color11:          #b5b18f
 !blue
-URxvt*color4:           #6c8b9e
-URxvt*color12:          #90a7b6
+!URxvt*color4:           #6c8b9e
+!URxvt*color12:          #90a7b6
 !magenta
-URxvt*color5:           #986b9e
-URxvt*color13:          #b290b6
+!URxvt*color5:           #986b9e
+!URxvt*color13:          #b290b6
 !cyan
-URxvt*color6:           #6b9e98
-URxvt*color14:          #90b6b3
+!URxvt*color6:           #6b9e98
+!URxvt*color14:          #90b6b3
 !white
-URxvt*color7:           #b8baba
-URxvt*color15:          #cdcfce
+!URxvt*color7:           #b8baba
+!URxvt*color15:          #cdcfce

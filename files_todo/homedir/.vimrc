@@ -16,6 +16,9 @@ call plug#begin('~/.vim/plugged')
 " python-mode python IDE features
 " https://github.com/python-mode/python-mode
 " Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
+" Improved python syntax highlighting
+" https://github.com/vim-python/python-syntax
+Plug 'vim-python/python-syntax'
 " Use vim-plug to install rust syntax
 " https://github.com/rust-lang/rust.vim
 Plug 'rust-lang/rust.vim'
@@ -51,6 +54,9 @@ set foldlevel=99
 " Remove python-mode column
 "let g:pymode_options_colorcolumn = 0
 
+" Improved python syntax highlighting
+let g:python_highlight_all = 1
+
 "autocmd StdinReadPre * let s:std_in=1
 " Start NERDTree if no args are passsed to vim
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
@@ -61,7 +67,7 @@ inoremap <silent><expr> <Tab>
 
 " Set the ALE linters
 let g:ale_linters = {
-\ 'python': ['jedils', 'pylinl', 'flake8'],
+\ 'python': ['jedils', 'pylint', 'flake8'],
 \}
 
 " Set the ALE fixers
