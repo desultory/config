@@ -20,11 +20,18 @@ exec gentoo-pipewire-launcher &
 # Start foot server
 exec foot --server
 
+for_window [app_id="flying-foot"] floating enable
+
 exec swaymsg "workspace 2; exec signal-desktop"
+assign [class="Signal"] 2
 exec swaymsg "workspace 2; exec voice-desktop.AppImage"
+assign [class="voice-desktop-app"] 2
 exec swaymsg "workspace 2; layout tabbed; exec $term tmux attach-session -t weechat"
 
-
+exec swaymsg "workspace 3; exec flatpak run com.plexamp.Plexamp"
+assign [app_id="plexamp"] 3
+exec swaymsg "workspace 3; layout tabbed; exec pavucontrol"
+assign [app_id="pavucontrol"] 3
 
 exec swayidle -w timeout 900 'swaymsg "output * power off"' resume 'swaymsg "output * power on"'
 
@@ -59,7 +66,7 @@ input "1133:49291:Logitech_G502_HERO_Gaming_Mouse" {
     bindsym $mod+p exec $term -e python
 
     # Start htop
-    bindsym control+shift+escape exec $term -e htop
+    bindsym control+shift+escape exec $term -a 'flying-foot' htop
 
     # Lock the session
     bindsym $mod+l exec swaylock --ignore-empty-password --show-failed-attempts \
