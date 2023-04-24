@@ -74,7 +74,7 @@ fi
 
 # Start sway on TTY login
 if [ -z "${WAYLAND_DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-    dbus-run-session sway
+    exec dbus-run-session sway > /tmp/sway.log 2> /tmp/sway.err
 fi
 
 HISTFILE=~/.histfile

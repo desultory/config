@@ -22,14 +22,14 @@ exec foot --server
 
 for_window [app_id="flying-foot"] floating enable
 
-exec swaymsg "workspace 2; exec signal-desktop"
+exec signal-desktop
 assign [class="Signal"] 2
-exec swaymsg "workspace 2; exec voice-desktop.AppImage"
+exec voice-desktop.AppImage
 assign [class="voice-desktop-app"] 2
-exec swaymsg "workspace 2; layout tabbed; exec $term tmux attach-session -t weechat"
+exec swaymsg "workspace 2; layout tabbed; exec sleep 1; exec $term tmux attach-session -t weechat"
 
-exec swaymsg "workspace 3; exec flatpak run com.plexamp.Plexamp"
-assign [app_id="plexamp"] 3
+exec flatpak run com.plexamp.Plexamp
+assign [app_id="Plexamp"] 3
 exec swaymsg "workspace 3; layout tabbed; exec pavucontrol"
 assign [app_id="pavucontrol"] 3
 
@@ -74,6 +74,10 @@ input "1133:49291:Logitech_G502_HERO_Gaming_Mouse" {
     --inside-clear-color 11a8cd --ring-clear-color 29b8db \
     --inside-ver-color 2472c8 --ring-ver-color 3b8eea \
     --inside-wrong-color cd3131 --ring-wrong-color f14c4c
+
+    # Copy an area to the clipboard
+    bindsym $mod+shift+s exec grimshot copy area
+
 
     # Start your launcher
     bindsym $mod+d exec $menu
