@@ -1,45 +1,46 @@
 # ~/.config/sway/config
 
-exec urxvtd --quiet --opendisplay --fork
+font pango:DejaVu Sans Mono 8
 
-exec_always test -f ~/.Xresources && xrdb -merge ~/.Xresources
 ### Variables
 #
 # Logo key. Use Mod1 for Alt.
 set $mod Mod4
 
 # Your preferred terminal emulator
-set $term urxvtc
+set $term footclient
 
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu dmenu_path | dmenu | xargs swaymsg exec --
+set $menu bemenu-run -p "" | xargs swaymsg exec --
 
-### Output configuration
-#
-# Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-#output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+# Startup config
+exec gentoo-pipewire-launcher &
+# Start foot server
+exec foot --server
 
-output DP-1 resolution 3440x1440@165hz pos 2560 350
-output DP-2 resolution 2560x1440@74.971hz pos 0 250
-output DP-3 resolution 1920x1080@60hz pos 6000 0 transform 270
+exec swaymsg "workspace 2; exec signal-desktop"
+exec swaymsg "workspace 2; exec voice-desktop.AppImage"
+exec swaymsg "workspace 2; layout tabbed; exec $term tmux attach-session -t weechat"
+
+
 
 exec swayidle -w timeout 900 'swaymsg "output * power off"' resume 'swaymsg "output * power on"'
 
+exec_always test -f ~/.Xresources && xrdb -merge ~/.Xresources
+
+### Output configuration
+output DP-1 resolution 3440x1440@165hz pos 2560 350 bg ~/Pictures/Wallpapers/Zenn_colorful_geometric_psychedelic_trippy_rainbow_prismatic_mo_2888e60c-c2b1-4954-a3d1-626f936dd99f.png fill
+output DP-2 resolution 2560x1440@74.971hz pos 0 250 bg ~/Pictures/Wallpapers/Zenn_colorful_geometric_psychedelic_trippy_rainbow_prismatic_mo_20eb2cb8-484b-4a6c-8e00-a7cc232c85e1.png fill
+output DP-3 resolution 1920x1080@60hz pos 6000 0 transform 270 bg ~/Pictures/Wallpapers/Zenn_colorful_geometric_psychedelic_trippy_rainbow_prismatic_mo_3944d8b8-93a0-4b7c-ad05-a0072c45dd93.png fill
+
 ### Input configuration
-#
-# Example configuration:
-#
-#   input "2:14:SynPS/2_Synaptics_TouchPad" {
-#       dwt enabled
-#       tap enabled
-#       natural_scroll enabled
-#       middle_emulation enabled
-#   }
-#
-# You can get the names of your inputs by running: swaymsg -t get_inputs
-# Read `man 5 sway-input` for more information about this section.
+input "1133:49291:Logitech_G502_HERO_Gaming_Mouse" {
+    accel_profile "flat"
+    pointer_accel -0.3
+}
+
 
 ### Key bindings
 #
@@ -59,6 +60,13 @@ exec swayidle -w timeout 900 'swaymsg "output * power off"' resume 'swaymsg "out
 
     # Start htop
     bindsym control+shift+escape exec $term -e htop
+
+    # Lock the session
+    bindsym $mod+l exec swaylock --ignore-empty-password --show-failed-attempts \
+    --color 1e1e1e --inside-color cccccc --ring-color ffffff \
+    --inside-clear-color 11a8cd --ring-clear-color 29b8db \
+    --inside-ver-color 2472c8 --ring-ver-color 3b8eea \
+    --inside-wrong-color cd3131 --ring-wrong-color f14c4c
 
     # Start your launcher
     bindsym $mod+d exec $menu
@@ -132,12 +140,14 @@ exec swayidle -w timeout 900 'swaymsg "output * power off"' resume 'swaymsg "out
 
     # Toggle the current focus between tiling and floating mode
     bindsym $mod+Shift+space floating toggle
-
     # Swap focus between the tiling area and the floating area
     bindsym $mod+space focus mode_toggle
 
     # Move focus to the parent container
     bindsym $mod+a focus parent
+    # Focus the child container
+    bindsym $mod+z focus child
+
 #
 # Scratchpad:
 #
@@ -145,11 +155,11 @@ exec swayidle -w timeout 900 'swaymsg "output * power off"' resume 'swaymsg "out
     # You can send windows there and get them back later.
 
     # Move the currently focused window to the scratchpad
-    bindsym $mod+Shift+minus move scratchpad
+    bindsym $mod+minus move scratchpad
 
     # Show the next scratchpad window or hide the focused scratchpad window.
     # If there are multiple scratchpad windows, this command cycles through them.
-    bindsym $mod+minus scratchpad show
+    bindsym $mod+plus scratchpad show
 #
 # Resizing containers:
 #

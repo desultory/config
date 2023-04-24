@@ -1,7 +1,3 @@
-# Start sway on TTY login
-if [ -z "${WAYLAND_DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-    dbus-run-session sway
-fi
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -70,6 +66,17 @@ fi
 gpgconf --launch gpg-agent
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
+# start weechat session in tmux
+if [[ $(ps -ef | grep -c tmux) -eq 1 ]] || ([[ $(ps -ef | grep -c tmux) -ne 1 ]] && ! tmux has-session -t weechat) ; then
+    echo "Starting weechat tmux session"
+    tmux new-session -d -s weechat weechat
+fi
+
+# Start sway on TTY login
+if [ -z "${WAYLAND_DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
+    dbus-run-session sway
+fi
+
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
@@ -78,7 +85,6 @@ zstyle :compinstall filename '/home/desu/.zshrc'
 
 autoload -Uz compinit promptinit
 compinit
-promptinit; prompt gentoo
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
