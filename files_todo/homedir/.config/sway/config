@@ -16,17 +16,22 @@ set $term footclient
 set $menu bemenu-run -p "" | xargs swaymsg exec --
 
 # Startup config
-exec gentoo-pipewire-launcher &
+# Start dunst
+exec dunst &
 # Start foot server
 exec foot --server
+# Start pipewire services
+exec gentoo-pipewire-launcher &
 
 for_window [app_id="flying-foot"] floating enable
 
 exec signal-desktop
 assign [class="Signal"] 2
+exec discord
+assign [class="discord"] 2
 exec voice-desktop.AppImage
 assign [class="voice-desktop-app"] 2
-exec swaymsg "workspace 2; layout tabbed; exec sleep 1; exec $term tmux attach-session -t weechat"
+exec swaymsg "workspace 2; layout tabbed; exec sleep 1 && $term tmux attach-session -t weechat"
 
 exec flatpak run com.plexamp.Plexamp
 assign [app_id="Plexamp"] 3
@@ -63,10 +68,10 @@ input "1133:49291:Logitech_G502_HERO_Gaming_Mouse" {
     bindsym $mod+f exec firefox
 
     # Start a python shell
-    bindsym $mod+p exec $term -e python
+    bindsym $mod+p exec $term -a 'flying-foot' -w 1920x1080 bpython
 
     # Start htop
-    bindsym control+shift+escape exec $term -a 'flying-foot' htop
+    bindsym control+shift+escape exec $term -a 'flying-foot' -w 1920x1080 htop
 
     # Lock the session
     bindsym $mod+l exec swaylock --ignore-empty-password --show-failed-attempts \
@@ -77,7 +82,6 @@ input "1133:49291:Logitech_G502_HERO_Gaming_Mouse" {
 
     # Copy an area to the clipboard
     bindsym $mod+shift+s exec grimshot copy area
-
 
     # Start your launcher
     bindsym $mod+d exec $menu
@@ -111,6 +115,10 @@ input "1133:49291:Logitech_G502_HERO_Gaming_Mouse" {
 #
 # Workspaces:
 #
+    # Move between workspaces
+    bindsym $mod+control+Right workspace next
+    bindsym $mod+control+Left workspace prev
+
     # Switch to workspace
     bindsym $mod+1 workspace number 1
     bindsym $mod+2 workspace number 2
