@@ -50,7 +50,11 @@ if [ ! -d ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k ]; then
 fi
 
 gpgconf --launch gpg-agent
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+#export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+
+if [ -z "$SSH_AUTH_SOCK" ] || ! [ -e "$SSH_AUTH_SOCK" ]; then
+        eval $(ssh-agent)
+fi
 
 # start weechat session in tmux
 if [[ $(ps -ef | grep -c tmux) -eq 1 ]] || ([[ $(ps -ef | grep -c tmux) -ne 1 ]] && ! tmux has-session -t weechat) ; then

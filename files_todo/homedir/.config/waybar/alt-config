@@ -1,0 +1,15 @@
+{
+    "layer": "bottom",
+    "output": ["DP-2","DP-3"],
+    "modules-left": ["sway/workspaces"],
+    "modules-center": ["sway/window"],
+    "modules-right": ["clock"],
+    "sway/window": {
+        "max-length": 50
+    },
+    "clock": {
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format" : "{:%a, %d. %b  %H:%M}",
+        "format-alt": "{:%H:%M}"
+    },
+} 

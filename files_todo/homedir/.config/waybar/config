@@ -1,0 +1,69 @@
+{
+    "layer": "bottom",
+    "output": "DP-1",
+    "modules-left": ["sway/workspaces", "sway/mode", "sway/scratchpad"],
+    "modules-center": ["sway/window"],
+    "modules-right": ["memory", "cpu", "temperature", "network", "custom/work_vpn", "tray", "idle_inhibitor", "wireplumber", "clock"],
+    "sway/window": {
+        "max-length": 50
+    },
+    "sway/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+    "sway/scratchpad": {
+        "format": "{icon} {count}",
+        "show-empty": false,
+        "format-icons": ["", ""],
+        "tooltip": true,
+        "tooltip-format": "{app}: {title}"
+    },
+    "clock": {
+	"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format" : "{:%a, %d. %b  %H:%M}",
+	"format-alt": "{:%H:%M}"
+    },
+    "cpu": {
+        "format": "🖳 {usage}%",
+        "tooltip": true
+    },
+    "idle_inhibitor": {
+	"format": "{icon}",
+	"format-icons": {
+	    "activated": "🗲",
+	    "deactivated": "💤"
+	}
+    },
+    "memory": {
+        "format": "🖪 {percentage}% {used}GiB"
+    }, 
+    "network": {
+        // "interface": "wlp2*", // (Optional) To force the use of this interface
+        "format-wifi": "{essid}: ({signalStrength}%)",
+        "format-ethernet": "🔌 {ipaddr}/{cidr}",
+        "tooltip-format": "📶 {ifname} via {gwaddr} ",
+        "format-linked": "💢 {ifname} (No IP)",
+        "format-disconnected": "💢",
+        "format-alt": "🖧 {ifname}: {ipaddr}/{cidr}"
+    },
+    "temperature": {
+        // "thermal-zone": 2,
+        "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+        "critical-threshold": 90,
+        "format": "🌡️ {temperatureC}°C",
+	"format-critical": "🔥{temperatureC}°C"
+    },
+    "tray": {
+        "spacing": 10,
+	"show-passive-items": true,
+    },
+    "wireplumber": {
+	"format": "🔊 {volume}%",
+    },
+    "custom/work_vpn": {
+        "format": "🖧 Work",
+	"exec": "echo '{\"class\": \"connected\"}'",
+	"exec-if": "test -d /proc/sys/net/ipv4/conf/tsc",
+	"return-type": "json",
+	"interval": 5
+    }
+} 

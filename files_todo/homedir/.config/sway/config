@@ -13,7 +13,7 @@ set $term footclient
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu bemenu-run -p "" | xargs swaymsg exec --
+set $menu bemenu-run -p "" -H 26 | xargs swaymsg exec --
 
 # Startup config
 # Start dunst
@@ -35,10 +35,10 @@ exec swaymsg "workspace 2; layout tabbed; exec sleep 1 && $term tmux attach-sess
 
 exec flatpak run com.plexamp.Plexamp
 assign [app_id="Plexamp"] 3
-exec swaymsg "workspace 3; layout tabbed; exec pavucontrol"
+exec swaymsg "workspace 3; layout splitv; exec pavucontrol"
 assign [app_id="pavucontrol"] 3
 
-exec_always killall swayidle; swayidle -w timeout 300 'swaymsg "output * power off"' resume 'swaymsg "output * power on"'
+exec swayidle -w timeout 300 'swaymsg "output * power off"' resume 'swaymsg "output * power on"'
 
 exec_always test -f ~/.Xresources && xrdb -merge ~/.Xresources
 
@@ -202,21 +202,14 @@ bindsym $mod+r mode "resize"
 
 #
 # Status Bar:
-#
-# Read `man 5 sway-bar` for more information about this section.
-bar {
-    position top
+# Disable the visibility of the builin one and use waybar
+exec waybar
+exec waybar --config ~/.config/waybar/alt-config
 
-    # When the status_command prints a new line to stdout, swaybar updates.
-    # The default just shows the current date and time.
-    status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
-
-    colors {
-        statusline #ffffff
-        background #323232
-        inactive_workspace #32323200 #32323200 #5c5c5c
-    }
-}
+#bar {
+#    status_command waybar
+#    mode invisible
+#}
 
 # popup stuff
 for_window [window_role = "pop-up"] floating enable
@@ -228,6 +221,7 @@ for_window [window_type = "menu"] floating enable
 for_window [app_id = "floating"] floating enable
 for_window [app_id = "floating_update"] floating enable, resize set width 1000px height 600px
 for_window [class = "(?i)pinentry"] floating enable
+for_window [title = "Administrator privileges required"] floating enable
 
 for_window [title = "About Mozilla Firefox"] floating enable
 for_window [window_role = "About"] floating enable
@@ -235,5 +229,3 @@ for_window [app_id="firefox" title="Library"] floating enable, border pixel 1, s
 
 for_window [title = "Firefox - Sharing Indicator"] kill
 for_window [title = "Firefox — Sharing Indicator"] kill
-
-include /etc/sway/config.d/*
