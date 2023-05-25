@@ -42,6 +42,8 @@ Plug 'vim-airline/vim-airline'
 " be sure to install the following packages:
 " pylint,
 Plug 'dense-analysis/ale'
+" Copilot
+Plug 'github/copilot.vim'
 
 call plug#end()
 
@@ -67,7 +69,7 @@ inoremap <silent><expr> <Tab>
 
 " Set the ALE linters
 let g:ale_linters = {
-\ 'python': ['jedils', 'pylint', 'flake8'],
+\ 'python': ['jedils', 'flake8'],
 \}
 
 " Set the ALE fixers
@@ -80,7 +82,7 @@ let g:airline#extensions#ale#enabled = 1
 " Don't print errors to the buffer
 let g:ale_virtualtext_cursor = 0
 " Disable line too long errors
-let g:ale_python_flake8_options = "--ignore=E501,W391"
+let g:ale_python_flake8_options = "--ignore=E501,W391,C0301"
 
 " Airline enable tabline
 let g:airline#extensions#tabline#enabled = 1

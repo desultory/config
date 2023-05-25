@@ -1,10 +1,23 @@
 # ~/.zshrc
+
+# Install oh-my-zsh if it's not installed
+if [[ ! -d $HOME/.oh-my-zsh ]]; then
+    echo "oh-my-zsh not found, press y to install"
+    read key
+    if [[ $key =~ ^[Yy]$ ]]; then
+        echo "Installing oh-my-zsh"
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    else
+        echo "Skipping oh-my-zsh installation"
+    fi
+fi
+
 #
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # Path to your oh-my-zsh installation.
@@ -52,8 +65,8 @@ fi
 gpgconf --launch gpg-agent
 #export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
-if [ -z "$SSH_AUTH_SOCK" ] || ! [ -e "$SSH_AUTH_SOCK" ]; then
-        eval $(ssh-agent)
+if [ -z "$SSH_AUTH_SOCK" ] && ! [ -e "$SSH_AUTH_SOCK" ] && ! [ -n "$SSH_CONNECTION" ]; then
+    eval $(ssh-agent)
 fi
 
 # start weechat session in tmux
@@ -71,7 +84,7 @@ HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
 bindkey -v
-zstyle :compinstall filename '/home/desu/.zshrc'
+zstyle :compinstall filename "${HOME}/.zshrc"
 
 autoload -Uz compinit promptinit
 compinit
